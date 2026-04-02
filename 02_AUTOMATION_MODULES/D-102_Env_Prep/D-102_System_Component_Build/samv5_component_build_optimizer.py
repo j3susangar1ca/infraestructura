@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 #
-# 🛡️ HCG-SYSARCH: SAM-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0042_Resource_Dev
-# [TECHNIQUE]: T1587_Develop_Capabilities
+# ⚙️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: D-102_System_Component_Build
+# [COMPONENTE]: D-102_Build_Optimization_Service
 #
 # ============================================================================
-# SAMV5 — Weaponized Binary_Profile Compiler & Stager Generator
+# SAMV5 — Component Build Optimizer & Stager Generator
 # ============================================================================
-# Framework automatizado para compilación de binary_profiles y binary_codes.
+# Framework automatizado para compilación de componentes de sistema modulares.
 # Capacidades:
 #   - Motor de plantillas parametrizable (Jinja2-like pero nativo)
 #   - Compilación cruzada multi-arquitectura (x86, x64)
-#   - Inyección de variables de configuración C2, anti-sandbox headers
+#   - Optimización de variables de configuración, anti-leak headers
 #   - Empaquetado final de binarios: ELF crudo o Hex-Encoded C arrays
 #
 # Uso:
-#   python3 sigv5_t1587_component_build_optimizer.py --template templates/loader.c --arch x64 --lhost 10.2.1.200 --lport 443
+#   python3 samv5_component_build_optimizer.py --template templates/loader.c --arch x64 --lhost 10.2.1.200 --lport 443
 # ============================================================================
 
 import argparse
