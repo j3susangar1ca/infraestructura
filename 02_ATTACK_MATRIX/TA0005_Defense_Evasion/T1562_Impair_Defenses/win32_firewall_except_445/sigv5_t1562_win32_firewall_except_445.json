@@ -1,0 +1,22 @@
+{
+  "module_id": "WIN32-FIREWALL-EXCEPT-445-V5",
+  "name": "Win32 Add Firewall Exception (Port 445 TCP)",
+  "priority": "HIGH",
+  "tactic": "TA0005_Defense_Evasion",
+  "technique": "T1562",
+  "dependencies": ["gcc", "windows-target", "advapi32.dll"],
+  "targeting_intel": {
+    "os_family": "Windows",
+    "affected_versions": ["Windows XP SP3", "x86"],
+    "vulnerability": "Registry Modification (Impair Defenses)",
+    "hcg_scenario": "Shellcode that directly modifies the registry to add a firewall exception allowing inbound TCP traffic on port 445 (SMB)."
+  },
+  "execution_config": {
+    "command": "gcc sigv5_t1562_win32_firewall_except_445.c -o sigv5_t1562_win32_firewall_except_445.exe -ladvapi32",
+    "usage": "Compiled for x86. Requires ADVAPI32.dll to be loaded in the executing process."
+  },
+  "impact": {
+    "auth_level": "Administrator (Write access to HKEY_LOCAL_MACHINE required)",
+    "action": "Modify Firewall Policy (Defense Evasion)"
+  }
+}
