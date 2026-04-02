@@ -1,0 +1,56 @@
+{
+  "module_identity": {
+    "name": "Enhanced Native Multi-Stage Loader",
+    "family": "State-Level Convergent Implant",
+    "version": "5.0",
+    "mitre_attack_mappings": [
+      "T1106 - Native API: Direct Syscalls & PEB Traversal",
+      "T1620 - Reflective Code Loading",
+      "T1014 - Rootkit: Bootkit MBR/VBR Infection",
+      "T1027.002 - Obfuscated Files or Information: Software Packing (Zlib/Deflate)",
+      "T1055.012 - Process Injection: Process Hollowing/Reflection"
+    ],
+    "description": "Implante convergente de alta sofisticación que integra la carga reflectiva de imágenes PE, la infección de sectores de arranque físicos (Bootkit) y el hosting de entornos .NET (CLR) para la ejecución de payloads de forma sigilosa."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "Convergent TTPs (estilo Equation Group / UNC3886)",
+    "reference_report": "Off the Beaten Path: Recent Unusual Malware (Dixie-Playing Bootkit Analysis)",
+    "tactical_logic": "Persistencia a nivel de hardware (MBR) mediante abuso de drivers firmados ('ampa.sys') combinada con ejecución volátil en memoria para evadir análisis forense de disco y detección de EDR."
+  },
+  "technical_capabilities": {
+    "execution_stages": {
+      "recon_and_resolution": "Resolución dinámica de APIs críticas (VirtualAlloc, LoadLibraryA, GetProcAddress) mediante hashing ROL13 y recorrido de la PEB para evadir la Import Address Table (IAT).",
+      "persistence_mechanism": "Abuso del privilegio 'SeLoadDriverPrivilege' para cargar el controlador 'ampa.sys', crear servicios de driver en el registro y sobrescribir sectores del disco físico (\\\\.\\PhysicalDrive) con un bootloader personalizado.",
+      "clr_hosting": "Carga reflectiva y ejecución de ensamblados .NET en memoria utilizando las interfaces ICLRMetaHost e ICorrRuntimeHost (v4.0.30319)."
+    },
+    "cryptography_integrity": {
+      "compression": "Implementación nativa del algoritmo Deflate/Inflate con verificación de integridad mediante sumas de comprobación Adler32 y CRC32 para payloads embebidos.",
+      "anti_forensics": "Procedimiento de eliminación segura de archivos ('FileSecureDelete') que sobrescribe los drivers en disco con ceros antes de borrarlos físicamente para eliminar trazas forenses."
+    }
+  },
+  "targeting_intel": {
+    "ideal_environment": "Sistemas Windows desde Vista hasta Windows 11 (x64) con requerimientos de persistencia profunda pre-arranque y ejecución de código .NET.",
+    "deployment_strategy": "Uso de tareas programadas ('schtasks') bajo la cuenta SYSTEM para ejecutar el bootkit mediante 'rundll32 w32analytics.dll,ExecuteBootkit'."
+  },
+  "detection_and_evasion": {
+    "yara_targets": [
+      "ExecuteBootkit",
+      "ExecuteClrLoader",
+      "InstallPersistence",
+      "WriteBootloaderToPhysicalDisk"
+    ],
+    "behavioral_notes": "Implementa un complejo sistema de sincronización ('g_RuntimeLock') y conteo de referencias para gestionar el estado del implante en entornos multihilo, evitando fallos que alerten a las herramientas de monitoreo."
+  },
+  "build_instructions": {
+    "compiler": "msvc (cl.exe)",
+    "architecture": "x64",
+    "linker_dependencies": [
+      "ntdll.lib",
+      "advapi32.lib",
+      "oleaut32.lib",
+      "mscoree.lib"
+    ],
+    "recommended_flags": "/MT /O2 /GS- /ENTRY:DllMain",
+    "mutation_directives": "Se debe mutar el hash ROL13 de los módulos 'KERNEL32' (0x6A4ABC5B) y 'NTDLL' (0x3CFA685D) para evadir detecciones estáticas basadas en diccionarios de hashing comunes."
+  }
+}
