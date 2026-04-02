@@ -1,0 +1,45 @@
+{
+  "module_identity": {
+    "name": "MSVC Runtime Lifecycle Reconstruction",
+    "family": "Advanced Evasion Utilities",
+    "version": "5.0",
+    "mitre_attack_mappings": [
+      "T1027.007 - Obfuscated Files or Information: Stripped Payloads",
+      "T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "T1106 - Native API"
+    ],
+    "description": "Módulo de bajo nivel diseñado para la reconstrucción de estructuras de control de flujo de C++ (vtables) y la interceptación de manejadores de terminación (atexit), facilitando una salida limpia del proceso y dificultando el análisis forense de memoria post-ejecución."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "Unknown / High-Sophistication Developer ",
+    "tactical_logic": "Evitar la detección por comportamiento mediante la restauración manual de estructuras de la biblioteca estándar (STL) antes de que las herramientas de monitoreo inspeccionen el proceso al finalizar."
+  },
+  "technical_capabilities": {
+    "memory_manipulation": {
+      "vtable_restoration": "Restauración manual de tablas de funciones virtuales para 'std::basic_ostream' e 'std::ios_base' tras el uso de proxies de salida.",
+      "custom_layout": "Definición técnica de layouts MSVC para herencia virtual, permitiendo el acceso directo a punteros 'vbtable' en desplazamientos +0x10."
+    },
+    "anti_forensics": {
+      "atexit_tampering": "Procesamiento y ejecución manual de callbacks de terminación mediante decodificación de punteros en la tabla 'g_EncodedAtexitTable'.",
+      "drain_and_cleanup": "Inicialización y limpieza controlada de buffers de archivos globales (stdout/stderr) para asegurar la eliminación de logs temporales en memoria."
+    }
+  },
+  "targeting_intel": {
+    "ideal_environment": "Sistemas Windows x64 utilizando binarios compilados con MSVC que requieren ejecución silenciosa de larga duración.",
+    "deployment_role": "Librería base para el 'IIS Backdoor (Detele)' o frameworks como 'ProjectGeass' para manejar la limpieza del runtime sin activar alarmas de corrupción de memoria."
+  },
+  "detection_and_evasion": {
+    "logic": "Al restaurar las vtables originales de la biblioteca estándar (std::basic_filebuf::vftable) antes de cerrar los manejadores, el código neutraliza la posibilidad de detectar ganchos (hooks) de funciones en el momento del cierre.",
+    "obfuscation_targets": [
+      "InvokeAtexitHandlers",
+      "DestroyGlobalOstream",
+      "AcquireStreamHandle"
+    ]
+  },
+  "build_instructions": {
+    "compiler": "msvc (cl.exe)",
+    "architecture": "x64",
+    "recommended_flags": "/std:c++17 /O2 /GR- (Disable RTTI) /EHa",
+    "mutation_directives": "El motor de mutación debe variar el número de slots en la tabla atexit (g_AtexitHandlerIndex < 10) para evadir firmas heurísticas de limpieza de memoria."
+  }
+}
