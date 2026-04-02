@@ -1,4 +1,3 @@
-```
 # Python
 __pycache__/
 *.pyc
@@ -25,4 +24,10 @@ dist/
 *.tmp
 *.swp
 *~
-```
+
+# Sensitive Data (CRIT-03)
+01_TARGET_INTELLIGENCE/
+00_SENSITIVE_DATA_DONT_COMMIT/
+include/stratcom_secrets.h
+scripts/pre-commit-check.py
+.githooks/
