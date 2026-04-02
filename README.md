@@ -20,28 +20,38 @@ Focused on high-complexity targets—including healthcare networks and specializ
 
 ---
 
-## 🛰️ Operational Lifecycle (Tactical Chain)
+## 🛰️ Operational Lifecycle (Full Tactical Chain)
 
 ```mermaid
 graph TD
-    subgraph "INTELLIGENCE (Folder 01)"
+    subgraph "Phase 0: STRATCOM Intelligence (Folder 01)"
         A1[Target Recon Analysis] --> A2[Vulnerability & Vector Mapping]
     end
     
-    A2 -->|Tactical Selection| B{STRATCOM Matrix}
+    A2 -->|Selection| B{STRATCOM Matrix}
 
-    subgraph "ATTACK MATRIX (Folder 02)"
-        B -->|Phase 1: Prep| TA_PREP[TA0043 Recon / TA0042 Resource Dev]
-        TA_PREP -->|Phase 2: Ingress| TA_INGRESS[TA0001 Access / TA0002 Execution]
-        TA_INGRESS -->|Phase 3: Control| TA_CTRL[TA0003 Persistence / TA0004 PrivEsc / TA0005 Evasion / TA0006 Creds / TA0007 Disc / TA0011 C2]
-        TA_CTRL -->|Phase 4: Action| TA_ACTION[TA0008 Lateral / TA0009 Collection / TA0010 Exfil / TA0040 Impact]
+    subgraph "Phase 1: ATTACK MATRIX (Folder 02)"
+        B --> TA43[TA0043 Reconnaissance]
+        TA43 --> TA42[TA0042 Resource Dev]
+        TA42 --> TA01[TA0001 Initial Access]
+        TA01 --> TA02[TA0002 Execution]
+        TA02 --> TA03[TA0003 Persistence]
+        TA03 --> TA04[TA0004 Priv Escalation]
+        TA04 --> TA05[TA0005 Defense Evasion]
+        TA05 --> TA06[TA0006 Cred Access]
+        TA06 --> TA07[TA0007 Discovery]
+        TA07 --> TA11[TA0011 Command Control]
+        TA11 --> TA08[TA0008 Lateral Mov]
+        TA08 --> TA09[TA0009 Collection]
+        TA09 --> TA10[TA0010 Exfiltration]
+        TA10 --> TA40[TA0040 Impact]
     end
 
-    TA_ACTION -->|Solution Encoding| C[BUILD OUTPUT (Folder 03)]
+    TA40 -->|Solution Encoding| C[BUILD OUTPUT (Folder 03)]
     
-    style A2 fill:#d4edda,stroke:#28a745
-    style B fill:#fff3cd,stroke:#ffc107
-    style C fill:#f8d7da,stroke:#dc3545
+    style A2 fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style B fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    style C fill:#f8d7da,stroke:#dc3545,stroke-width:2px
 ```
 
 ---
@@ -53,23 +63,23 @@ The structure is strictly aligned with the **MITRE ATT&CK** matrix, ensuring eac
 ```text
 /C4ISR-STRATCOM-IMPLANT-SIGINT-V5
 │
-├── 📂 01_TARGET_INTELLIGENCE/      # Intelligence packets: HCG Infrastructure + Audit trails
-├── 📂 02_ATTACK_MATRIX/            # Tactical repository mapped to MITRE ATT&CK (14 Subcategories)
-│   ├── 📂 TA0043_Reconnaissance/   # Intelligence gathering & Scanning
-│   ├── 📂 TA0042_Resource_Dev/     # Infrastructure prep (Domains, Proxies)
-│   ├── 📂 TA0001_Initial_Access/   # Entry vectors & Spearphishing
-│   ├── 📂 TA0002_Execution/        # Command wrappers & Execution logic
-│   ├── 📂 TA0003_Persistence/      # Service implants & Keep-alive modules
-│   ├── 📂 TA0004_Priv_Escalation/  # Exploits for privilege gain
-│   ├── 📂 TA0005_Defense_Evasion/  # Rule bypass & Anti-forensics
-│   ├── 📂 TA0006_Credential_Access/# Stealers & Memory scanners
-│   ├── 📂 TA0007_Discovery/        # Network enumeration & Discovery
-│   ├── 📂 TA0008_Lateral_Movement/# Relay modules & Pivot tools
-│   ├── 📂 TA0009_Collection/       # Data aggregation (USB, File, DB)
-│   ├── 📂 TA0011_Command_Control/  # Stealth protocols (ICMP/UDP/TCP)
-│   ├── 📂 TA0010_Exfiltration/     # Secure data transit & Exfiltration
-│   └── 📂 TA0040_Impact/           # Action on objectives & Logic bombs
-└── 📂 03_BUILD_OUTPUT/             # Final stage compiled & stripped binaries
+├── 📂 01_TARGET_INTELLIGENCE/        # Intelligence packets: HCG Infrastructure + Audit trails
+├── 📂 02_ATTACK_MATRIX/              # Tactical repository mapped to MITRE ATT&CK (14 Subcategories)
+│   ├── 📂 TA0043_Reconnaissance/     # Intelligence gathering & Scanning
+│   ├── 📂 TA0042_Resource_Dev/       # Infrastructure prep (Domains, Proxies)
+│   ├── 📂 TA0001_Initial_Access/     # Entry vectors & Spearphishing
+│   ├── 📂 TA0002_Execution/          # Command wrappers & Execution logic
+│   ├── 📂 TA0003_Persistence/        # Service implants & Keep-alive modules
+│   ├── 📂 TA0004_Priv_Escalation/    # Exploits for privilege gain
+│   ├── 📂 TA0005_Defense_Evasion/    # Rule bypass & Anti-forensics
+│   ├── 📂 TA0006_Credential_Access/  # Stealers & Memory scanners
+│   ├── 📂 TA0007_Discovery/          # Network enumeration & Discovery
+│   ├── 📂 TA0008_Lateral_Movement/   # Relay modules & Pivot tools
+│   ├── 📂 TA0009_Collection/         # Data aggregation (USB, File, DB)
+│   ├── 📂 TA0011_Command_Control/    # Stealth protocols (ICMP/UDP/TCP)
+│   ├── 📂 TA0010_Exfiltration/       # Secure data transit & Exfiltration
+│   └── 📂 TA0040_Impact/             # Action on objectives & Logic bombs
+└── 📂 03_BUILD_OUTPUT/               # Final stage compiled & stripped binaries
 ```
 
 ---
@@ -95,7 +105,5 @@ This laboratory is sanctioned by the **Secretariat of Innovation, Science, and T
 - **Authorized Scope**: Advanced research, adversary emulation for critical health infrastructure, and defensive hardening.
 
 ---
-
-### Command Statistics
 
 Orchestrated by C4ISR V5 — Strategic Command 2026
