@@ -1,0 +1,64 @@
+{
+  "technique_id": "T1119",
+  "technique_name": "Automated Collection",
+  "tactic": "TA0009 - Collection",
+  "subtechnique_of": null,
+  "description": "Automated heuristic file scanner and harvester designed to identify, compress (zlib), and encrypt (AES-256-CTR) sensitive data (credentials, configs, DBs, clinical PII) directly into a monolithic binary blob for secure staging.",
+  "platforms": ["Linux", "Windows"],
+  "permissions_required": ["User", "Administrator"],
+  "data_sources": ["File Monitoring", "Process Creation"],
+  "implementation_details": {
+    "source_file": "sigv5_t1119_data_harvester.py",
+    "language": "Python 3.8+",
+    "dependencies": ["cryptography (optional, for AES-256)"],
+    "external_dependencies": [],
+    "usage": {
+      "standard": "python3 sigv5_t1119_data_harvester.py --root /home/user /var/www --output /tmp/.cache_dat",
+      "custom_size_pass": "python3 sigv5_t1119_data_harvester.py --root / --max-size 10M --pass operation_key"
+    },
+    "capabilities": [
+      "Heuristic file classification based on extensions, names, and path patterns",
+      "Dynamic exclusion of noisy/system directories (e.g., /bin, /sys, node_modules)",
+      "On-the-fly streaming AES-256-CTR encryption (if cryptography lib present) to avoid plaintext staging",
+      "Zlib compression per-file to reduce exfiltration footprint",
+      "SHA-256 hashing for integrity verification",
+      "Monolithic custom binary blob format (SIG5 magic header)",
+      "Detailed JSON manifest generation"
+    ],
+    "evasion_techniques": [
+      "In-memory classification and staging process without intermediate cleartext files",
+      "Output blending strategy (e.g., saving blob as hidden cache file in /tmp/)",
+      "Graceful degradation (falls back to unencrypted blob if crypto libs are missing)"
+    ]
+  },
+  "output_files": [
+    {
+      "name": "[output_path]",
+      "description": "The custom binary blob containing staged, compressed, and encrypted files"
+    },
+    {
+      "name": "[output_path].manifest.json",
+      "description": "JSON summary mapping offsets and hashes of collected files within the blob"
+    }
+  ],
+  "mitre_attack_url": "https://attack.mitre.org/techniques/T1119/",
+  "related_techniques": [
+    "T1005 - Data from Local System",
+    "T1074 - Data Staged",
+    "T1560 - Archive Collected Data"
+  ],
+  "detection_opportunities": [
+    "High volume of file read operations across multiple directories in a short timeframe",
+    "Creation of large unknown binaries in temporary or hidden locations",
+    "Execution of python processes consuming significant CPU for encryption/compression",
+    "High disk I/O operations from an unprivileged process traversing user directories"
+  ],
+  "metadata": {
+    "author": "C4ISR STRATCOM",
+    "version": "1.0",
+    "created": "2026",
+    "classification": "CONFIDENTIAL",
+    "operation": "SIGINT-V5",
+    "convention": "CONV-0221-JAL-HCG-2026"
+  }
+}
