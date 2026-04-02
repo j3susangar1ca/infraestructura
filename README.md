@@ -20,44 +20,65 @@ Focused on high-complexity targets—including healthcare networks and specializ
 
 ---
 
-## 🛰️ Operational Lifecycle
+## 🛰️ Operational Lifecycle (Tactical Chain)
 
 ```mermaid
-graph TD
-    A[01 TARGET INTELLIGENCE] -->|Context Injection| B(02 ATTACK MATRIX)
-    B --> T1{Tactical Selection}
-    T1 -->|Initial Access| C[Execution]
-    T1 -->|Persistence| D[Evasion]
-    C -->|Build Pipeline| E[03 BUILD OUTPUT]
-    D -->|Post-Compromise| E
-    E -->|Static Validation| F[Operational Deployment]
+graph LR
+    subgraph "Phase 1: Intelligence & Prep"
+        TA43[TA0043 Reconnaissance] --> TA42[TA0042 Resource Dev]
+    end
+    
+    subgraph "Phase 2: Infiltration"
+        TA42 --> TA01[TA0001 Initial Access]
+        TA01 --> TA02[TA0002 Execution]
+    end
+    
+    subgraph "Phase 3: Control & Expansion"
+        TA02 --> TA03[TA0003 Persistence]
+        TA03 --> TA04[TA0004 Priv Escalation]
+        TA04 --> TA05[TA0005 Defense Evasion]
+        TA05 --> TA06[TA0006 Cred Access]
+        TA06 --> TA07[TA0007 Discovery]
+        TA07 --> TA11[TA0011 C2]
+    end
+    
+    subgraph "Phase 4: Action & Exfil"
+        TA11 --> TA08[TA0008 Lateral Mov]
+        TA08 --> TA09[TA0009 Collection]
+        TA09 --> TA10[TA0010 Exfiltration]
+        TA10 --> TA40[TA0040 Impact]
+    end
+
+    style TA01 fill:#f96,stroke:#333,stroke-width:2px
+    style TA11 fill:#f96,stroke:#333,stroke-width:2px
+    style TA05 fill:#f96,stroke:#333,stroke-width:2px
 ```
 
 ---
 
-## ⚔️ Tactical Matrix (MITRE ATT&CK Mapping)
+## 🏗️ Architectural Topology (Tactical Repository)
 
-| Category | Tactical Folder | Focus Area | Core Modules |
-| :--- | :--- | :--- | :--- |
-| **Pre-Attack** | `TA0043_Reconnaissance` | Intelligence gathering & scanning | `hcg_audit_report.json` |
-| **Delivery** | `TA0001_Initial_Access` | Surface infiltration vectors | Spearphishing / External exploit |
-| **Control** | `TA0011_Command_Control` | Stealth C2 & Tunneling | `backdoor_icmp.c` |
-| **Execution** | `TA0002_Execution` | Code execution & IPC wrapping | `wrapper_pipe_server.c` |
-| **Stealth** | `TA0005_Defense_Evasion` | Anti-EDR & Signature modification | YARA-Bypass Engine |
-
----
-
-## 🏗️ Architectural Topology
+The structure is strictly aligned with the **MITRE ATT&CK** matrix, ensuring each artifact is documented within its tactical objective folder.
 
 ```text
 /C4ISR-STRATCOM-IMPLANT-SIGINT-V5
 │
 ├── 📂 01_TARGET_INTELLIGENCE/      # Intelligence packets: HCG Infrastructure + Audit trails
-├── 📂 02_ATTACK_MATRIX/            # Tactical repository mapped to MITRE ATT&CK
-│   ├── 📂 TA0001_Initial_Access/   # Entry vector development
-│   ├── 📂 TA0002_Execution/        # Command wrappers (e.g., Pipe IPC Server)
-│   ├── 📂 TA0005_Defense_Evasion/  # Anti-forensics & Rule bypass
-│   └── 📂 TA0011_Command_Control/  # Stealth protocols (e.g., ICMP Backdoor irad-variant)
+├── 📂 02_ATTACK_MATRIX/            # Tactical repository mapped to MITRE ATT&CK (14 Subcategories)
+│   ├── 📂 TA0043_Reconnaissance/   # Intelligence gathering & Scanning
+│   ├── 📂 TA0042_Resource_Dev/     # Infrastructure prep (Domains, Proxies)
+│   ├── 📂 TA0001_Initial_Access/   # Entry vectors & Spearphishing
+│   ├── 📂 TA0002_Execution/        # Command wrappers & Execution logic
+│   ├── 📂 TA0003_Persistence/      # Service implants & Keep-alive modules
+│   ├── 📂 TA0004_Priv_Escalation/  # Exploits for privilege gain
+│   ├── 📂 TA0005_Defense_Evasion/  # Rule bypass & Anti-forensics
+│   ├── 📂 TA0006_Credential_Access/# Stealers & Memory scanners
+│   ├── 📂 TA0007_Discovery/        # Network enumeration & Discovery
+│   ├── 📂 TA0008_Lateral_Movement/# Relay modules & Pivot tools
+│   ├── 📂 TA0009_Collection/       # Data aggregation (USB, File, DB)
+│   ├── 📂 TA0011_Command_Control/  # Stealth protocols (ICMP/UDP/TCP)
+│   ├── 📂 TA0010_Exfiltration/     # Secure data transit & Exfiltration
+│   └── 📂 TA0040_Impact/           # Action on objectives & Logic bombs
 └── 📂 03_BUILD_OUTPUT/             # Final stage compiled & stripped binaries
 ```
 
