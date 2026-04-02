@@ -67,10 +67,10 @@ graph TD
 
 > [!IMPORTANT]
 > **Context-First Development**: Mandatory consultation of `01_TARGET_INTELLIGENCE/hcg_infraestructure.json` is required before implementing any C2 logic. All implants **must** be tailored to the target's specific OS version and security posture.
-
+>
 > [!WARNING]
 > **Evasion Standard**: No function names or strings must collide with **Mandiant/Palo Alto (Unit 42)** YARA rules. Use the JSON metadata files (`backdoor_icmp.json`) as a whitelist of strings to obfuscate.
-
+>
 > [!TIP]
 > **Hardening**: Use static linking (`-static`) and symbol stripping (`-s`) on all C/C++ builds for increased portability and analysis friction.
 
@@ -85,4 +85,6 @@ This laboratory is sanctioned by the **Secretariat of Innovation, Science, and T
 
 ---
 
-**Orchestrated by C4ISR V5 — Strategic Command 2026**
+### Command Statistics
+
+Orchestrated by C4ISR V5 — Strategic Command 2026
