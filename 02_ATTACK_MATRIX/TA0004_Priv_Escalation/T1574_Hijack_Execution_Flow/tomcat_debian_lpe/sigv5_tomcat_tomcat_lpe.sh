@@ -3,7 +3,7 @@
 # [CLASSIFIED]: CONFIDENCIAL
 # [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
 # [TACTIC]: TA0004_Priv_Escalation
-# [TECHNIQUE]: Tomcat_Debian_LPE_CVE_2016_1240
+# [TECHNIQUE]: T1574_Hijack_Execution_Flow
 #
 =============================================
 - Discovered by: Dawid Golunski

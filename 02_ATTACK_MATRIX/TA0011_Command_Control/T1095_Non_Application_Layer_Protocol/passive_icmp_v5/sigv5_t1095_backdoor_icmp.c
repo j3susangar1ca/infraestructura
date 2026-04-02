@@ -3,7 +3,7 @@
  * [CLASSIFIED]: CONFIDENCIAL
  * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
  * [TACTIC]: TA0011_Command_Control
- * [TECHNIQUE]: T1071_Application_Layer
+ * [TECHNIQUE]: T1095_Non_Application_Layer_Protocol
  */
 /*
  * ============================================================================

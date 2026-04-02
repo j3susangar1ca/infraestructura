@@ -2,8 +2,8 @@
 # 🛡️ C4ISR-STRATCOM: SIGINT-V5
 # [CLASSIFIED]: CONFIDENCIAL
 # [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0004_Priv_Escalation
-# [TECHNIQUE]: T1068_STRATCOM_PAYLOADation_for_Priv_Escalation
+# [TACTIC]: TA0006_Credential_Access
+# [TECHNIQUE]: T1557_Adversary_in_the_Middle
 #
 VULNERABILITY DETAILS
 It's possible to use the NTLM reflection attack to escape a browser sandbox in the case where the
