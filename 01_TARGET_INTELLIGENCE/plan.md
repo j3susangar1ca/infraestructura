@@ -2,12 +2,6 @@
 
 ## CLASIFICACIÓN: CONFIDENCIAL — Solo uso autorizado por la Dirección de Seguridad
 
-**Fecha:** Abril 2026  
-**Versión:** 2.0 — Plan Final Integrado con Framework de Automatización  
-**Metodología:** MITRE ATT&CK Enterprise v14 + Cyber Kill Chain + PTES + OWASP  
-**Alcance:** 93 dispositivos, 11 zonas de red, 14 subredes, 18 servidores  
-**Referencia:** Auditoría consolidada (289 registros brutos, 20 documentos fuente)
-
 ---
 
 ## ÍNDICE
