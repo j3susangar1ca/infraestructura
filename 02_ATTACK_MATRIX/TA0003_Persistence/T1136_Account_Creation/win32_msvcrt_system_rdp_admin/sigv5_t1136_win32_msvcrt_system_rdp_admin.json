@@ -1,0 +1,22 @@
+{
+  "module_id": "WIN32-MSVCRT-SYSTEM-RDP-ADMIN-V5",
+  "name": "Win32 MSVCRT System RDP Admin Persistence Shellcode (Bobby Cooke)",
+  "priority": "HIGH",
+  "tactic": "TA0003_Persistence",
+  "technique": "T1136",
+  "dependencies": ["gcc", "windows-target"],
+  "targeting_intel": {
+    "os_family": "Windows",
+    "affected_versions": ["Win10", "Win7", "x86", "x64 (via Wow64)"],
+    "vulnerability": "Post-Exploitation Persistence via MSVCRT",
+    "hcg_scenario": "Shellcode de 644 bytes (null-free) que utiliza la función system de msvcrt.dll para añadir al usuario 'MajinBuu', habilitar RDP y desactivar el firewall."
+  },
+  "execution_config": {
+    "command": "gcc sigv5_t1136_win32_msvcrt_system_rdp_admin.c -o sigv5_t1136_win32_msvcrt_system_rdp_admin.exe",
+    "usage": "Compilar para x86. El shellcode busca dinámicamente kernel32.dll y msvcrt.dll para invocar comandos de sistema de manera sigilosa."
+  },
+  "impact": {
+    "auth_level": "Privileged Execution (Local Admin required)",
+    "action": "Account Creation & Remote Access Enablement"
+  }
+}
