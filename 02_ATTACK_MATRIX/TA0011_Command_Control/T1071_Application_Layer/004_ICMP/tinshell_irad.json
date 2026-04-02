@@ -1,0 +1,86 @@
+{
+  "module_identity": {
+    "name": "Advanced TINYSHELL Passive Backdoor (irad-variant)",
+    "family": "TINYSHELL Custom Ecosystem",
+    "version": "5.0",
+    "mitre_attack_mappings": [
+      "T1071.004 - Application Layer Protocol: ICMP",
+      "T1055 - Process Injection (Deployment Phase)",
+      "T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "T1014 - Rootkit: Manual Process Memory Patching"
+    ],
+    "description": "Implante pasivo de grado estatal basado en libpcap, diseñado para interceptar tráfico ICMP, establecer canales C2 cifrados y proveer persistencia profunda mediante la manipulación directa de la memoria de procesos del sistema."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "UNC3886 (China-Nexus)",
+    "reference_report": "Ghost in the Router: China-Nexus Espionage Actor UNC3886 Targets Juniper Routers",
+    "tactical_logic": "El actor utiliza backdoors pasivos para minimizar el ruido en la red y mantener acceso a largo plazo en infraestructuras críticas (routers, firewalls, entornos de virtualización) donde los agentes EDR tradicionales no están presentes."
+  },
+  "technical_capabilities": {
+    "activation_trigger": {
+      "protocol": "ICMP Echo Request (Type 8)",
+      "bpf_filter": "icmp[4:2] == 0xaa56",
+      "decryption_key": "XOR 0x86"
+    },
+    "authentication_markers": {
+      "session_key_seed": "WZtOTig2m42gXB6U",
+      "active_mode_trigger": "uSarguuS62bKRA0J",
+      "kill_switch": "1spCq0BMbJwCoeZn",
+      "proxy_trigger": "fb-75c043b82127",
+      "session_established_marker": "ek63a21km7WSWkfk"
+    },
+    "cryptography": {
+      "encryption": "Implementación personalizada de AES-256 (NR=14) con schedules de claves de cifrado y descifrado independientes",
+      "integrity": "HMAC-SHA1 nativo con derivación de claves basada en desafíos (nonces) del servidor y cliente"
+    },
+    "c2_functions": [
+      "1: Remote File Download",
+      "2: Remote File Upload",
+      "3: Interactive Shell via PTY Multiplexing (/bin/csh)",
+      "4: Exit Session",
+      "5: Port Forward / Relay Connection"
+    ]
+  },
+  "evasion_log_tampering": {
+    "module_lmpad": {
+      "proactive_log_disabling": "Ejecución de scripts que redirigen syslog.conf a /dev/null y envían señales HUP a eventd para silenciar el sistema",
+      "in_memory_patching": "Uso de 'dd' para sobrescribir directamente en /proc/$pid/mem la configuración de traps de snmpd (addr: 0x8601328) y el prólogo de funciones de mgd (addr: 0x84E90D8) para omitir auditorías de acceso",
+      "forensic_cleanup": "Eliminación selectiva de registros en logfiles (messages, auth, history) mediante comandos 'sed' integrados en el comando de shell"
+    }
+  },
+  "targeting_intel": {
+    "ideal_environment": "Dispositivos de red basados en FreeBSD/Junos OS que operan en capas de red externas (Edge) o de monitoreo crítico",
+    "network_context": "VLANs de monitoreo o infraestructura donde el tráfico ICMP es común pero el puerto 31234/TCP (bind port) está típicamente permitido internamente"
+  },
+  "detection_and_evasion": {
+    "yara_rules_to_bypass": [
+      {
+        "rule": "M_Hunting_PacketEncryptionLayer_1",
+        "targets": [
+          "pel_client_init",
+          "pel_setup_context",
+          "pel_send_msg",
+          "pel_recv_msg"
+        ]
+      },
+      {
+        "rule": "M_Hunting_TINYSHELL_5",
+        "targets": ["tsh_get_file", "tsh_put_file", "tsh_runshell"]
+      }
+    ],
+    "ids_signatures_to_bypass": [
+      {
+        "type": "Snort/Suricata",
+        "sid": "1000002",
+        "description": "M_Backdoor_TINYSHELL_uSarguuS62bKRA0J",
+        "hex_pattern": "f3 d5 e7 f4 e1 f3 f3 d5 b0 b4 e4 cd d4 c7 b6 cc"
+      }
+    ]
+  },
+  "build_instructions": {
+    "compiler": "gcc (FreeBSD/Linux targeted)",
+    "required_libraries": ["libpcap", "libutil"],
+    "recommended_flags": "-O3 -s -static",
+    "deployment_strategy": "Uso de doble fork para independencia de demonios y desactivación de historial mediante 'putenv(\"HISTFILE=\")'"
+  }
+}
