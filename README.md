@@ -84,7 +84,7 @@ The structure is strictly aligned with the **MITRE ATT&CK** matrix, ensuring eac
 
 ---
 
-## 🚦 Operational Protocols (Build & Evasion)
+## 🚦 Operational Protocols
 
 > [!IMPORTANT]
 > **Context-First Development**: Mandatory consultation of `01_TARGET_INTELLIGENCE/hcg_infraestructure.json` is required before implementing any C2 logic. All implants **must** be tailored to the target's specific OS version and security posture.
@@ -109,5 +109,5 @@ This laboratory is sanctioned by the **Secretariat of Innovation, Science, and T
 
 ---
 
-Gobierno del Estado de Jalisco - "Innovación y desarrollo tecnológico".
+Gobierno del Estado de Jalisco - "Innovación y desarrollo tecnológico" //
 OPD Hospital Civil de Guadalajara - "La salud del pueblo es la suprema ley".
