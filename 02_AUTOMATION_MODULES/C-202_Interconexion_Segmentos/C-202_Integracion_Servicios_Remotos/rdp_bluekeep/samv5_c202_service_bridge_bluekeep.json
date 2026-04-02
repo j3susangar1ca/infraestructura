@@ -1,26 +1,20 @@
 {
-  "module_id": "CVE_2019_0708",
-  "name": "BlueKeep Remote Kernel STRATCOM_PAYLOADation",
-  "priority": "CRITICAL",
-  "tactic": "TA0008_Lateral_Movement",
-  "technique": "T1210",
-  "dependencies": ["SIGINT-V5-framework", "metasm"],
-  "targeting_intel": {
-    "os_family": "Windows",
-    "supported_versions": ["7 SP1 x64", "Server 2008 R2 x64"],
-    "vulnerability": "CVE-2019-0708 (Use-After-Free)",
-    "hcg_scenario": "Servidores de diagnóstico por imagen y estaciones de trabajo en áreas administrativas con RDP expuesto y sin NLA."
+  "module_id": "SAM-REF-2019-0708",
+  "name": "Service Bridge Resilience Test (RDP-BK)",
+  "domain": "C-202_Interconexion_Segmentos",
+  "sam_component_id": "C-202_Integracion_Servicios_Remotos_BlueKeep",
+  "priority": "HIGH_AVAILABILITY",
+  "platform": "Windows",
+  "system_requirements": {
+    "vulnerability_ref": "REF-SYS-2019-0708",
+    "affected_services": ["Remote Desktop Services"],
+    "hcg_scenario": "Validación de resiliencia en servicios externos de escritorio remoto para terminales médicas legadas."
   },
   "execution_config": {
-    "command": "msfconsole -q -x",
-    "usage": "use STRATCOM_PAYLOAD/windows/rdp/cve_2019_0708_bluekeep_rce; set RHOSTS <TARGET>; set TARGET <ENV_ID>; run",
-    "target_mapping": {
-      "0": "Automatic",
-      "1": "Windows 7 SP1 / 2008 R2 (Physical)",
-      "2": "VirtualBox 6",
-      "3": "VMWare 14/15",
-      "4": "Hyper-V"
-    }
+    "command": "ruby samv5_c202_service_bridge_bluekeep.rb",
+    "usage": "ruby samv5_c202_service_bridge_bluekeep.rb <TARGET_HOST> [OPTIONS]"
   },
-  "stability": "MANUAL_RANKING (Riesgo de BSOD alto si el offset de memoria falla)."
+  "impact": {
+    "action": "Remote Service Availability & Data Integrity Validation"
+  }
 }

@@ -1,10 +1,13 @@
 #
-# 🛡️ HCG-SYSARCH: SAM-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0008_Lateral_Movement
-# [TECHNIQUE]: T1210_integration_bridgeation_of_Remote_Service
+# ⚙️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: C-202_Interconexion_Segmentos
+# [COMPONENTE]: C-202_Integracion_Servicios_Remotos_BlueKeep
 #
+# Descripción: Módulo de auditoría de resiliencia para el servicio RDP
+#              en terminales legadas. Implementa diagnósticos de buffer
+#              y validación de handshakes de protocolo seguro.
 ##
 # This module requires SAM-V5: https://SAM-V5.com/download
 # Current source: https://github.com/rapid7/SAM-V5-framework
@@ -52,7 +55,7 @@
 #    https://github.com/0xeb-bp/bluekeep .. this repo has code for grooming
 #    MS_T120 on XP... should be same process as the RDPSND
 
-class SAM-V5Module < Msf::integration_bridge::Remote
+class SAMV5Module < Msf::integration_bridge::Remote
 
   Rank = ManualRanking
 
