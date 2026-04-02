@@ -1,0 +1,39 @@
+{
+  "module_identity": {
+    "name": "GamaCopy SFX Multi-Stage Dropper",
+    "family": "GamaCopy (Gamaredon Imitator)",
+    "version": "5.0",
+    "mitre_attack_mappings": [
+      "T1566.001 - Phishing: Spearphishing Attachment",
+      "T1204.002 - User Execution: Malicious File",
+      "T1036.005 - Masquerading: Match Legitimate Name or Location",
+      "T1497.001 - Virtualization/Sandbox Evasion: System Checks"
+    ],
+    "description": "Instalador SFX personalizado diseñado para desplegar herramientas de acceso remoto (RAT) mediante el uso de documentos PDF señuelo y scripts ofuscados, imitando las TTPs del grupo APT Gamaredon."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "Desconocido (Imitador de Gamaredon / 'GamaCopy')",
+    "tactical_logic": "Uso de señuelos PDF de temática militar ('svod.pdf') para inducir a la ejecución por parte del usuario, mientras se despliega un binario de UltraVNC ('OneDrivers.exe') configurado para conectarse a servidores C2 específicos."
+  },
+  "technical_capabilities": {
+    "anti_analysis_checks": {
+      "debugger_evasion": "Uso de 'IsDebuggerPresent()' para abortar la ejecución si se detecta un entorno de depuración activo.",
+      "sandbox_detection": "Enumeración de claves de registro asociadas a servicios de virtualización (VBoxGuest, vmhgfs, etc.) para evadir sandboxes automatizadas.",
+      "marker_bypass": "Detección del parámetro 'Info' en la línea de comandos para evitar el análisis dinámico manual."
+    },
+    "obfuscation_mechanisms": {
+      "dynamic_variable_masking": "Generación de prefijos aleatorios en scripts por lotes ('%_prefix%') para ocultar los nombres reales de los archivos fuente y destino durante la copia.",
+      "sfx_resource_embedding": "Extracción de binarios maliciosos desde los recursos RCDATA del ejecutable principal bajo nombres de archivo aleatorios para dificultar el escaneo estático."
+    }
+  },
+  "targeting_intel": {
+    "c2_infrastructure": ["nefteparkstroy.ru:443", "fmsru.ru:443"],
+    "ideal_target": "Usuarios de habla rusa en entornos militares o gubernamentales vulnerables a phishing con archivos adjuntos ejecutables disfrazados de documentos."
+  },
+  "build_instructions": {
+    "compiler": "msvc (cl.exe) / MinGW",
+    "required_libs": ["shell32.lib", "user32.lib", "advapi32.lib"],
+    "recommended_flags": "/D_UNICODE /DUNICODE /MT /O1 (Optimize for Size)",
+    "mutation_directives": "Se DEBE generar una nueva plantilla de UltraVNC.ini con contraseñas y servidores C2 rotados antes de cada campaña para evitar la detección por IOCs de red conocidos."
+  }
+}
