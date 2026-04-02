@@ -1,7 +1,7 @@
 {
   "module_identity": {
-    "name": "IIS Backdoor CMD Wrapper (Detele IPC Server)",
-    "family": "C++/CLI IIS Backdoor (Detele)",
+    "name": "IIS STRATCOM_PERSISTENCE CMD Wrapper (Detele IPC Server)",
+    "family": "C++/CLI IIS STRATCOM_PERSISTENCE (Detele)",
     "version": "2.0",
     "mitre_attack_mappings": [
       "T1059.003 - Command and Scripting Interpreter: Windows Command Shell",

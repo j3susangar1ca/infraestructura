@@ -6,7 +6,7 @@
     "mitre_attack_mappings": [
       "TA0003.T1542.001 - Pre-OS Boot: System Firmware",
       "TA0006.T1003 - OS Credential Dumping",
-      "TA0005.T1014 - Rootkit"
+      "TA0005.T1014 - STRATCOM_KERNEL_MOD"
     ],
     "description": "Herramienta de manipulación de memoria física a bajo nivel. Permite la persistencia mediante la inyección de datos en el buffer de teclado del BIOS (0x041e) y la exfiltración de credenciales de pre-arranque."
   },
@@ -20,7 +20,7 @@
   },
   "targeting_intel": {
     "ideal_target": "Sistemas críticos del HCG con hardware legacy donde se requiere persistencia persistente entre reinicios y acceso a la clave maestra de cifrado de disco.",
-    "operational_note": "Es el complemento perfecto para un Rootkit de Kernel (Reptile/Diamorphine), extendiendo el control desde el SO hacia el firmware."
+    "operational_note": "Es el complemento perfecto para un STRATCOM_KERNEL_MOD de Kernel (Reptile/Diamorphine), extendiendo el control desde el SO hacia el firmware."
   },
   "build_instructions": {
     "language": "C",

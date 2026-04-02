@@ -4,7 +4,7 @@
   "tactic": "TA0040_Impact",
   "technique": "T1499.002",
   "priority": "MEDIUM",
-  "dependencies": ["metasploit-framework", "rdp_protocol_lib"],
+  "dependencies": ["SIGINT-V5-framework", "rdp_protocol_lib"],
   "targeting_intel": {
     "os_family": "Windows",
     "supported_versions": ["XP (32-bit)", "7 (64-bit)", "Server 2008 R2"],

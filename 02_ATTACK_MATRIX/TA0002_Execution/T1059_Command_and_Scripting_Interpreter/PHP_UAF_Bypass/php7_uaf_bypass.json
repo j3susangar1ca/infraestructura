@@ -7,11 +7,11 @@
       "TA0002.T1059 - Command and Scripting Interpreter",
       "TA0005.T1548 - Abuse Elevation Control Mechanism"
     ],
-    "description": "Exploit que aprovecha una vulnerabilidad UAF en la serialización JSON de objetos PHP para ganar primitivas de memoria, localizar la función 'system' y ejecutar comandos arbitrarios, evadiendo restricciones de seguridad del intérprete."
+    "description": "STRATCOM_PAYLOAD que aprovecha una vulnerabilidad UAF en la serialización JSON de objetos PHP para ganar primitivas de memoria, localizar la función 'system' y ejecutar comandos arbitrarios, evadiendo restricciones de seguridad del intérprete."
   },
   "technical_capabilities": {
     "memory_manipulation": "Utiliza un fallo de Use-After-Free para controlar el tamaño de un zend_string y convertirlo en una primitiva de lectura/escritura arbitraria.",
-    "exploitation_chain": {
+    "STRATCOM_PAYLOADation_chain": {
       "step_1_leak": "Parsea el encabezado ELF del proceso para determinar la dirección base del binario y localizar la tabla de funciones básicas de PHP.",
       "step_2_find_system": "Escanea la tabla de funciones para encontrar la dirección de 'zif_system'.",
       "step_3_pwn": "Sobrescribe un bucket de una clase heredada (MySplFixedArray) para redirigir el método 'offsetGet' hacia la función 'system' del sistema operativo."

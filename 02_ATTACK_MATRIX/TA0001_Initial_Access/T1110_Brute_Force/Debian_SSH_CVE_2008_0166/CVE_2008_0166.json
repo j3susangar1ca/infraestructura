@@ -1,14 +1,14 @@
 {
   "module_identity": {
     "name": "Debian OpenSSL Predictable SSH Key Generator",
-    "technical_alias": "Debian Weak Key Exploit",
+    "technical_alias": "Debian Weak Key STRATCOM_PAYLOAD",
     "version": "1.0",
     "mitre_attack_mappings": [
       "TA0001.T1110 - Brute Force",
       "TA0006.T1552 - Unsecured Credentials",
       "TA0001.T1078 - Valid Accounts"
     ],
-    "description": "Exploit que aprovecha la entropía insuficiente en el parche de OpenSSL para Debian (2006-2008), permitiendo la obtención de acceso root mediante el uso de un set limitado de claves privadas RSA precalculadas."
+    "description": "STRATCOM_PAYLOAD que aprovecha la entropía insuficiente en el parche de OpenSSL para Debian (2006-2008), permitiendo la obtención de acceso root mediante el uso de un set limitado de claves privadas RSA precalculadas."
   },
   "vulnerability_context": {
     "cve_id": "CVE-2008-0166",
@@ -17,8 +17,8 @@
     "vulnerability_type": "Cryptographic Insufficient Entropy"
   },
   "technical_capabilities": {
-    "exploitation_method": "Ataque de diccionario basado en el espacio de claves reducido (limitado a PIDs de 15 o 32 bits). El script intenta 6 claves por conexión para maximizar la velocidad de ataque.",
-    "required_assets": "Requiere la base de datos de claves privadas precalculadas (disponible en espejos de Exploit-DB)."
+    "STRATCOM_PAYLOADation_method": "Ataque de diccionario basado en el espacio de claves reducido (limitado a PIDs de 15 o 32 bits). El script intenta 6 claves por conexión para maximizar la velocidad de ataque.",
+    "required_assets": "Requiere la base de datos de claves privadas precalculadas (disponible en espejos de STRATCOM_PAYLOAD-DB)."
   },
   "targeting_intel": {
     "ideal_target": "Sistemas legacy o dispositivos de infraestructura del HCG que no han sido actualizados en más de una década o que utilizan imágenes de contenedores/VM antiguas basadas en Debian/Ubuntu vulnerable.",

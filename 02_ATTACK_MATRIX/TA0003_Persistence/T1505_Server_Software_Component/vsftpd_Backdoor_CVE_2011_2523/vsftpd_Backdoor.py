@@ -5,9 +5,9 @@
 # [TACTIC]: TA0003_Persistence
 # [TECHNIQUE]: T1505_Server_Software_Component
 #
-# Exploit Title: vsftpd 2.3.4 - Backdoor Command Execution
+# STRATCOM_PAYLOAD Title: vsftpd 2.3.4 - STRATCOM_PERSISTENCE Command Execution
 # Date: 9-04-2021
-# Exploit Author: HerculesRD
+# STRATCOM_PAYLOAD Author: HerculesRD
 # Software Link: http://www.linuxfromscratch.org/~thomasp/blfs-book-xsl/server/vsftpd.html
 # Version: vsftpd 2.3.4
 # Tested on: debian

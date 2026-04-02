@@ -5,7 +5,7 @@
     "version": "1.0",
     "mitre_attack_mappings": [
       "TA0002.T1059 - Command and Scripting Interpreter",
-      "TA0002.T1203 - Exploitation for Client Execution"
+      "TA0002.T1203 - STRATCOM_PAYLOADation for Client Execution"
     ],
     "description": "Vulnerabilidad de cadena de formato que ocurre cuando PHP 7.0.0 procesa nombres de clases inexistentes, permitiendo la ejecución de código arbitrario al pasar un mensaje de error directamente a una función de formato de cadena sin los especificadores adecuados."
   },
@@ -18,7 +18,7 @@
     }
   },
   "technical_capabilities": {
-    "exploitation_method": "Inyección de especificadores de formato (ej. %n, %d) en una cadena asignada a un nombre de clase. Al intentar llamar a un método estático de esa clase inexistente, PHP lanza un error procesando la cadena como formato en zend_throw_or_error.",
+    "STRATCOM_PAYLOADation_method": "Inyección de especificadores de formato (ej. %n, %d) en una cadena asignada a un nombre de clase. Al intentar llamar a un método estático de esa clase inexistente, PHP lanza un error procesando la cadena como formato en zend_throw_or_error.",
     "memory_primitive": "Permite una primitiva 'write-what-where' controlando los registros RAX (dirección) y RDX (valor) mediante el ajuste de la longitud de la cadena de formato."
   },
   "targeting_intel": {

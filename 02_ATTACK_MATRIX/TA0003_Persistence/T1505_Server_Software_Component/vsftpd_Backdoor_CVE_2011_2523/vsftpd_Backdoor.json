@@ -1,11 +1,11 @@
 {
   "module_identity": {
-    "name": "vsftpd 2.3.4 Supply Chain Backdoor",
+    "name": "vsftpd 2.3.4 Supply Chain STRATCOM_PERSISTENCE",
     "technical_alias": "Smiley Face Persistence",
     "version": "1.1",
     "mitre_attack_mappings": [
       "TA0003.T1505.003 - Server Software Component",
-      "TA0001.T1190 - Exploit Public-Facing Application",
+      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
       "TA0003.T1195.002 - Supply Chain Compromise"
     ],
     "description": "Persistencia pre-implantada en la cadena de suministro de vsftpd 2.3.4. Permite la activación de una shell de root persistente mediante una secuencia de caracteres específica en el protocolo FTP."
@@ -25,6 +25,6 @@
   },
   "build_instructions": {
     "language": "Python 3",
-    "usage": "python3 vsftpd_exploit.py [target]"
+    "usage": "python3 vsftpd_STRATCOM_PAYLOAD.py [target]"
   }
 }

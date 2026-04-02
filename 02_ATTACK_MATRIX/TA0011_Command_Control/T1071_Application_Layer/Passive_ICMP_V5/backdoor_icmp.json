@@ -1,6 +1,6 @@
 {
   "module_identity": {
-    "name": "Advanced ICMP Passive Backdoor (irad-variant)",
+    "name": "Advanced ICMP Passive STRATCOM_PERSISTENCE (irad-variant)",
     "family": "TINYSHELL Custom Ecosystem",
     "version": "5.0",
     "mitre_attack_mappings": [
@@ -79,7 +79,7 @@
       {
         "type": "Snort/Suricata",
         "sid": "1000002",
-        "description": "M_Backdoor_TINYSHELL_uSarguuS62bKRA0J",
+        "description": "M_STRATCOM_PERSISTENCE_TINYSHELL_uSarguuS62bKRA0J",
         "hex_pattern_to_mutate": "f3 d5 e7 f4 e1 f3 f3 d5 b0 b4 e4 cd d4 c7 b6 cc"
       }
     ],

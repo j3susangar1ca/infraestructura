@@ -6,7 +6,7 @@
     "mitre_attack_mappings": [
       "T1106 - Native API: Direct Syscalls & PEB Traversal",
       "T1620 - Reflective Code Loading",
-      "T1014 - Rootkit: Bootkit MBR/VBR Infection",
+      "T1014 - STRATCOM_KERNEL_MOD: Bootkit MBR/VBR Infection",
       "T1027.002 - Obfuscated Files or Information: Software Packing (Zlib/Deflate)",
       "T1055.012 - Process Injection: Process Hollowing/Reflection"
     ],

