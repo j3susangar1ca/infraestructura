@@ -1,9 +1,9 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0001_Initial_Access
- * [TECHNIQUE]: T1566_Phishing
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0001_Initial_Access
+ * [COMPONENTE]: T1566_Distribution_Verification
  */
 /*
  * GamaCopy SFX Installer - Refactored from Ghidra Decompilation

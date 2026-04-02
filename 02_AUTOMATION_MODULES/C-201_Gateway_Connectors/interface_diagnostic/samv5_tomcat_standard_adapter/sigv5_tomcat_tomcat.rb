@@ -1,20 +1,20 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0001_Initial_Access
-# [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0001_Initial_Access
+# [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
 #
 ##
-# This module requires SIGINT-V5: http://SIGINT-V5.com/download
-# Current source: https://github.com/rapid7/SIGINT-V5-framework
+# This module requires SAM-V5: http://SAM-V5.com/download
+# Current source: https://github.com/rapid7/SAM-V5-framework
 ##
 
-class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Remote
+class SAM-V5Module < Msf::integration_bridge::Remote
 
   Rank = ExcellentRanking
 
-  include Msf::STRATCOM_PAYLOAD::Remote::HttpClient
+  include Msf::integration_bridge::Remote::HttpClient
 
   def initialize(info = {})
     super(update_info(info,
@@ -85,13 +85,13 @@ class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Remote
         },
         timeout = 1
       )
-      return STRATCOM_PAYLOAD::CheckCode::Vulnerable
+      return integration_bridge::CheckCode::Vulnerable
     end
 
-    STRATCOM_PAYLOAD::CheckCode::Safe
+    integration_bridge::CheckCode::Safe
   end
 
-  def STRATCOM_PAYLOAD
+  def integration_bridge
     print_status("Uploading payload...")
     testurl = Rex::Text::rand_text_alpha(10)
 

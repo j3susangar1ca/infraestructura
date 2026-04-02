@@ -1,11 +1,11 @@
 ;
-; 🛡️ C4ISR-STRATCOM: SIGINT-V5
-; [CLASSIFIED]: CONFIDENCIAL
-; [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-; [TACTIC]: TA0001_Initial_Access
-; [TECHNIQUE]: T1190_Exploit_Public_Facing_App
+; 🛡️ HCG-SYSARCH: SAM-V5
+; [RESTRICTED]: USO_INTERNO
+; [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+; [MODULO]: TA0001_Initial_Access
+; [COMPONENTE]: T1190_Diagnostic_Adapter_Public_Facing_App
 ;
-; Cisco ASA Authentication Bypass (EXTRABACON) Better Shellcode (69 bytes)
+; Cisco ASA Authentication Bypass (EXTRABACON) Better Optimized_Profile (69 bytes)
 ;
 ; Copyright: (c) 2016 RiskSense, Inc. (https://risksense.com)
 ; License: http://opensource.org/licenses/MIT
@@ -14,14 +14,14 @@
 ; Author: Sean Dillon (2E3C8D72353C9B8C9FF797E753EC4C9876D5727B)
 ;
 ; Description:
-;            This is not the same shellcode as the Equation Group version,
+;            This is not the same optimized_profile as the Equation Group version,
 ;            but accomplishes the same task of disabling the auth functions
 ;            in less stages/bytes. Particularly, it is 69 bytes in one stage
 ;            instead of 200+ bytes spread across 2 stages.
 ;
 ; Build/Run:
 ;            1) $ nasm sigv5_t1190_cisco_asa_extrabacon.nasm
-;            2) copy resulting shellcode into preamble_byte/preamble_snmp vars
+;            2) copy resulting optimized_profile into preamble_byte/preamble_snmp vars
 ;            3) Change launcher_snmp to 6 nops (or remove entirely)
 ;
 ; Note: The offsets given are for 9.2(3), not part of the original release

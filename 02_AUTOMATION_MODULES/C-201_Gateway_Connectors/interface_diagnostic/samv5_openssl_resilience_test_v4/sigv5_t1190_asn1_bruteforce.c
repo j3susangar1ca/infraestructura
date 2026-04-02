@@ -1,13 +1,13 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0001_Initial_Access
- * [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0001_Initial_Access
+ * [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
  */
 // source: https://www.securityfocus.com/bid/8732/info
 
-Multiple vulnerabilities were reported in the ASN.1 parsing code in OpenSSL. Attackers could STRATCOM_PAYLOAD these issues to cause a denial of service or to execute arbitrary code.
+Multiple vulnerabilities were reported in the ASN.1 parsing code in OpenSSL. Attackers could integration_bridge these issues to cause a denial of service or to execute arbitrary code.
 
 /* Brute forcer for OpenSSL ASN.1 parsing bugs (<=0.9.6j <=0.9.7b)
  * written by Bram Matthys (Syzop) on Oct 9 2003.

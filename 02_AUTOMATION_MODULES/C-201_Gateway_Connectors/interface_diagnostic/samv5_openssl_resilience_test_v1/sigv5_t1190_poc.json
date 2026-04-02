@@ -3,11 +3,11 @@
     "name": "OpenSSL OCSP Remote Memory Corruption",
     "technical_alias": "Double-Free Vulnerability",
     "version": "1.0",
-    "mitre_attack_mappings": [
-      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
-      "TA0002.T1203 - STRATCOM_PAYLOADation for Client Execution"
+    "compliance_ref": [
+      "TA0001.T1190 - integration_bridge Public-Facing Application",
+      "TA0002.T1203 - integration_bridgeation for Client Execution"
     ],
-    "description": "STRATCOM_PAYLOAD que aprovecha un fallo en la función ssl3_get_client_hello() para causar una corrupción de memoria (Double-Free) mediante el envío de extensiones OCSP malformadas en el handshake TLS."
+    "description": "integration_bridge que aprovecha un fallo en la función ssl3_get_client_hello() para causar una corrupción de memoria (Double-Free) mediante el envío de extensiones OCSP malformadas en el handshake TLS."
   },
   "vulnerability_context": {
     "cve_id": "CVE-2010-2939",
@@ -16,7 +16,7 @@
     "vulnerability_type": "Memory Corruption / Double-Free"
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_method": "Manipulación de la estructura de datos que maneja la extensión OCSP en el paquete inicial ClientHello para forzar una doble liberación de memoria.",
+    "integration_bridgeation_method": "Manipulación de la estructura de datos que maneja la extensión OCSP en el paquete inicial ClientHello para forzar una doble liberación de memoria.",
     "impact": "Ejecución de código arbitrario en el contexto de la aplicación que utiliza la librería (ej. servidores web, balanceadores) o caída del servicio (DoS)."
   },
   "targeting_intel": {
@@ -24,7 +24,7 @@
     "deployment_strategy": "Ataque remoto directo durante el inicio de una sesión TLS cifrada."
   },
   "build_instructions": {
-    "required_tool": "Binarios de explotación referenciados en STRATCOM_PAYLOAD-DB (34427.zip).",
+    "required_tool": "Binarios de explotación referenciados en integration_bridge-DB (34427.zip).",
     "usage_note": "Se recomienda el uso de scripts de automatización para orquestar handshakes TLS malformados masivos."
   }
 }

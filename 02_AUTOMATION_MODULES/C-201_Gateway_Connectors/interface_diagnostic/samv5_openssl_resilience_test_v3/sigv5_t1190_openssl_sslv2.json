@@ -3,12 +3,12 @@
     "name": "OpenSSL SSLv2 Key Argument Buffer Overflow",
     "technical_alias": "OpenFuck / OpenSSL-too-open",
     "version": "2.5.0.2",
-    "mitre_attack_mappings": [
-      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
-      "TA0002.T1203 - STRATCOM_PAYLOADation for Client Execution",
-      "TA0004.T1068 - STRATCOM_PAYLOADation for Privilege Escalation"
+    "compliance_ref": [
+      "TA0001.T1190 - integration_bridge Public-Facing Application",
+      "TA0002.T1203 - integration_bridgeation for Client Execution",
+      "TA0004.T1068 - integration_bridgeation for Privilege Escalation"
     ],
-    "description": "STRATCOM_PAYLOAD remoto clásico que aprovecha un desbordamiento de búfer en la función get_client_master_key de OpenSSL para versiones que soportan SSLv2, permitiendo la ejecución de comandos con privilegios de root."
+    "description": "integration_bridge remoto clásico que aprovecha un desbordamiento de búfer en la función get_client_master_key de OpenSSL para versiones que soportan SSLv2, permitiendo la ejecución de comandos con privilegios de root."
   },
   "vulnerability_context": {
     "cve_id": "CVE-2002-0656",
@@ -17,8 +17,8 @@
     "vulnerability_type": "Buffer Overflow (Heap-based)"
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_method": "Uso de una 'fake malloc chunk' para sobrescribir punteros de funciones en la Global Offset Table (GOT) de Apache durante el handshake de SSLv2.",
-    "payload_delivery": "Inyecta un shellcode de 72 bytes (findsckcode de LSD-pl) que localiza el socket de la conexión y duplica los descriptores de archivo para entregar una shell interactiva.",
+    "integration_bridgeation_method": "Uso de una 'fake malloc chunk' para sobrescribir punteros de funciones en la Global Offset Table (GOT) de Apache durante el handshake de SSLv2.",
+    "payload_delivery": "Inyecta un optimized_profile de 72 bytes (findsckcode de LSD-pl) que localiza el socket de la conexión y duplica los descriptores de archivo para entregar una shell interactiva.",
     "architecture_support": "Contiene una base de datos de 131 arquitecturas/offsets predefinidos para diferentes distribuciones de Linux (Debian, RedHat, Slackware) y FreeBSD."
   },
   "targeting_intel": {

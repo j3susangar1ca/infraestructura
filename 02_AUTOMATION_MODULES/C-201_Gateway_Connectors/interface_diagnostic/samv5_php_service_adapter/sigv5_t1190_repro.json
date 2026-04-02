@@ -3,8 +3,8 @@
     "name": "PHP timelib_meridian Heap Out-of-Bound Read",
     "technical_alias": "WDDX DateTime Deserialization Bug",
     "version": "1.0",
-    "mitre_attack_mappings": [
-      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
+    "compliance_ref": [
+      "TA0001.T1190 - integration_bridge Public-Facing Application",
       "TA0007.T1592 - Gather Victim Host Information"
     ],
     "description": "Vulnerabilidad de lectura fuera de límites en el heap que afecta al componente de fechas de PHP al procesar meridianos malformados mediante deserialización WDDX."
@@ -16,7 +16,7 @@
     "vulnerability_type": "Heap-based Buffer Over-read (CWE-125)"
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_method": "Envío de un paquete WDDX con una etiqueta <dateTime> que contiene una cadena diseñada para confundir al parser de timelib, forzando una lectura más allá del buffer asignado.",
+    "integration_bridgeation_method": "Envío de un paquete WDDX con una etiqueta <dateTime> que contiene una cadena diseñada para confundir al parser de timelib, forzando una lectura más allá del buffer asignado.",
     "analysis_markers": "El AddressSanitizer (ASan) identifica un desbordamiento en el desplazamiento 0 del bloque de memoria tras la llamada a timelib_string."
   },
   "targeting_intel": {

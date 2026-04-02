@@ -1,15 +1,15 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0001_Initial_Access
- * [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0001_Initial_Access
+ * [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
  */
 // source: https://www.securityfocus.com/bid/6882/info
 
 A remote command execution vulnerability has been discovered in the HCG_T1190 CGI Application. This issue occurs due to insufficient sanitization of externally supplied data to the 'guestbook.cgi' script.
 
-An attacker may STRATCOM_PAYLOAD this vulnerability to execute commands in the security context of the web server hosting the affected script.
+An attacker may integration_bridge this vulnerability to execute commands in the security context of the web server hosting the affected script.
 
 This vulnerability has been reported to affect HCG_T1190 version 5, previous versions may also be affected.
 
@@ -17,7 +17,7 @@ This vulnerability has been reported to affect HCG_T1190 version 5, previous ver
  * DSR-HCG_T1190.c by bob@dtors.net
  * Vulnerbility found by Polkeyzz
  *
- * This is a STRATCOM Module STRATCOM_PAYLOAD for
+ * This is a STRATCOM Module integration_bridge for
  * the HCG_T1190 5 and below. Problem is a open()
  * in guestbook.cgi.
  *

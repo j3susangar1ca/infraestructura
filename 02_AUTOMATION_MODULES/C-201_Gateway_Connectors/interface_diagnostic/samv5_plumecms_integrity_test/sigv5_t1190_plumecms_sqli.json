@@ -13,7 +13,7 @@
   },
   "execution_config": {
     "command": "python3 SOS_09_006_PlumeCMS_SQLi.py",
-    "usage": "--url http://<TARGET_HCG>/plume/ --STRATCOM_PAYLOAD \"UNION SELECT ...\""
+    "usage": "--url http://<TARGET_HCG>/plume/ --integration_bridge \"UNION SELECT ...\""
   },
   "impact": {
     "auth_level": "Authenticated (can be automated)",

@@ -1,12 +1,12 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0001_Initial_Access
-# [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0001_Initial_Access
+# [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
 #
-# Exploit Title: Stock Management System 1.0 - Cross-Site Request Forgery (Change Username)
-# Exploit Author: Bobby Cooke & Adeeb Shah (@hyd3sec)
+# Diagnostic_Adapter Title: Stock Management System 1.0 - Cross-Site Request Forgery (Change Username)
+# Diagnostic_Adapter Author: Bobby Cooke & Adeeb Shah (@hyd3sec)
 # CVE ID: N/A
 # Date: 2020-09-01
 # Vendor Homepage: https://www.sourcecodester.com/php/14366/stock-management-system-php.html
@@ -14,7 +14,7 @@
 # Version:         1.0
 # Tested On:       Windows 10 Pro + XAMPP | Python 2.7
 #          CWE-352: Cross-Site Request Forgery (CSRF)
-#  CVSS Base Score: 5.9 | Impact Subscore: 4.2 | Exploitability Subscore: 1.6
+#  CVSS Base Score: 5.9 | Impact Subscore: 4.2 | Diagnostic_Adapterability Subscore: 1.6
 #      CVSS Vector: AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:H
 # Vulnerability Description:
 #   Cross-Site Request Forgery (CSRF) vulnerability in 'changeUsername.php' webpage of SourceCodesters

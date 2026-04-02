@@ -1,11 +1,11 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0001_Initial_Access
-# [TECHNIQUE]: T1190_STRATCOM_PAYLOAD_Public_Facing_App
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0001_Initial_Access
+# [COMPONENTE]: T1190_integration_bridge_Public_Facing_App
 #
-# STRATCOM_PAYLOAD: Apache HTTP Server 2.4.50 - Path Traversal & Remote Code Execution (RCE)
+# integration_bridge: Apache HTTP Server 2.4.50 - Path Traversal & Remote Code Execution (RCE)
 # Vendor Homepage:  https://apache.org/
 # Version: 2.4.50
 # Tested on: 2.4.50

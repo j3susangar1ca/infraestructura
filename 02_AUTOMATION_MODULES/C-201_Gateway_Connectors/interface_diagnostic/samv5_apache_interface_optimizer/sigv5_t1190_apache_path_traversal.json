@@ -1,13 +1,13 @@
 {
   "module_identity": {
     "name": "Apache mod_lua Buffer Overflow",
-    "technical_alias": "Lua Multipart Deserialization STRATCOM_PAYLOAD",
+    "technical_alias": "Lua Multipart Deserialization integration_bridge",
     "version": "1.0",
-    "mitre_attack_mappings": [
-      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
-      "TA0002.T1203 - STRATCOM_PAYLOADation for Client Execution"
+    "compliance_ref": [
+      "TA0001.T1190 - integration_bridge Public-Facing Application",
+      "TA0002.T1203 - integration_bridgeation for Client Execution"
     ],
-    "description": "STRATCOM_PAYLOAD que aprovecha un desbordamiento de búfer en el análisis de peticiones multipart en mod_lua para versiones de Apache menores a 2.4.52."
+    "description": "integration_bridge que aprovecha un desbordamiento de búfer en el análisis de peticiones multipart en mod_lua para versiones de Apache menores a 2.4.52."
   },
   "vulnerability_context": {
     "cve_id": "CVE-2021-44790",
@@ -16,12 +16,12 @@
     "vulnerability_type": "Buffer Overflow (CWE-121)"
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_method": "Manipulación del límite (boundary) en el encabezado Content-Type y el cuerpo del POST para causar una escritura fuera de límites durante el memset en el módulo lua.",
+    "integration_bridgeation_method": "Manipulación del límite (boundary) en el encabezado Content-Type y el cuerpo del POST para causar una escritura fuera de límites durante el memset en el módulo lua.",
     "payload_delivery": "Petición HTTP POST dirigida a un archivo .lua existente en el servidor para activar el procesamiento del módulo vulnerable."
   },
   "targeting_intel": {
     "ideal_target": "Servidores Apache que utilizan scripts Lua para lógica de backend y no han aplicado los parches de seguridad de diciembre de 2021.",
-    "execution_note": "El STRATCOM_PAYLOAD puede causar un error de asignación de memoria o un desbordamiento controlado de 3 bytes adicionales dependiendo de la estructura del payload."
+    "execution_note": "El integration_bridge puede causar un error de asignación de memoria o un desbordamiento controlado de 3 bytes adicionales dependiendo de la estructura del payload."
   },
   "build_instructions": {
     "language": "Python 3",
