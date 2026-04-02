@@ -1,0 +1,22 @@
+{
+  "module_id": "WIN32-DL-EXEC-GEN-V5",
+  "name": "Win32 Download and Execute Shellcode Generator",
+  "priority": "HIGH",
+  "tactic": "TA0001_Initial_Access",
+  "technique": "T1189",
+  "dependencies": ["perl"],
+  "targeting_intel": {
+    "os_family": "Windows (Target architecture for shellcode)",
+    "affected_versions": ["Win32"],
+    "vulnerability": "Payload Generator for Browser/Client Exploits",
+    "hcg_scenario": "Generación de shellcode de descarga y ejecución (275 bytes) para ser utilizado en exploits de navegador (drive-by compromise) contra objetivos Windows."
+  },
+  "execution_config": {
+    "command": "perl sigv5_t1189_win32_dl_exec_generator.pl <URL_TO_EXE>",
+    "usage": "Ejecutar el script en Perl proporcionando la URL del ejecutable remoto para generar el bloque de shellcode formateado para JavaScript."
+  },
+  "impact": {
+    "auth_level": "Pre-authentication (Client-side execution)",
+    "action": "Remote File Download and Execution"
+  }
+}
