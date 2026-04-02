@@ -1,3 +1,10 @@
+#
+# 🛡️ C4ISR-STRATCOM: SIGINT-V5
+# [CLASSIFIED]: CONFIDENCIAL
+# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+# [TACTIC]: TA0003_Persistence
+# [TECHNIQUE]: T1505_Server_Software_Component
+#
 # Exploit Title: vsftpd 2.3.4 - Backdoor Command Execution
 # Date: 9-04-2021
 # Exploit Author: HerculesRD

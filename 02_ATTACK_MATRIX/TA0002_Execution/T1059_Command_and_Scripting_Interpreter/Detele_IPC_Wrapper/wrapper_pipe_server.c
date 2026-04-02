@@ -1,3 +1,10 @@
+/*
+ * 🛡️ C4ISR-STRATCOM: SIGINT-V5
+ * [CLASSIFIED]: CONFIDENCIAL
+ * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+ * [TACTIC]: TA0002_Execution
+ * [TECHNIQUE]: T1059_Command_and_Scripting_Interpreter
+ */
 #include <windows.h>
 #include <tlhelp32.h>
 #include <stdio.h>

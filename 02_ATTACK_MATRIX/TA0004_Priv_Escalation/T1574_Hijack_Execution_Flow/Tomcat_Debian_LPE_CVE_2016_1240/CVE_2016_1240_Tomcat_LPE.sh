@@ -1,3 +1,10 @@
+#
+# 🛡️ C4ISR-STRATCOM: SIGINT-V5
+# [CLASSIFIED]: CONFIDENCIAL
+# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+# [TACTIC]: TA0004_Priv_Escalation
+# [TECHNIQUE]: Tomcat_Debian_LPE_CVE_2016_1240
+#
 =============================================
 - Discovered by: Dawid Golunski
 - http://legalhackers.com

@@ -1,4 +1,11 @@
 /*
+ * 🛡️ C4ISR-STRATCOM: SIGINT-V5
+ * [CLASSIFIED]: CONFIDENCIAL
+ * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+ * [TACTIC]: TA0043_Reconnaissance
+ * [TECHNIQUE]: T1046_Network_Service_Scanning
+ */
+/*
  * HCG Target-Aware SMB/LDAP Enumerator
  * MITRE ATT&CK: TA0043 (Reconnaissance) - T1046 (Network Service Scanning)
  * 

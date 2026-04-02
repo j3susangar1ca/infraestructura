@@ -1,3 +1,10 @@
+#
+# 🛡️ C4ISR-STRATCOM: SIGINT-V5
+# [CLASSIFIED]: CONFIDENCIAL
+# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+# [TACTIC]: TA0040_Impact
+# [TECHNIQUE]: T1499_DoS_BlueKeep
+#
 # Exploit Title: Bluekeep Denial of Service (metasploit module)
 # Shodan Dork: port:3389
 # Date: 07/14/2019

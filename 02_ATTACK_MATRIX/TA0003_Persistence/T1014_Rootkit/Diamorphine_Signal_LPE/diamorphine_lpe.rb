@@ -1,3 +1,10 @@
+#
+# 🛡️ C4ISR-STRATCOM: SIGINT-V5
+# [CLASSIFIED]: CONFIDENCIAL
+# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+# [TACTIC]: TA0003_Persistence
+# [TECHNIQUE]: T1014_Rootkit
+#
 ##
 # This module requires Metasploit: https://metasploit.com/download
 # Current source: https://github.com/rapid7/metasploit-framework
