@@ -24,7 +24,7 @@ obfuscate:
 # Rule to compile each C file, placing it flat in out dir
 $(OUT_DIR)/%: $(SRC_DIR)/%.c
 	@echo "[+] Compiling and Hardening: $<"
-	@$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$(notdir $@)
+	@$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$(notdir $@) || echo "[!] Ignored (Requires MinGW or dependencies)"
 
 postbuild:
 	@echo "[*] Build Complete. Artifacts in $(OUT_DIR)/"
