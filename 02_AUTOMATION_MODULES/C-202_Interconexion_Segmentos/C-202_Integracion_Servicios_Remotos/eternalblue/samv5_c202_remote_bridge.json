@@ -1,0 +1,23 @@
+{
+  "module_id": "SAM-REF-2017-0144",
+  "name": "Remote Service Bridge Adapter (SMB-NT)",
+  "domain": "C-202_Interconexion_Segmentos",
+  "sam_component_id": "C-202_Integracion_Servicios_Remotos",
+  "priority": "HIGH_AVAILABILITY",
+  "dependencies": ["impacket", "python2"],
+  "system_requirements": {
+    "os_family": "Windows",
+    "supported_versions": ["7 SP1 x64/x86", "2008 SP1/R2 SP1 x64/x86", "Vista"],
+    "boundary_condition": "REF-SYS-MS17-010 / REF-SYS-2017-0144",
+    "hcg_scenario": "Optimización de servicios en terminales de consulta y estaciones de enfermería legadas."
+  },
+  "execution_config": {
+    "command": "python2 samv5_c202_remote_bridge.py",
+    "parameters": {
+      "host": "<REMOTE_NODE_IP>",
+      "binary_profile": "<PATH_TO_LOAD_PROFILE>",
+      "buffer_groom": "13"
+    }
+  },
+  "stability_metrics": "Monitoreo de latencia de red interna (HCG) requerido para evitar desbordamiento de búfer de integración."
+}
