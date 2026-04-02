@@ -1,63 +1,23 @@
 {
-  "technique_id": "T1587",
-  "technique_name": "Develop Capabilities",
-  "tactic": "TA0042 - Resource Development",
-  "subtechnique_of": null,
-  "description": "Automated cross-architecture payload compiler that generates weaponized binary loaders integrating raw ASM shellcode with dynamic configurations and anti-sandbox evasion layers in C.",
-  "platforms": ["Linux", "Windows"],
-  "permissions_required": ["User"],
-  "data_sources": ["File Monitoring"],
-  "implementation_details": {
-    "source_file": "sigv5_t1587_payload_compiler.py",
-    "language": "Python 3.8+",
-    "dependencies": ["nasm", "gcc", "binutils"],
-    "external_dependencies": [],
-    "usage": {
-      "build_x64_elf": "python3 sigv5_t1587_payload_compiler.py --lhost 10.2.1.200 --lport 443 --arch x64 --out build/payload_x64.elf",
-      "build_x86_raw": "python3 sigv5_t1587_payload_compiler.py --lhost 10.2.1.200 --lport 8080 --arch x86 --raw --out shellcode.bin"
-    },
-    "capabilities": [
-      "Dynamic in-memory generation of custom null-free x86 and x64 ASM reverse shell shellcode",
-      "Compilation of raw ASM into standalone .bin blobs using NASM and objcopy",
-      "In-memory templating of a standard C wrapper that allocates virtual memory and executes payload",
-      "Automated XOR encryption layer generation (random keys per run) to bypass static signature detection",
-      "GCC orchestration for building standalone statically linked ELF executables without stack protections",
-      "Anti-sandbox logic injection (CPU core count checks, random sleep jittering)"
-    ],
-    "evasion_techniques": [
-      "XOR payload obfuscation embedded dynamically at compile time",
-      "Anti-sandbox jitter routines (stalling analysis with usleep delays)",
-      "Checking _SC_NPROCESSORS_ONLN to abort execution inside constrained sandbox environments",
-      "No inline literals of IPs/Ports in standard format; everything encoded dynamically into the ASM block."
-    ]
+  "module_id": "SAM-D-102",
+  "name": "Component Build Optimizer (SAM-CBO)",
+  "domain": "D-102_System_Component_Build",
+  "sam_component_id": "D-102_Build_Optimization_Service",
+  "priority": "HIGH_AVAILABILITY",
+  "system_requirements": {
+    "purpose": "Optimización y compilación de componentes de sistema modulares.",
+    "hcg_scenario": "Generación de binarios optimizados para el entorno de arquitectura de sistemas del HCG."
   },
-  "output_files": [
-    {
-      "name": "sigv5_payload.elf",
-      "description": "Statically linked ELF binary executable acting as the final stage loader."
-    },
-    {
-      "name": "shellcode.bin",
-      "description": "Raw binary shellcode structure if requested."
+  "execution_config": {
+    "command": "python3 samv5_component_build_optimizer.py",
+    "parameters": {
+      "host": "<LISTENER_IP>",
+      "port": "<LISTENER_PORT>",
+      "arch": "x64"
     }
-  ],
-  "mitre_attack_url": "https://attack.mitre.org/techniques/T1587/",
-  "related_techniques": [
-    "T1027 - Obfuscated Files or Information",
-    "T1497 - Virtualization/Sandbox Evasion",
-    "T1055 - Process Injection"
-  ],
-  "detection_opportunities": [
-    "Detection of `nasm` and `gcc` execution in unexpected administrative environments",
-    "Generated ELF binaries with non-standard section permissions (e.g. RWX memory mapping)",
-    "Small static ELFs containing significant entropy structures in arrays (from XOR'd data)"
-  ],
-  "metadata": {
-    "author": "C4ISR STRATCOM",
-    "version": "1.0",
-    "created": "2026",
-    "classification": "CONFIDENTIAL",
-    "operation": "SIGINT-V5",
-    "convention": "CONV-0221-JAL-HCG-2026"
+  },
+  "metrics": {
+    "status": "PRODUCTION_STABLE",
+    "reliability": "OPTIMIZED"
   }
 }
