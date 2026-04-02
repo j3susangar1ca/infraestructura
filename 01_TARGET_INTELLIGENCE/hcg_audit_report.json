@@ -1,0 +1,2516 @@
+{
+  "informe_auditoria_infraestructura": {
+    "metadatos": {
+      "titulo": "INFORME CONSOLIDADO DE AUDITORÍA DE INFRAESTRUCTURA DE RED",
+      "institucion": "Hospital Civil de Guadalajara (HCG)",
+      "clasificacion": "CONFIDENCIAL — Uso autorizado",
+      "registros_brutos": 289,
+      "dispositivos_unicos_detectados": 93
+    },
+    "resumen_ejecutivo": {
+      "contexto": "El presente informe consolida los hallazgos de dos análisis complementarios realizados sobre la infraestructura de red del Hospital Civil de Guadalajara (HCG), una de las instituciones hospitalarias más importantes de Jalisco, México.",
+      "analisis_1": "El primer análisis abarcó un escaneo integral de toda la infraestructura del hospital a partir de 12 documentos fuente extraídos el 28 de febrero de 2026, generando 289 registros brutos que, tras deduplicación, revelaron 93 dispositivos únicos distribuidos en 11 subredes y 13 dominios.",
+      "analisis_2": "El segundo análisis se centró en la estación de trabajo NPIA00B9D (10.1.7.238), proporcionando una perspectiva detallada del tráfico de red, tabla ARP (83 entradas), caché DNS, configuración de firewall, capacidades de Hyper-V, entorno inalámbrico y pila Winsock.",
+      "arquitectura_red": "La arquitectura de red identificada está segmentada en múltiples zonas funcionales: DMZ/Externa (servidores web públicos en IPs 201.131.132.x y 216.245.211.x), Servidores Core (10.2.1.0/24, 10.2.61.0/24, 10.2.22.0/24), Estaciones de Trabajo (10.1.7.0/24 con 83 hosts ARP), Wi-Fi Institucional (10.254.0.0/16, SSID 'redopdhcg'), Virtualización (Hyper-V 172.21.240.0/24, Docker 10.254.178.0/24, ICS 192.168.137.0/24), Monitoreo (10.1.97.0/24), e IoT/Ubiquiti (10.23.1.0/24). El ruteo inter-VLAN es realizado por el gateway principal 10.1.7.254 que funge como router/firewall perimetral.",
+      "hallazgos_criticos": [
+        "(a) un Controlador de Dominio (10.2.1.1) con LDAP (389) y DNS (53) expuestos sin cifrar ni restricciones IP",
+        "(b) un servidor de expedientes clínicos (10.2.1.140) con RDP (3389) y SMB (445) accesibles, vulnerable a BlueKeep y EternalBlue",
+        "(c) un servidor de archivos (10.2.1.92) que expone 37 recursos compartidos SMB incluyendo ADMIN$ y C$",
+        "(d) el portal web público ejecutando Apache 2.4.38, OpenSSL 1.0.2q y PHP 7.1.26 — todos End of Life desde 2019",
+        "(e) el panel cPanel/WHM (216.245.211.42) expuesto a Internet sin restricción IP",
+        "(f) la red Wi-Fi corporativa con WPA2-Personal en lugar de 802.1X, con 4 servidores Tomcat vulnerables a Ghostcat (CVE-2020-1938)",
+        "(g) un endpoint auditor (10.254.117.118) con credenciales administrativas (jlangarica@hcg.gob.mx) y SeImpersonatePrivilege habilitado",
+        "(h) en la estación NPIA00B9D, reglas de firewall críticas como AnyDesk sin restricciones en perfil Público y logging completamente deshabilitado"
+      ],
+      "conclusion": "El nivel de riesgo general se califica como ALTO, requiriendo atención inmediata en múltiples frentes de seguridad simultáneamente."
+    },
+    "metodologia_y_contexto": {
+      "fuentes_de_datos": "La auditoría fue realizada mediante la consolidación de 12 documentos fuente provenientes de múltiples vectores de recolección de datos... Adicionalmente, se analizaron 5 archivos complementarios provenientes de la estación NPIA00B9D: cs.csv, vmswitch.txt, neighbors.txt, dns.txt, wlaninfo.txt, firewalleffectiverules.txt, firewallconfig.txt y winsock.txt.",
+      "comandos_y_herramientas": "Escaneos de red, capturas .etl y .pcapng almacenadas en C:\\Users\\Public\\Documents\\, enumeraciones de AD vía LDAP, escaneos de puertos, y comandos de PowerShell: Test-NetConnection, Get-SmbMapping, Get-NetNeighbor, Get-DnsClientCache, netsh trace, y Get-NetFirewallRule.",
+      "puntos_de_recoleccion": "Una estación de trabajo cableada en la subred 10.1.7.0/24 (área DIVSERADMIN) y un cliente inalámbrico conectado a la SSID 'redopdhcg' en la subred 10.254.0.0/16.",
+      "detalles_captura_trafico": "La captura en cs.csv cubre 0.9 segundos (437 paquetes), dominada por flujo UDP masivo hacia 187.213.74.192 (Telcel/América Móvil), consistente con videoconferencia/WebRTC.",
+      "nota_operacional": "Presencia de un proxy SOCKS5 configurado en 127.0.0.1:9050 (Tor) durante el escaneo externo, indicando escaneo a través de la red Tor para anonimato."
+    },
+    "inventario_documentos_fuente": [
+      {
+        "id": 1,
+        "archivo": "Escaneo red 10.2.1.0/24",
+        "tipo": "Port Scan",
+        "contenido_principal": "Puertos abiertos en servidores core (18 hosts detectados)"
+      },
+      {
+        "id": 2,
+        "archivo": "Escaneo red 10.1.7.0/24",
+        "tipo": "Host Discovery",
+        "contenido_principal": "83 hosts con DHCP/NetBIOS, nombres de estaciones"
+      },
+      {
+        "id": 3,
+        "archivo": "Escaneo red 10.254.0.0/16",
+        "tipo": "Network Mapping",
+        "contenido_principal": "8 hosts en red Wi-Fi, puertos AJP13, WUDO"
+      },
+      {
+        "id": 4,
+        "archivo": "Caché DNS interno",
+        "tipo": "DNS Extraction",
+        "contenido_principal": "18+ registros de servidores internos"
+      },
+      {
+        "id": 5,
+        "archivo": "Enumeración LDAP",
+        "tipo": "AD Enumeration",
+        "contenido_principal": "Usuarios, grupos, SID del dominio, SRV records"
+      },
+      {
+        "id": 6,
+        "archivo": "Enumeración SMB",
+        "tipo": "Share Listing",
+        "contenido_principal": "37 recursos compartidos en 10.2.1.92"
+      },
+      {
+        "id": 7,
+        "archivo": "Escaneo externo",
+        "tipo": "Port Scan (Public)",
+        "contenido_principal": "Puertos en 201.131.132.x y 216.245.211.42"
+      },
+      {
+        "id": 8,
+        "archivo": "Captura .etl",
+        "tipo": "Packet Capture",
+        "contenido_principal": "Tráfico capturado por Windows ETL"
+      },
+      {
+        "id": 9,
+        "archivo": "Captura .pcapng",
+        "tipo": "Packet Capture",
+        "contenido_principal": "Tráfico en formato PCAP"
+      },
+      {
+        "id": 10,
+        "archivo": "Tablas ARP/NDP",
+        "tipo": "L2 Mapping",
+        "contenido_principal": "83 entradas ARP + vecinos NDP IPv6"
+      },
+      {
+        "id": 11,
+        "archivo": "Escaneo WiFi",
+        "tipo": "Wireless Survey",
+        "contenido_principal": "10 BSSIDs, canales, clientes por canal"
+      },
+      {
+        "id": 12,
+        "archivo": "Config. Firewall",
+        "tipo": "Firewall Rules",
+        "contenido_principal": "Reglas efectivas y configuración"
+      },
+      {
+        "id": 13,
+        "archivo": "cs.csv",
+        "tipo": "Packet Capture (CSV)",
+        "contenido_principal": "437 paquetes Wireshark exportados"
+      },
+      {
+        "id": 14,
+        "archivo": "vmswitch.txt",
+        "tipo": "Hyper-V Config",
+        "contenido_principal": "Capacidades VmSwitch v19.0, 29 features"
+      },
+      {
+        "id": 15,
+        "archivo": "neighbors.txt",
+        "tipo": "ARP/NDP Table",
+        "contenido_principal": "Tabla completa de vecinos red"
+      },
+      {
+        "id": 16,
+        "archivo": "dns.txt",
+        "tipo": "DNS Cache",
+        "contenido_principal": "Resoluciones internas y externas"
+      },
+      {
+        "id": 17,
+        "archivo": "wlaninfo.txt",
+        "tipo": "WiFi Info",
+        "contenido_principal": "SSID, BSSIDs, canales, seguridad"
+      },
+      {
+        "id": 18,
+        "archivo": "firewalleffectiverules.txt",
+        "tipo": "Firewall Rules",
+        "contenido_principal": "Reglas activas del firewall"
+      },
+      {
+        "id": 19,
+        "archivo": "firewallconfig.txt",
+        "tipo": "Firewall Config",
+        "contenido_principal": "Perfiles, IPsec, logging"
+      },
+      {
+        "id": 20,
+        "archivo": "winsock.txt",
+        "tipo": "Winsock Catalog",
+        "contenido_principal": "Transportes, namespaces, providers"
+      }
+    ],
+    "entidades_extraidas_y_estandarizadas": {
+      "direcciones_ipv4": {
+        "subred_10_2_1_0_24": [
+          {
+            "ip": "10.2.1.1",
+            "hostnames": ["opd-hcg.org"],
+            "rol": "Controlador de Dominio / DNS / LDAP",
+            "puertos": "389/TCP, 53/TCP"
+          },
+          {
+            "ip": "10.2.1.7",
+            "hostnames": ["HCGINFMED"],
+            "rol": "Informática Médica",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.11",
+            "hostnames": ["jim3"],
+            "rol": "Sistema de Gestión Jim3",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.12",
+            "hostnames": ["portal.hcg.gob.mx"],
+            "rol": "Portal Web Institucional",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.18",
+            "hostnames": ["opd-hcg.org (secundario)"],
+            "rol": "Portal Principal (secundario)",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.46",
+            "hostnames": ["correo.opdhcg.net"],
+            "rol": "Servidor de Correo",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.92",
+            "hostnames": [],
+            "rol": "Servidor de Archivos SMB",
+            "puertos": "445/TCP"
+          },
+          {
+            "ip": "10.2.1.136",
+            "hostnames": ["sii.hcg.gob.mx"],
+            "rol": "Sistema Integral de Información",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.139",
+            "hostnames": ["sigma.hcg.gob.mx", "api-sigma.hcg.gob.mx"],
+            "rol": "Infraestructura Biométrica",
+            "puertos": "—"
+          },
+          {
+            "ip": "10.2.1.140",
+            "hostnames": [
+              "expediente.hcg.gob.mx",
+              "pah.hcg.gob.mx",
+              "intranet.hcg.gob.mx",
+              "empleado.hcg.gob.mx"
+            ],
+            "rol": "Expedientes Clínicos / Intranet / Empleados",
+            "puertos": "3389/TCP, 445/TCP"
+          },
+          {
+            "ip": "10.2.1.141",
+            "hostnames": ["sah.hcg.gob.mx", "cbs.hcg.gob.mx", "pp.hcg.gob.mx"],
+            "rol": "Sistemas SAH, CBS, PP",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.165",
+            "hostnames": ["certificados.hcg.gob.mx"],
+            "rol": "Certificados / Firma Digital",
+            "puertos": "Ping"
+          },
+          {
+            "ip": "10.2.1.3 a .12",
+            "hostnames": [],
+            "rol": "Servidores activos",
+            "puertos": "Ping"
+          }
+        ],
+        "subred_10_1_7_0_24": [
+          {
+            "ip": "10.1.7.2",
+            "mac": "94-c6-91-78-7e-3a",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "Posible switch/gateway secundario"
+          },
+          {
+            "ip": "10.1.7.7",
+            "mac": "4c-cc-6a-38-78-a0",
+            "vendor": "No registrado",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.8",
+            "mac": "2c-f0-5d-1c:b0:xx",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.9",
+            "mac": "2c-f0-5d-1c:b0:xx",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.15",
+            "mac": "20-53-8d-00-e4-0d",
+            "vendor": "Dell Inc.",
+            "notas": "IPv6 Router (RA activo)"
+          },
+          {
+            "ip": "10.1.7.17",
+            "mac": "2c-f0-5d-1c:ac:xx",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.18",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.19",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.22",
+            "mac": "c4-34-6b",
+            "vendor": "Dell Inc.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.25",
+            "mac": "a4-bb-6d",
+            "vendor": "IoT/Periférico",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.30",
+            "mac": "a0-48-1c",
+            "vendor": "Móvil/Tablet",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.31",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.32",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.34",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.35",
+            "mac": "—",
+            "vendor": "—",
+            "notas": "Workgroup WORKGROUP"
+          },
+          {
+            "ip": "10.1.7.37",
+            "mac": "94-c6-91-79-b8-af",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "EliteGroupCo ARP (10.1.7.101)"
+          },
+          {
+            "ip": "10.1.7.39",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.47",
+            "mac": "a0-48-1c",
+            "vendor": "Móvil/Tablet",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.48", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.49",
+            "mac": "f8-0d-ac",
+            "vendor": "Apple Inc.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.51",
+            "mac": "38-ca-84",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.52",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.53",
+            "mac": "64-51-06",
+            "vendor": "Ubiquiti Networks",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.60", "mac": "—", "vendor": "—", "notas": "—" },
+          { "ip": "10.1.7.62", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.66",
+            "mac": "30-24-a9",
+            "vendor": "Apple Inc.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.71",
+            "mac": "10-e7-c6",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.73", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.77",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.81", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.85",
+            "mac": "a0-48-1c / 3c-d9-2b",
+            "vendor": "Samsung Electronics",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.86",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.91",
+            "mac": "50-65-f3",
+            "vendor": "Samsung Electronics",
+            "notas": "7091segpop (Seguridad Pública)"
+          },
+          { "ip": "10.1.7.93", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.96",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.97",
+            "mac": "94-c6-91-79-c4-cb",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "8670TORAXCARDIO (SMBv1)"
+          },
+          { "ip": "10.1.7.103", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.110",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.116", "mac": "—", "vendor": "—", "notas": "—" },
+          { "ip": "10.1.7.119", "mac": "—", "vendor": "—", "notas": "—" },
+          { "ip": "10.1.7.124", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.140",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.141",
+            "mac": "a4-bb-6d",
+            "vendor": "IoT/Periférico",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.142",
+            "mac": "a4-bb-6d",
+            "vendor": "IoT/Periférico",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.146",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.155",
+            "mac": "30-24-a9",
+            "vendor": "Apple Inc.",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.156", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.159",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.161",
+            "mac": "2c-f0-5d-1c-b1-89",
+            "vendor": "MSI",
+            "notas": "LLMNR/mDNS/NBNS activity"
+          },
+          {
+            "ip": "10.1.7.162",
+            "mac": "2c-f0-5d-1c-b1-f6",
+            "vendor": "MSI",
+            "notas": "mDNS/NBNS activity"
+          },
+          {
+            "ip": "10.1.7.163",
+            "mac": "2c-f0-5d-1c-b2-94",
+            "vendor": "MSI",
+            "notas": "LLMNR/mDNS/NBNS activity"
+          },
+          {
+            "ip": "10.1.7.167",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.174",
+            "mac": "04-7c-16-24-92-41",
+            "vendor": "Universal Global",
+            "notas": "Cross-VLAN (también en 10.2.4.174)"
+          },
+          {
+            "ip": "10.1.7.182",
+            "mac": "38-ca-84",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.185", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.186",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "IPv6 Router (RA activo)"
+          },
+          {
+            "ip": "10.1.7.192",
+            "mac": "38-ca-84",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.197", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.200",
+            "mac": "38-ca-84",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.201",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.202",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "DIVSERADMIN workgroup"
+          },
+          {
+            "ip": "10.1.7.210",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.212",
+            "mac": "64-51-06",
+            "vendor": "Ubiquiti Networks",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.214",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.218",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.222",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.223",
+            "mac": "10-e7-c6",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.227",
+            "mac": "04-0e-3c",
+            "vendor": "Universal Global (HMI)",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.228", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.236",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "ARP: Who has 10.1.7.4?"
+          },
+          {
+            "ip": "10.1.7.237",
+            "mac": "94-c6-91",
+            "vendor": "Sercomm/Foxconn",
+            "notas": "ARP: Who has 10.1.7.4?"
+          },
+          {
+            "ip": "10.1.7.238",
+            "mac": "2c-f0-5d-1c-b0-ad",
+            "vendor": "MSI",
+            "notas": "NPIA00B9D (endpoint analizado)"
+          },
+          {
+            "ip": "10.1.7.241",
+            "mac": "04-7c-16",
+            "vendor": "Universal Global",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.244", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.247",
+            "mac": "38-ca-84",
+            "vendor": "Intel Corp.",
+            "notas": "—"
+          },
+          { "ip": "10.1.7.248", "mac": "—", "vendor": "—", "notas": "—" },
+          {
+            "ip": "10.1.7.249",
+            "mac": "a4-bb-6d",
+            "vendor": "IoT/Periférico",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.252",
+            "mac": "2c-f0-5d",
+            "vendor": "MSI",
+            "notas": "—"
+          },
+          {
+            "ip": "10.1.7.254",
+            "mac": "ec-7c-2c-c0-f7-03",
+            "vendor": "Gateway",
+            "notas": "GW Principal / Router Perimetral"
+          }
+        ],
+        "subred_10_254_0_0_16": [
+          {
+            "ip": "10.254.0.1",
+            "puertos": "—",
+            "ttl_rtt": "—",
+            "funcion": "Gateway / DHCP Server"
+          },
+          {
+            "ip": "10.254.3.193",
+            "puertos": "8009/TCP (AJP13)",
+            "ttl_rtt": "TTL=64, 6ms",
+            "funcion": "Servidor Tomcat"
+          },
+          {
+            "ip": "10.254.30.158",
+            "puertos": "8009/TCP (AJP13)",
+            "ttl_rtt": "—",
+            "funcion": "Servidor Tomcat"
+          },
+          {
+            "ip": "10.254.81.81",
+            "puertos": "7680/TCP (WUDO)",
+            "ttl_rtt": "—",
+            "funcion": "Windows Update Delivery"
+          },
+          {
+            "ip": "10.254.117.118",
+            "puertos": "—",
+            "ttl_rtt": "—",
+            "funcion": "Endpoint auditor (6 NICs, admin)"
+          },
+          {
+            "ip": "10.254.178.36",
+            "puertos": "—",
+            "ttl_rtt": "—",
+            "funcion": "host.docker.internal"
+          },
+          {
+            "ip": "10.254.185.35",
+            "puertos": "8009/TCP (AJP13)",
+            "ttl_rtt": "TTL=64, 34ms",
+            "funcion": "Servidor Tomcat"
+          },
+          {
+            "ip": "10.254.225.221",
+            "puertos": "8009/TCP (AJP13)",
+            "ttl_rtt": "TTL=64, 16ms",
+            "funcion": "Servidor Tomcat"
+          }
+        ],
+        "subredes_adicionales": [
+          {
+            "ip": "10.2.22.76",
+            "subred": "10.2.22.0/24",
+            "funcion": "pesopd.opd-hcg.org"
+          },
+          {
+            "ip": "10.2.61.17",
+            "subred": "10.2.61.0/24",
+            "funcion": "SYNHCGN (Nómina/Chequeo)"
+          },
+          {
+            "ip": "10.1.61.16",
+            "subred": "10.1.61.0/24",
+            "funcion": "SYNHCGV (Sincronización)"
+          },
+          {
+            "ip": "10.1.97.54",
+            "subred": "10.1.97.0/24",
+            "funcion": "Dispositivo monitoreo (TTL=255)"
+          },
+          {
+            "ip": "10.1.97.254",
+            "subred": "10.1.97.0/24",
+            "funcion": "Gateway VLAN monitoreo"
+          },
+          {
+            "ip": "10.2.4.174",
+            "subred": "10.2.4.0/24",
+            "funcion": "Cross-VLAN (04:7c:16:24:92:41)"
+          },
+          {
+            "ip": "10.2.4.254",
+            "subred": "10.2.4.0/24",
+            "funcion": "Gateway subred adicional"
+          },
+          {
+            "ip": "10.23.1.43",
+            "subred": "10.23.1.0/24",
+            "funcion": "Dispositivo Ubiquiti"
+          },
+          {
+            "ip": "10.23.1.254",
+            "subred": "10.23.1.0/24",
+            "funcion": "Gateway Ubiquiti IoT/DMZ"
+          }
+        ],
+        "ips_externas": [
+          {
+            "ip": "201.131.132.131",
+            "hostname": "www.hcg.gob.mx, hcg.gob.mx, mail.hcg.gob.mx, ftp.hcg.gob.mx, portal.hcg.gob.mx",
+            "funcion": "Portal Web Público (Apache EOL)"
+          },
+          {
+            "ip": "201.131.132.136",
+            "hostname": "intranet.hcg.gob.mx",
+            "funcion": "Intranet Pública"
+          },
+          {
+            "ip": "216.245.211.42",
+            "hostname": "lajun.hosting-mexico.net, cpanel.hcg.gob.mx, whm.hcg.gob.mx, webmail.hcg.gob.mx",
+            "funcion": "Hosting cPanel/WHM"
+          },
+          {
+            "ip": "148.202.3.5",
+            "hostname": "b.rec.ns.udg.mx",
+            "funcion": "DNS Externo (UDG)"
+          },
+          {
+            "ip": "148.202.1.29",
+            "hostname": "a.rec.ns.udg.mx (deducido)",
+            "funcion": "DNS Externo (UDG)"
+          },
+          {
+            "ip": "1.1.1.1",
+            "hostname": "—",
+            "funcion": "DNS Público (Cloudflare)"
+          },
+          {
+            "ip": "8.8.8.8",
+            "hostname": "—",
+            "funcion": "DNS Público (Google)"
+          },
+          {
+            "ip": "187.213.74.192",
+            "hostname": "—",
+            "funcion": "Flujo VoIP/WebRTC (Telcel/AMX)"
+          },
+          {
+            "ip": "192.178.56.99",
+            "hostname": "—",
+            "funcion": "QUIC/Microsoft Telemetry"
+          },
+          {
+            "ip": "13.89.178.26",
+            "hostname": "self.events.data.microsoft.com",
+            "funcion": "Azure Central US (Telemetría)"
+          },
+          {
+            "ip": "150.171.22.17",
+            "hostname": "config.edge.skype.com",
+            "funcion": "Edge/Teams Config"
+          },
+          {
+            "ip": "66.24.102.44",
+            "hostname": "—",
+            "funcion": "ISP (Charter Communications)"
+          }
+        ],
+        "ips_virtuales": [
+          {
+            "ip": "127.0.0.1",
+            "red": "Loopback",
+            "funcion": "Localhost / Docker K8s / WPAD"
+          },
+          {
+            "ip": "172.21.240.1",
+            "red": "172.21.240.0/24",
+            "funcion": "Hyper-V Default Switch (NAT)"
+          },
+          {
+            "ip": "192.168.137.1",
+            "red": "192.168.137.0/24",
+            "funcion": "ICS / mshome (Compartición Internet)"
+          },
+          {
+            "ip": "10.254.178.36",
+            "red": "10.254.178.0/24",
+            "funcion": "Docker Desktop (host.docker.internal)"
+          }
+        ]
+      },
+      "direcciones_ipv6": [
+        {
+          "ipv6": "fe80::a68c:dbff:fee6:4701",
+          "host_ipv4_correspondiente": "10.254.0.1",
+          "notas": "Gateway Wi-Fi link-local"
+        },
+        {
+          "ipv6": "fe80::53c8:1edd:453f:b821",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz Ethernet endpoint"
+        },
+        {
+          "ipv6": "fe80::ced7:2093:c8ce:340b",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz WiFi Direct"
+        },
+        {
+          "ipv6": "fe80::608d:f2b:b803:3242",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz WiFi Direct #2"
+        },
+        {
+          "ipv6": "fe80::1e36:b1:bd8b:c20b",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz Bluetooth PAN"
+        },
+        {
+          "ipv6": "fe80::7ac8:a798:6154:5baf",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz WiFi Intel AC 8265"
+        },
+        {
+          "ipv6": "fe80::ca77:a22f:3087:634c",
+          "host_ipv4_correspondiente": "10.254.117.118",
+          "notas": "Interfaz Hyper-V Virtual"
+        },
+        {
+          "ipv6": "fe80::7c51:4eb7:bd16:1d6a",
+          "host_ipv4_correspondiente": "10.1.7.15",
+          "notas": "Router IPv6 (RA activo, Dell)"
+        },
+        {
+          "ipv6": "fe80::71f4:5201:1013:f92d",
+          "host_ipv4_correspondiente": "10.1.7.186",
+          "notas": "Router IPv6 (RA activo, Universal Global)"
+        },
+        {
+          "ipv6": "fec0:0:0:ffff::1-3",
+          "host_ipv4_correspondiente": "—",
+          "notas": "Site-local deprecadas (RFC 4291)"
+        }
+      ],
+      "mac_oui_catalog": [
+        {
+          "oui": "2c:f0:5d",
+          "vendor": "MicroStar International Co. (MSI)",
+          "cantidad": 15,
+          "ips": ".8, .9, .17, .31, .34, .77, .86, .96, .161, .162, .163, .167, .210, .236, .252"
+        },
+        {
+          "oui": "04:7c:16",
+          "vendor": "UNIVERSAL GLOBAL Scientific Industrial Co.",
+          "cantidad": 12,
+          "ips": ".18, .19, .52, .110, .140, .174, .186, .201, .202, .222, .241"
+        },
+        {
+          "oui": "94:c6:91",
+          "vendor": "Sercomm Corporation / Foxconn",
+          "cantidad": 10,
+          "ips": ".2, .32, .37, .39, .97, .146, .159, .214, .218, .237"
+        },
+        {
+          "oui": "38:ca:84",
+          "vendor": "Intel Corporation",
+          "cantidad": 6,
+          "ips": ".20, .51, .182, .192, .200, .247"
+        },
+        {
+          "oui": "10:e7:c6",
+          "vendor": "Intel Corporation",
+          "cantidad": 2,
+          "ips": ".71, .223"
+        },
+        {
+          "oui": "30:24:a9",
+          "vendor": "Apple Inc.",
+          "cantidad": 2,
+          "ips": ".66, .155"
+        },
+        {
+          "oui": "f8:0d:ac",
+          "vendor": "Apple Inc.",
+          "cantidad": 1,
+          "ips": ".49"
+        },
+        {
+          "oui": "20:53:8d",
+          "vendor": "Dell Inc.",
+          "cantidad": 1,
+          "ips": ".15"
+        },
+        {
+          "oui": "c4:34:6b",
+          "vendor": "Dell Inc.",
+          "cantidad": 2,
+          "ips": ".22, .16"
+        },
+        {
+          "oui": "64:51:06",
+          "vendor": "Ubiquiti Networks Inc.",
+          "cantidad": 2,
+          "ips": ".53, .212"
+        },
+        {
+          "oui": "a0:48:1c",
+          "vendor": "No registrado (móvil/tablet)",
+          "cantidad": 3,
+          "ips": ".30, .47, .85"
+        },
+        {
+          "oui": "a4:bb:6d",
+          "vendor": "No registrado (IoT/periférico)",
+          "cantidad": 4,
+          "ips": ".25, .141, .142, .249"
+        },
+        {
+          "oui": "ec:7c:2c",
+          "vendor": "No registrado (Gateway)",
+          "cantidad": 1,
+          "ips": ".254"
+        },
+        {
+          "oui": "00:15:5d",
+          "vendor": "Microsoft (Hyper-V)",
+          "cantidad": 1,
+          "ips": "10.254.117.118 (vNIC)"
+        },
+        {
+          "oui": "8a:66:36",
+          "vendor": "Intel (WiFi 8265)",
+          "cantidad": 1,
+          "ips": "10.254.117.118"
+        },
+        {
+          "oui": "e8:84:a5",
+          "vendor": "Intel (WiFi 8265)",
+          "cantidad": 1,
+          "ips": "10.254.117.118"
+        },
+        {
+          "oui": "3c:d9:2b",
+          "vendor": "Samsung Electronics",
+          "cantidad": 1,
+          "ips": ".85"
+        },
+        {
+          "oui": "50:65:f3",
+          "vendor": "Samsung Electronics",
+          "cantidad": 1,
+          "ips": ".91"
+        },
+        {
+          "oui": "f4:45:88",
+          "vendor": "No registrado (AP WiFi corporativo)",
+          "cantidad": 0,
+          "ips": "BSSIDs redopdhcg"
+        },
+        {
+          "oui": "b8:85:7b",
+          "vendor": "No registrado (AP WiFi corporativo)",
+          "cantidad": 0,
+          "ips": "BSSIDs redopdhcg"
+        },
+        {
+          "oui": "08:fa:28",
+          "vendor": "No registrado (AP WiFi corporativo)",
+          "cantidad": 0,
+          "ips": "BSSIDs redopdhcg"
+        },
+        {
+          "oui": "c4:5e:5c",
+          "vendor": "No registrado (AP WiFi corporativo)",
+          "cantidad": 0,
+          "ips": "BSSIDs redopdhcg"
+        },
+        {
+          "oui": "58:38:79",
+          "vendor": "Dispositivos de red/impresoras",
+          "cantidad": 2,
+          "ips": "RNP583879B2D716, RNP583879281047"
+        }
+      ],
+      "puertos_tcp_udp_detectados": [
+        {
+          "puerto": 21,
+          "protocolo": "TCP",
+          "servicio": "FTP",
+          "hosts": "201.131.132.136",
+          "estado": "Filtrado",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 22,
+          "protocolo": "TCP",
+          "servicio": "SSH",
+          "hosts": "201.131.132.136",
+          "estado": "Filtrado",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 53,
+          "protocolo": "TCP",
+          "servicio": "DNS",
+          "hosts": "10.2.1.1, 148.202.3.5",
+          "estado": "Abierto",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 53,
+          "protocolo": "UDP",
+          "servicio": "DNS",
+          "hosts": "148.202.3.5",
+          "estado": "Abierto",
+          "riesgo": "INFO"
+        },
+        {
+          "puerto": "67-68",
+          "protocolo": "UDP",
+          "servicio": "DHCP Relay",
+          "hosts": "10.254.0.1",
+          "estado": "—",
+          "riesgo": "INFO"
+        },
+        {
+          "puerto": 80,
+          "protocolo": "TCP",
+          "servicio": "HTTP",
+          "hosts": "201.131.132.136",
+          "estado": "Filtrado",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 443,
+          "protocolo": "TCP",
+          "servicio": "HTTPS",
+          "hosts": "201.131.132.131",
+          "estado": "Abierto",
+          "riesgo": "—"
+        },
+        {
+          "puerto": 445,
+          "protocolo": "TCP",
+          "servicio": "SMB",
+          "hosts": "10.2.1.92, 10.2.1.140, 10.1.7.97",
+          "estado": "Abierto",
+          "riesgo": "CRÍTICO"
+        },
+        {
+          "puerto": 137,
+          "protocolo": "UDP",
+          "servicio": "NBNS",
+          "hosts": "10.1.7.161, .162, .163",
+          "estado": "Multicast",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 5353,
+          "protocolo": "UDP",
+          "servicio": "mDNS",
+          "hosts": "10.1.7.161, .162, .163",
+          "estado": "Multicast",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 5355,
+          "protocolo": "UDP",
+          "servicio": "LLMNR",
+          "hosts": "10.1.7.161, .163, 10.254.117.118",
+          "estado": "Multicast",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 389,
+          "protocolo": "TCP",
+          "servicio": "LDAP",
+          "hosts": "10.2.1.1",
+          "estado": "Abierto",
+          "riesgo": "CRÍTICO"
+        },
+        {
+          "puerto": 3389,
+          "protocolo": "TCP",
+          "servicio": "RDP",
+          "hosts": "10.2.1.140, 201.131.132.136",
+          "estado": "Abierto/Filtrado",
+          "riesgo": "CRÍTICO"
+        },
+        {
+          "puerto": 3306,
+          "protocolo": "TCP",
+          "servicio": "MySQL",
+          "hosts": "10.2.61.17, 201.131.132.136",
+          "estado": "Filtrado",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 56219,
+          "protocolo": "UDP",
+          "servicio": "VoIP/WebRTC",
+          "hosts": "10.1.7.238 → 187.213.74.192",
+          "estado": "Activo",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 60666,
+          "protocolo": "TCP",
+          "servicio": "SMB Client",
+          "hosts": "10.1.7.238 → 10.2.1.92",
+          "estado": "Establecido",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 60611,
+          "protocolo": "UDP",
+          "servicio": "QUIC",
+          "hosts": "10.1.7.238 → 192.178.56.99",
+          "estado": "Handshake",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 7680,
+          "protocolo": "TCP",
+          "servicio": "WUDO",
+          "hosts": "10.254.81.81",
+          "estado": "Abierto",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 8009,
+          "protocolo": "TCP",
+          "servicio": "AJP13",
+          "hosts": "10.254.3.193, .185.35, .225.221, .30.158",
+          "estado": "Abierto",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 1900,
+          "protocolo": "UDP",
+          "servicio": "UPnP/ICS",
+          "hosts": "NPIA00B9D",
+          "estado": "—",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 2869,
+          "protocolo": "UDP",
+          "servicio": "ICS",
+          "hosts": "NPIA00B9D",
+          "estado": "—",
+          "riesgo": "BAJO"
+        },
+        {
+          "puerto": 2082,
+          "protocolo": "TCP",
+          "servicio": "cPanel HTTP",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 2083,
+          "protocolo": "TCP",
+          "servicio": "cPanel HTTPS",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 2086,
+          "protocolo": "TCP",
+          "servicio": "WHM HTTP",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "CRÍTICO"
+        },
+        {
+          "puerto": 2087,
+          "protocolo": "TCP",
+          "servicio": "WHM HTTPS",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 2095,
+          "protocolo": "TCP",
+          "servicio": "Webmail HTTP",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "ALTO"
+        },
+        {
+          "puerto": 2096,
+          "protocolo": "TCP",
+          "servicio": "Webmail HTTPS",
+          "hosts": "216.245.211.42",
+          "estado": "Abierto",
+          "riesgo": "MEDIO"
+        },
+        {
+          "puerto": 9050,
+          "protocolo": "TCP",
+          "servicio": "SOCKS5/Tor",
+          "hosts": "127.0.0.1",
+          "estado": "Activo",
+          "riesgo": "MEDIO"
+        }
+      ],
+      "hostnames_identificados": {
+        "servidores": [
+          "opd-hcg.org",
+          "HCGINFMED",
+          "jim3",
+          "SYNHCGN",
+          "SYNHCGV",
+          "sigma.hcg.gob.mx",
+          "api-sigma.hcg.gob.mx",
+          "expediente.hcg.gob.mx",
+          "pah.hcg.gob.mx",
+          "intranet.hcg.gob.mx",
+          "empleado.hcg.gob.mx",
+          "portal.hcg.gob.mx",
+          "correo.opdhcg.net",
+          "sii.hcg.gob.mx",
+          "sah.hcg.gob.mx",
+          "cbs.hcg.gob.mx",
+          "pp.hcg.gob.mx",
+          "certificados.hcg.gob.mx",
+          "pesopd.opd-hcg.org",
+          "www.hcg.gob.mx",
+          "hcg.gob.mx",
+          "mail.hcg.gob.mx",
+          "ftp.hcg.gob.mx",
+          "lajun.hosting-mexico.net",
+          "b.rec.ns.udg.mx",
+          "cpanel.hcg.gob.mx",
+          "whm.hcg.gob.mx",
+          "webmail.hcg.gob.mx"
+        ],
+        "estaciones_de_trabajo": [
+          "NPIA00B9D",
+          "8600ucinex",
+          "8646divpediatria",
+          "12564MEDPEDIA",
+          "8670TORAXCARDIO",
+          "8445trabajosoc",
+          "8727endocrinologia",
+          "8853dietologia",
+          "10378COCINADIET",
+          "12856almgeneral",
+          "8883almacengral",
+          "7091segpop",
+          "RESONANCIAMAGNETICA",
+          "12366DIVSERADMIN",
+          "10524divseradmin",
+          "12364DIVSERADMIN",
+          "RNP583879B2D716",
+          "RNP583879281047"
+        ],
+        "dispositivos_de_red": ["S/N (10.1.7.254)", "b.rec.ns.udg.mx"],
+        "docker_virtual": [
+          "host.docker.internal",
+          "gateway.docker.internal",
+          "kubernetes.docker.internal",
+          "wpad"
+        ]
+      }
+    },
+    "topologia_de_red": {
+      "diagrama_logico": "Incluido en formato ASCII original en el MD (Representa Internet, IPs Públicas, Firewall, VLANs internas, Hyper-V/Docker y Red Wi-Fi).",
+      "descripcion_zonas": [
+        {
+          "zona": "Z01 — DMZ / Externa",
+          "descripcion": "La zona desmilitarizada concentra todos los servicios web accesibles desde Internet. El portal web institucional (201.131.132.131) aloja múltiples subdominios bajo un único servidor Apache en Windows Server, con versiones de software críticamente desactualizadas (EOL desde 2019). La intranet pública (201.131.132.136) tiene puertos filtrados que sugieren un firewall activo, pero la presencia de MySQL y RDP entre los puertos filtrados representa un riesgo inherente si las reglas de firewall se modifican accidental o intencionalmente. El hosting externo en lajun.hosting-mexico.net (216.245.211.42) opera bajo cPanel/WHM con el panel de gestión administrativa expuesto directamente a Internet sin restricción de IP origen, lo que constituye el vector de ataque más accesible desde el exterior."
+        },
+        {
+          "zona": "Z02 — Servidores Core",
+          "descripcion": "Esta zona alberga la totalidad de la infraestructura de servidores crítica del hospital en la subred 10.2.1.0/24. Concentra el Controlador de Dominio (10.2.1.1), el servidor de expedientes clínicos electrónicos (10.2.1.140), la infraestructura biométrica Sigma (10.2.1.139), el servidor de archivos departamental (10.2.1.92), el sistema de información médica (10.2.1.7), los sistemas administrativos (sah, cbs, pp en 10.2.1.141), el portal de certificados (10.2.1.165), y el correo electrónico interno (10.2.1.46). Las subredes satélite 10.2.61.0/24 (sistema de nómina SYNHCGN) y 10.2.22.0/24 (sistema PESOPD) se comunican a través del router central. Se detectaron al menos 15 hosts activos que responden a ping en esta subred, indicando una densidad de servidores considerable."
+        },
+        {
+          "zona": "Z03 — Estaciones de Trabajo",
+          "descripcion": "La subred 10.1.7.0/24 contiene 83 dispositivos identificados en la tabla ARP, correspondientes a estaciones de trabajo predominantemente Windows distribuidas en áreas clínicas y administrativas del hospital. Los nombres NetBIOS reflejan su ubicación: UCI Neonatal (8600ucinex), Pediatría (8646divpediatria, 12564MEDPEDIA), Toracocardio (8670TORAXCARDIO), Trabajo Social (8445trabajosoc), Endocrinología (8727endocrinologia), Dietología (8853dietologia), Cocina y Nutrición (10378COCINADIET), Almacén General (12856almgeneral, 8883almacengral), Seguridad Pública (7091segpop), y Resonancia Magnética. La presencia de workgroups como TORAXCARDIO y DIVSERADMIN indica que algunos equipos no están unidos al dominio Active Directory, lo cual constituye un hallazgo de seguridad relevante que sugiere posible gestión inconsistente de políticas grupales."
+        },
+        {
+          "zona": "Z04 — Red Wi-Fi Institucional",
+          "descripcion": "La red inalámbrica opera bajo la SSID 'redopdhcg' con autenticación WPA2-Personal (PSK) en tecnología WiFi 7 (802.11be) con 10 BSSIDs distribuidos en bandas de 2.4 GHz y 5 GHz. Se estiman aproximadamente 126 clientes distribuidos entre los canales activos, con saturación significativa en el canal 52 de 5 GHz (73 clientes combinados, 40% de utilización) y en el canal 11 de 2.4 GHz (60% de utilización). La presencia de 4 servidores Tomcat con el puerto AJP13 expuesto en esta red es particularmente alarmante, dado que vulnerabilidades como CVE-2020-1938 (Ghostcat) podrían permitir lectura de archivos y ejecución remota de código desde cualquier dispositivo conectado a la red Wi-Fi. La concesión DHCP de 30 minutos sugiere un pool de direcciones limitado o una política restrictiva."
+        },
+        {
+          "zona": "Z05 — Virtualización",
+          "descripcion": "La estación NPIA00B9D ejecuta un entorno de virtualización completo con Hyper-V (Default Switch v19.0) proporcionando NAT en 172.21.240.0/24, Docker Desktop con Kubernetes integrado en 10.254.178.0/24, e Internet Connection Sharing (ICS) en 192.168.137.0/24. La coexistencia de estas tres redes virtuales en un solo endpoint amplía significativamente la superficie de ataque, especialmente considerando que el endpoint tiene credenciales administrativas activas y privilegios de impersonation habilitados. Las redes virtuales Hyper-V y Wi-Fi Direct pueden ser utilizadas como vectores de pivoting para evadir la segmentación de red y acceder a segmentos que deberían estar aislados."
+        },
+        {
+          "zona": "Z06-Z11 — Zonas Secundarias",
+          "descripcion": "Las zonas restantes incluyen: la red de Monitoreo (10.1.97.0/24) con dispositivos de infraestructura (TTL=255 confirma que son dispositivos de red, no estaciones de trabajo); la subred adicional 10.2.4.0/24 que presenta tráfico ARP cruzado desde la VLAN de usuarios; la DMZ Ubiquiti (10.23.1.0/24) posiblemente dedicada a cámaras de seguridad o sensores IoT; y las redes de sincronización (10.2.61.0/24 para SYNHCGN y 10.1.61.0/24 para SYNHCGV) que probablemente mantienen sincronizados los sistemas de nómina y gestión entre sedes hospitalarias distintas. La captura de un paquete ICMP desde 10.1.97.54 hacia 10.1.97.254 dentro de la captura en la VLAN 10.1.7.0/24 sugiere fuertemente la presencia de port mirroring/span configurado en el switch de acceso."
+        }
+      ]
+    },
+    "correlacion_l2_l3": {
+      "patrones_cluster_oui": "El análisis de las direcciones MAC revela tres clusters predominantes de equipos que corresponden a lotes de compras institucionales específicos. El cluster MSI (2c:f0:5d) concentra 15 equipos con MACs en rangos 1c:b0:xx, 1c:b1:xx, 1c:b2:xx, 1c:ac:xx y 17:4c:xx, que corresponden a laptops corporativos desplegados como estaciones de trabajo estándar, incluyendo el endpoint analizado NPIA00B9D (1c:b0:ad). El cluster Sercomm/Foxconn (94:c6:91) agrupa 10 dispositivos con MACs en rangos 79:xx y 7c:xx, que podrían ser equipos de escritorio o terminales de red, dado que este OUI se utiliza frecuentemente en routers ONT de ISPs mexicanos y equipos OEM. El cluster Universal Global (04:7c:16) contiene 12 dispositivos que probablemente corresponden a periféricos de red o estaciones de trabajo de un segundo lote de compra.\n\nUn hallazgo significativo es la detección del host 10.1.7.174 (MAC 04:7c:16:24:92:41) que aparece en solicitudes ARP tanto en la subred 10.1.7.0/24 como en la 10.2.4.0/24 (ARP 'Who has 10.2.4.254? Tell 10.2.4.174'), confirmando que este dispositivo tiene presencia en múltiples VLANs, ya sea mediante configuración multi-homing o trunking no autorizado. Las estaciones vecinas 10.1.7.161, 10.1.7.162 y 10.1.7.163 (todas del cluster MSI, MACs 2c:f0:5d:1c:b1-xx) están buscando activamente el hostname NPIA00B9D a través de todos los protocolos de resolución disponibles (LLMNR, mDNS, NBNS), lo que indica que estas estaciones comparten un contexto de trabajo o grupo de seguridad y dependen de un servicio publicado por la estación analizada.",
+      "mapeo_multi_interfaz_endpoint_auditor": [
+        {
+          "interfaz": "Ethernet",
+          "mac": "2c:f0:5d:1c:b0:ad",
+          "tecnologia": "Intel I219-V (física)",
+          "direccion_ip": "(del endpoint original)"
+        },
+        {
+          "interfaz": "Wi-Fi",
+          "mac": "8a:66:36:f4:79:92",
+          "tecnologia": "Intel Dual Band AC 8265",
+          "direccion_ip": "10.254.117.118"
+        },
+        {
+          "interfaz": "Wi-Fi Direct #1",
+          "mac": "e8:84:a5:eb:78:1f",
+          "tecnologia": "Virtual (Microsoft)",
+          "direccion_ip": "—"
+        },
+        {
+          "interfaz": "Wi-Fi Direct #2",
+          "mac": "ea:84:a5:eb:78:1e",
+          "tecnologia": "Virtual (Microsoft)",
+          "direccion_ip": "—"
+        },
+        {
+          "interfaz": "Bluetooth PAN",
+          "mac": "e8:84:a5:eb:78:22",
+          "tecnologia": "Bluetooth",
+          "direccion_ip": "—"
+        },
+        {
+          "interfaz": "Hyper-V",
+          "mac": "00:15:5d:c7:f9:01",
+          "tecnologia": "Microsoft Hyper-V",
+          "direccion_ip": "172.21.x.x"
+        }
+      ]
+    },
+    "gateways_y_ruteo": {
+      "gateway_principal_10_1_7_254": "Este dispositivo, con MAC ec:7c:2c:c0:f7:03 y OUI no registrado en la base de datos IEEE estándar, funge como gateway por defecto para toda la VLAN de usuarios (10.1.7.0/24) y como router inter-VLAN que facilita la comunicación entre todas las zonas de red internas. Su posición como último octeto .254 de la subred es convencional para dispositivos de infraestructura de red. Desde este gateway es posible alcanzar las subredes 10.2.1.0/24, 10.2.22.0/24, 10.2.61.0/24, 10.1.61.0/24, 10.1.97.0/24, 10.2.4.0/24 y 10.23.1.0/24, lo que confirma que realiza ruteo inter-VLAN centralizado sin que se haya identificado un firewall dedicado o dispositivo de ruteo inter-VLAN explícito.",
+      "gateway_wifi_10_254_0_1": "Funciona simultáneamente como gateway por defecto y servidor DHCP para la red Wi-Fi institucional (zona 10.254.0.0/16). La concesión DHCP observada tiene una duración inusualmente corta de 30 minutos (obtenida a las 08:35:33, expira a las 09:05:33 del 9 de febrero de 2026), lo que sugiere un pool de direcciones limitado o una política de renovación agresiva. El gateway IPv6 correspondiente es fe80::a68c:dbff:fee6:4701. No responde a consultas DNS inversas desde el servidor DNS externo 148.202.3.5, lo cual es esperado y confirma que no existe fuga de resolución DNS interna hacia el exterior.",
+      "gateway_servidores_10_2_1_1": "El Controlador de Dominio cumple una doble función como servidor DNS y potencial gateway de la subred 10.2.1.0/24. La exposición de LDAP (389) y DNS (53) sin restricciones IP sugiere que cualquier host que pueda alcanzar esta subred tiene capacidad de enumerar completamente el Active Directory, incluyendo usuarios, grupos, políticas GPO y topología del bosque de dominios.",
+      "tabla_de_ruteo_completa_npia00b9d": [
+        {
+          "destino": "0.0.0.0",
+          "mascara": "0.0.0.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.1.7.0",
+          "mascara": "255.255.255.0",
+          "gateway": "On-link",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.2.1.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.2.22.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.2.61.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.1.61.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.1.97.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.2.4.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.23.1.0",
+          "mascara": "255.255.255.0",
+          "gateway": "10.1.7.254",
+          "interfaz": "Ethernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "172.21.240.0",
+          "mascara": "255.255.255.0",
+          "gateway": "On-link",
+          "interfaz": "vEthernet",
+          "metrica": "—"
+        },
+        {
+          "destino": "192.168.137.0",
+          "mascara": "255.255.255.0",
+          "gateway": "On-link",
+          "interfaz": "ICS",
+          "metrica": "—"
+        },
+        {
+          "destino": "10.254.178.0",
+          "mascara": "255.255.255.0",
+          "gateway": "On-link",
+          "interfaz": "Docker",
+          "metrica": "—"
+        }
+      ]
+    },
+    "infraestructura_dns": {
+      "servidores_dns_identificados": [
+        {
+          "ip": "10.2.1.1",
+          "hostname": "opd-hcg.org",
+          "rol": "Primario (AD DNS)",
+          "zona": "Interna",
+          "riesgo": "ALTO"
+        },
+        {
+          "ip": "148.202.3.5",
+          "hostname": "b.rec.ns.udg.mx",
+          "rol": "Externo (UDG)",
+          "zona": "Externa",
+          "riesgo": "INFO"
+        },
+        {
+          "ip": "148.202.1.29",
+          "hostname": "a.rec.ns.udg.mx (deducido)",
+          "rol": "Externo (UDG)",
+          "zona": "Externa",
+          "riesgo": "INFO"
+        },
+        {
+          "ip": "1.1.1.1",
+          "hostname": "—",
+          "rol": "Público (Cloudflare)",
+          "zona": "Externa",
+          "riesgo": "MEDIO"
+        },
+        {
+          "ip": "8.8.8.8",
+          "hostname": "—",
+          "rol": "Público (Google)",
+          "zona": "Externa",
+          "riesgo": "MEDIO"
+        }
+      ],
+      "cache_dns_interno_servidores_corporativos": [
+        {
+          "fqdn": "opd-hcg.org",
+          "ip": "10.2.1.1, 10.2.1.18",
+          "servicio": "Portal Principal OPD"
+        },
+        {
+          "fqdn": "portal.hcg.gob.mx",
+          "ip": "10.2.1.12",
+          "servicio": "Portal Web Institucional"
+        },
+        {
+          "fqdn": "jim3",
+          "ip": "10.2.1.11",
+          "servicio": "Sistema de Gestión Jim3"
+        },
+        {
+          "fqdn": "correo.opdhcg.net",
+          "ip": "10.2.1.46",
+          "servicio": "Correo Electrónico Interno"
+        },
+        {
+          "fqdn": "HCGINFMED",
+          "ip": "10.2.1.7",
+          "servicio": "Informática Médica"
+        },
+        {
+          "fqdn": "sii.hcg.gob.mx",
+          "ip": "10.2.1.136",
+          "servicio": "Sistema Integral de Información"
+        },
+        {
+          "fqdn": "sigma.hcg.gob.mx",
+          "ip": "10.2.1.139",
+          "servicio": "Sistema Biométrico Sigma"
+        },
+        {
+          "fqdn": "api-sigma.hcg.gob.mx",
+          "ip": "10.2.1.139",
+          "servicio": "API Biométrica Sigma"
+        },
+        {
+          "fqdn": "expediente.hcg.gob.mx",
+          "ip": "10.2.1.140",
+          "servicio": "Expedientes Clínicos Electrónicos"
+        },
+        {
+          "fqdn": "pah.hcg.gob.mx",
+          "ip": "10.2.1.140",
+          "servicio": "Portal Atención Horizontal"
+        },
+        {
+          "fqdn": "intranet.hcg.gob.mx",
+          "ip": "10.2.1.140",
+          "servicio": "Intranet Hospitalaria"
+        },
+        {
+          "fqdn": "empleado.hcg.gob.mx",
+          "ip": "10.2.1.140",
+          "servicio": "Portal de Empleados"
+        },
+        {
+          "fqdn": "sah.hcg.gob.mx",
+          "ip": "10.2.1.141",
+          "servicio": "Sistema SAH"
+        },
+        {
+          "fqdn": "cbs.hcg.gob.mx",
+          "ip": "10.2.1.141",
+          "servicio": "Sistema CBS"
+        },
+        {
+          "fqdn": "pp.hcg.gob.mx",
+          "ip": "10.2.1.141",
+          "servicio": "Sistema PP"
+        },
+        {
+          "fqdn": "certificados.hcg.gob.mx",
+          "ip": "10.2.1.165",
+          "servicio": "Certificados / Firma Digital"
+        },
+        {
+          "fqdn": "SYNHCGN",
+          "ip": "10.2.61.17",
+          "servicio": "Sincronización Nómina Norte"
+        },
+        {
+          "fqdn": "SYNHCGV",
+          "ip": "10.1.61.16",
+          "servicio": "Sincronización HCG Veracruz"
+        },
+        {
+          "fqdn": "pesopd.opd-hcg.org",
+          "ip": "10.2.22.76",
+          "servicio": "Sistema PESOPD"
+        }
+      ],
+      "anomalias_dns": "La infraestructura DNS presenta múltiples vulnerabilidades que requieren atención. El uso simultáneo de DNS internos (10.2.1.1) y DNS públicos (1.1.1.1, 8.8.8.8) en los clientes Wi-Fi permite fugas de DNS donde las consultas a nombres internos podrían ser resueltas externamente, exponiendo la topología de red. Las consultas DNS se transmiten en texto claro sin DoH (DNS over HTTPS) ni DoT (DNS over TLS), permitiendo la interceptación pasiva de consultas por cualquier actor con acceso a la red. Los registros SRV de LDAP y DC para los dominios hcg.gob.mx y hcfaa.com están presentes en la caché DNS de endpoints, exponiendo la topología del bosque de Active Directory. Se detectaron direcciones IPv6 site-local obsoletas (fec0:0:0:ffff::1-3) que están deprecadas según RFC 4291 y no deberían estar configuradas. La resolución del dominio falla desde la red Wi-Fi con errores 0x51 (servidor inactivo) y 1355 (dominio no existe), sugiriendo segmentación DNS parcial o problemas de configuración del servidor DHCP Wi-Fi que no asigna correctamente el DNS interno."
+    },
+    "analisis_de_puertos_y_servicios": {
+      "servicios_criticos_riesgo_critico": [
+        {
+          "host": "10.2.1.1",
+          "puerto": "389",
+          "protocolo": "TCP",
+          "servicio": "LDAP (sin cifrar)",
+          "vulnerabilidad": "Enumeración completa de AD, credenciales en texto claro"
+        },
+        {
+          "host": "10.2.1.140",
+          "puerto": "3389",
+          "protocolo": "TCP",
+          "servicio": "RDP",
+          "vulnerabilidad": "BlueKeep CVE-2019-0708, fuerza bruta"
+        },
+        {
+          "host": "10.2.1.140",
+          "puerto": "445",
+          "protocolo": "TCP",
+          "servicio": "SMB",
+          "vulnerabilidad": "Pass-the-Hash, EternalBlue MS17-010"
+        },
+        {
+          "host": "10.2.1.92",
+          "puerto": "445",
+          "protocolo": "TCP",
+          "servicio": "SMB (37 shares)",
+          "vulnerabilidad": "ADMIN$, C$ expuestos, datos RH/financieros"
+        },
+        {
+          "host": "216.245.211.42",
+          "puerto": "2086-2087",
+          "protocolo": "TCP",
+          "servicio": "WHM",
+          "vulnerabilidad": "Control administrativo total sin restricción IP"
+        },
+        {
+          "host": "201.131.132.131",
+          "puerto": "443",
+          "protocolo": "TCP",
+          "servicio": "HTTPS (Apache 2.4.38)",
+          "vulnerabilidad": "CVE-2019-0211, CVE-2019-10081 (EOL)"
+        },
+        {
+          "host": "10.254.117.118",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "SeImpersonatePrivilege",
+          "vulnerabilidad": "Escalada de privilegios local (JuicyPotato)"
+        },
+        {
+          "host": "10.2.1.139",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "Datos biométricos",
+          "vulnerabilidad": "Acceso a huellas/rostros irrecuperables"
+        }
+      ],
+      "servicios_de_alto_riesgo": [
+        {
+          "host": "10.2.1.1",
+          "puerto": "53",
+          "protocolo": "TCP",
+          "servicio": "DNS",
+          "vulnerabilidad": "Transferencia de zona sin restricción"
+        },
+        {
+          "host": "10.254.3.193, .185.35, .225.221, .30.158",
+          "puerto": "8009",
+          "protocolo": "TCP",
+          "servicio": "AJP13 (Tomcat)",
+          "vulnerabilidad": "CVE-2020-1938 (Ghostcat)"
+        },
+        {
+          "host": "10.1.7.97",
+          "puerto": "445",
+          "protocolo": "TCP",
+          "servicio": "SMBv1",
+          "vulnerabilidad": "MS17-010 EternalBlue"
+        },
+        {
+          "host": "216.245.211.42",
+          "puerto": "2082, 2095",
+          "protocolo": "TCP",
+          "servicio": "cPanel/Webmail HTTP",
+          "vulnerabilidad": "Credenciales en texto claro (MITM)"
+        },
+        {
+          "host": "201.131.132.136",
+          "puerto": "3306, 3389",
+          "protocolo": "TCP",
+          "servicio": "MySQL, RDP (filtrados)",
+          "vulnerabilidad": "Si cambian reglas firewall → exposición"
+        },
+        {
+          "host": "Toda la red",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "WPAD/LLMNR",
+          "vulnerabilidad": "Spoofing LLMNR/NBT-NS → NTLMv2 relay"
+        },
+        {
+          "host": "Toda la red",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "DNS públicos (1.1.1.1, 8.8.8.8)",
+          "vulnerabilidad": "Fuga DNS interna"
+        },
+        {
+          "host": "10.254.117.118",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "Hyper-V redes virtuales",
+          "vulnerabilidad": "Pivoting entre segmentos"
+        }
+      ],
+      "servicios_de_riesgo_medio": [
+        {
+          "host": "redopdhcg",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "WPA2-Personal",
+          "observacion": "Clave compartida, sin 802.1X"
+        },
+        {
+          "host": "201.131.132.131",
+          "puerto": "443",
+          "protocolo": "TCP",
+          "servicio": "Server header",
+          "observacion": "Versiones reveladas en HTTP"
+        },
+        {
+          "host": "10.1.7.238",
+          "puerto": "—",
+          "protocolo": "—",
+          "servicio": "Capturas C:\\Users\\Public",
+          "observacion": "Archivos .etl/.pcapng accesibles"
+        },
+        {
+          "host": "10.254.117.118",
+          "puerto": "9050",
+          "protocolo": "TCP",
+          "servicio": "SOCKS5/Tor",
+          "observacion": "Navegación anónima/exfiltración"
+        },
+        {
+          "host": "10.254.0.1",
+          "puerto": "67-68",
+          "protocolo": "UDP",
+          "servicio": "DHCP",
+          "observacion": "Concesión de 30 min (inusual)"
+        }
+      ]
+    },
+    "stack_tecnologico": {
+      "portal_web_publico_201_131_132_131": "El servidor web público ejecuta un stack tecnológico completamente desactualizado. Apache 2.4.38 fue lanzado en enero de 2019 y alcanzó End of Life hace varios años, exponiendo al portal a vulnerabilidades documentadas como CVE-2019-0211 (escalada de privilegios) y CVE-2019-10081 (mod_http2 read after free). OpenSSL 1.0.2q (noviembre 2018) presenta vulnerabilidades como CVE-2019-1563 (padding oracle) y CVE-2019-1547 (side-channel). PHP 7.1.26 (enero 2019) es vulnerable a CVE-2019-11043 (bypass de limit_request_nesting en PHP-FPM). La exposición de las versiones exactas en el header HTTP (Server: Apache/2.4.38 (Win64) OpenSSL/1.0.2q PHP/7.1.26) facilita el ataque automatizado por herramientas de escaneo como Shodan o Nikto. El servidor opera sobre Windows Server (Win64), lo cual añade una superficie de ataque adicional.",
+      "infraestructura_de_virtualizacion": "El endpoint NPIA00B9D ejecuta Hyper-V con un switch virtual 'Default Switch' versión 19.0 que soporta 29 features incluyendo Packet Monitoring, Dynamic VMMQ con RSSv2, Hardware Packet Timestamping, Suspended Live Migration, Untrusted Guest Isolation, y Software RSC sobre NIC física. Docker Desktop está integrado con Hyper-V, con el host docker resolviendo a 10.254.178.36 y el gateway docker interno a la misma IP. La pila Winsock no presenta LSP (Layered Service Providers) de terceros, descartando la presencia de software espía o manipulación del stack de red por rootkits.",
+      "infraestructura_wi_fi": "El despliegue Wi-Fi utiliza tecnología WiFi 7 (802.11be) con backward compatibility para 802.11ax/ac/n, lo cual representa una inversión tecnológica reciente significativa. Los dos OUIs principales de fabricante (f4:45:88 con 5 BSSIDs y b8:85:7b con 3 BSSIDs) sugieren un despliegue multi-vendor o un upgrade parcial de la infraestructura wireless. La saturación del canal 52 de 5 GHz (73 clientes combinados entre dos BSSIDs, 40% de utilización) y del canal 11 de 2.4 GHz (60%) puede causar degradación significativa de rendimiento, latencia elevada y colisiones de paquetes para los usuarios conectados."
+    },
+    "infraestructura_biometrica_sigma": {
+      "descripcion": "El sistema biométrico Sigma opera bajo el dominio sigma.hcg.gob.mx con una API accesible en api-sigma.hcg.gob.mx, alojado en la dirección IP 10.2.1.139 dentro de la zona de servidores internos (10.2.1.0/24). Este sistema gestiona la identificación biométrica de empleados y pacientes del hospital, lo cual lo convierte en un activo de altísima sensibilidad dado que maneja datos biométricos (huellas dactilares, reconocimiento facial) que, a diferencia de las contraseñas, son permanentes e irrecuperables en caso de compromiso.",
+      "hallazgos": "Durante la auditoría, el servidor no presentó puertos abiertos identificados mediante escaneo, lo que sugiere que el servicio podría estar filtrado por firewall o que utiliza puertos no estándar. Sin embargo, la resolución DNS fue confirmada desde múltiples puntos de la red interna, lo que indica uso activo del sistema. El riesgo principal no reside en la exposición directa del servidor, sino en la posibilidad de que un atacante que haya comprometido otro punto de la red pueda acceder a la base de datos de Sigma y comprometer permanentemente la información biométrica de cientos o miles de individuos. Un ataque al sistema de control de acceso biométrico podría además permitir acceso físico no autorizado a áreas restringidas del hospital como quirófanos, farmacias de estupefacientes, o áreas de almacenamiento de materiales peligrosos."
+    },
+    "active_directory_ldap": {
+      "descripcion": "El Controlador de Dominio principal opera en 10.2.1.1 bajo el dominio opd-hcg.org con LDAP (389/TCP) y DNS (53/TCP) activos. Se detectaron registros SRV para dos dominios: _ldap._tcp.dc._msdcs.hcg.gob.mx y _ldap._tcp.dc._msdcs.hcfaa.com, indicando la existencia de al menos dos bosques de Active Directory, herencia probable de la reestructuración hospitalaria que integró el antiguo Hospital FAA con el HCG. También se detectaron registros para los workgroups DIVSERADMIN y hosts en mshome.net, sugiriendo una gestión inconsistente con equipos fuera del dominio centralizado.",
+      "vulnerabilidades": "Las vulnerabilidades principales de la implementación LDAP incluyen: operación sin cifrado (puerto 389, no LDAPS 636), transmitiendo credenciales y datos de sesión en texto claro; puertos LDAP y DNS abiertos desde cualquier punto de la red sin restricción de IP origen, permitiendo enumeración completa con herramientas como ldapsearch, BloodHound o SharpHound; registros SRV que exponen la topología del bosque de dominios; y el SID del dominio (S-1-5-21-3216482593-212876407-1992140904) revelado por el endpoint auditado a través del usuario jlangarica@hcg.gob.mx, lo que permite identificar de forma única la instalación de AD incluso fuera de la red."
+    },
+    "servidores_web_externos": {
+      "portal_web_201_131_132_131": "Responde únicamente en 443/TCP con redirección 301 a /hcg/. El banner HTTP revela el stack completo. Aloja los subdominios www, hcg (raíz), mail, ftp y portal bajo una única IP, indicando que múltiples servicios comparten el mismo servidor. Se detectó una conexión SOCKS5 (127.0.0.1:9050/Tor) durante el escaneo que, de existir en producción, indicaría un compromiso previo del servidor con capacidad de exfiltración encubierta.",
+      "intranet_201_131_132_136": "Presenta puertos FTP (21), SSH (22), HTTP (80), HTTPS (443), MySQL (3306) y RDP (3389) en estado filtrado, lo que sugiere un firewall activo en la ruta pero representa un riesgo inherente: si las reglas de firewall se modifican intencional o accidentalmente, la base de datos MySQL y el servicio RDP quedarían expuestos directamente a Internet. La exposición de MySQL y RDP en un servidor accesible desde Internet que almacena datos hospitalarios internos es particularmente peligrosa."
+    },
+    "hosting_externo_cpanel_whm": {
+      "descripcion": "El servidor lajun.hosting-mexico.net (216.245.211.42) opera bajo cPanel/WHM con certificado SSL Let's Encrypt R13 (CN=lajun.hosting-mexico.net, raíz ISRG Root X1). Los puertos 2082/2083 (cPanel HTTP/HTTPS), 2086/2087 (WHM HTTP/HTTPS) y 2095/2096 (Webmail HTTP/HTTPS) están abiertos a Internet sin restricción IP. La exposición de WHM (2086/2087) es particularmente crítica dado que proporciona control administrativo total del servidor: gestión de cuentas, acceso a archivos, configuración de DNS, y administración de bases de datos. Los puertos HTTP sin cifrar (2082, 2095) transmiten credenciales en texto claro, permitiendo captura mediante ataques Man-in-the-Middle. Los subdominios cpanel.hcg.gob.mx, whm.hcg.gob.mx y webmail.hcg.gob.mx resuelven directamente a esta IP, vinculando explícitamente la identidad institucional del HCG con el panel de gestión externo."
+    },
+    "servidor_de_expedientes_clinicos_10_2_1_140": {
+      "descripcion": "El sistema de expedientes clínicos electrónicos opera en expediente.hcg.gob.mx (10.2.1.140), compartiendo la IP con los servicios de intranet, portal de atención horizontal y portal de empleados. Con RDP (3389/TCP) y SMB (445/TCP) abiertos y respondiendo activamente, este servidor almacena los historiales médicos electrónicos de todos los pacientes del hospital. El compromiso de este servidor tendría consecuencias devastadoras: exposición masiva de historiales médicos conteniendo diagnósticos, tratamientos, datos de seguros y información personal sensible; violación directa de la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados; sanciones regulatorias por parte del INAI; daño reputacional severo para una institución de salud pública; y responsabilidad legal civil y penal. La combinación de RDP (vulnerable a fuerza bruta y BlueKeep CVE-2019-0708) con SMB (vulnerable a Pass-the-Hash, SMB Relay y EternalBlue MS17-010) amplifica significativamente el riesgo de compromiso."
+    },
+    "sistema_de_chequeo_nomina_synhcgn_10_2_61_17": {
+      "descripcion": "El sistema SYNHCGN opera en la subred 10.2.61.0/24, segmentada de los servidores core como práctica de seguridad de red. El nombre sugiere 'Sistema de Nómina' o 'Sistema de Chequeo' del HCG. Presenta una latencia de 52ms desde la red Wi-Fi, consistente con múltiples saltos de red que sugieren ruteo a través del router central. El puerto MySQL (3306) está filtrado (responde a ping pero no acepta conexiones TCP), indicando que la base de datos está activa pero protegida por firewall. Este sistema maneja datos financieros de alta sensibilidad: salarios de empleados, datos bancarios para transferencias de nómina, registros de pagos, deducciones y prestaciones. La segmentación de subred es una medida de seguridad positiva, pero la presencia de MySQL filtrado sugiere que la base de datos podría ser accesible si se modifica la configuración del firewall intermedio."
+    },
+    "infraestructura_wi_fi_detallada_redopdhcg": {
+      "configuracion_general": {
+        "SSID": "redopdhcg",
+        "Seguridad": "WPA2-Personal (CCMP/AES)",
+        "BSSIDs_detectados": "10",
+        "Tecnologia": "WiFi 7 (802.11be), 802.11ax, 802.11ac, 802.11n",
+        "Bandas_activas": "2.4 GHz (Ch 1, 6, 11) y 5 GHz (Ch 36, 52, 116, 128, 149)",
+        "Clientes_totales_estimados": "~126",
+        "OUI_principales": "f4:45:88 (5 BSSIDs), b8:85:7b (3 BSSIDs), 08:fa:28, c4:5e:5c",
+        "Gateway_DHCP": "10.254.0.1",
+        "Duracion_concesion_DHCP": "30 minutos"
+      },
+      "distribucion_por_canal": [
+        {
+          "Canal": "1",
+          "Banda": "2.4 GHz",
+          "BSSID": "b8:85:7b:28:e6:e0",
+          "Clientes": "1",
+          "Utilizacion": "38%",
+          "Estado": "Normal"
+        },
+        {
+          "Canal": "6",
+          "Banda": "2.4 GHz",
+          "BSSID": "f4:45:88:7a:72:00",
+          "Clientes": "3",
+          "Utilizacion": "29%",
+          "Estado": "Normal"
+        },
+        {
+          "Canal": "11",
+          "Banda": "2.4 GHz",
+          "BSSID": "c4:5e:5c:24:79:20",
+          "Clientes": "6",
+          "Utilizacion": "60%",
+          "Estado": "Saturado"
+        },
+        {
+          "Canal": "11",
+          "Banda": "2.4 GHz",
+          "BSSID": "f4:45:88:7a:8a:40",
+          "Clientes": "5",
+          "Utilizacion": "50%",
+          "Estado": "Cercano a saturación"
+        },
+        {
+          "Canal": "36",
+          "Banda": "5 GHz",
+          "BSSID": "f4:45:88:7a:72:10",
+          "Clientes": "16",
+          "Utilizacion": "30%",
+          "Estado": "Normal"
+        },
+        {
+          "Canal": "52",
+          "Banda": "5 GHz",
+          "BSSID": "f4:45:88:7a:8a:50",
+          "Clientes": "29",
+          "Utilizacion": "34%",
+          "Estado": "Alto tráfico"
+        },
+        {
+          "Canal": "52",
+          "Banda": "5 GHz",
+          "BSSID": "08:fa:28:59:09:40",
+          "Clientes": "44",
+          "Utilizacion": "40%",
+          "Estado": "Saturado"
+        },
+        {
+          "Canal": "116",
+          "Banda": "5 GHz",
+          "BSSID": "b8:85:7b:28:e6:f0",
+          "Clientes": "8",
+          "Utilizacion": "3%",
+          "Estado": "Subutilizado"
+        },
+        {
+          "Canal": "128",
+          "Banda": "5 GHz",
+          "BSSID": "b8:85:7b:28:e1:70",
+          "Clientes": "12",
+          "Utilizacion": "7%",
+          "Estado": "Subutilizado"
+        },
+        {
+          "Canal": "149",
+          "Banda": "5 GHz",
+          "BSSID": "f4:45:88:f8:37:10",
+          "Clientes": "8",
+          "Utilizacion": "18%",
+          "Estado": "Normal"
+        }
+      ]
+    },
+    "recursos_compartidos_smb_10_2_1_92_37_shares": {
+      "recursos_administrativos": "ADMIN$, C$, E$, F$, G$, H$, I$, IPC$ — Permiten acceso potencial a archivos del sistema operativo desde cualquier usuario autenticado en la red.",
+      "recursos_departamentales": [
+        {
+          "Share": "020_Depto_Soporte",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Tickets, configuraciones de soporte técnico"
+        },
+        {
+          "Share": "060_Direccion",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Documentos directivos, estrategias institucionales"
+        },
+        {
+          "Share": "11 UIG",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Unidad de Investigación"
+        },
+        {
+          "Share": "AlmacenFAA",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Control de inventario almacén FAA"
+        },
+        {
+          "Share": "CAA_FAA",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Control de Activos Fijos"
+        },
+        {
+          "Share": "CGRH_CV",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Recursos Humanos - CVs y currículums"
+        },
+        {
+          "Share": "Coord.Administrativa-JIM",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Correspondencia administrativa JIM"
+        },
+        {
+          "Share": "Coord.Epidemio.Hospitalaria",
+          "Sensibilidad": "CRÍTICA",
+          "Contenido_Probable": "Datos de brotes epidémicos y pacientes"
+        },
+        {
+          "Share": "Coordinacion Juridico",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Asuntos legales del hospital"
+        },
+        {
+          "Share": "CoordinacionesAdministrativas-FAA-JIM",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Documentación coordinación administrativa"
+        },
+        {
+          "Share": "Ctrol.Correspondencia.Vinculacion",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Control de correspondencia"
+        },
+        {
+          "Share": "DIETOLOGIA_Y_NUT_FAA",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Dietología y Nutrición"
+        },
+        {
+          "Share": "FAA_divserv_admvos",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "División de Servicios Administrativos"
+        },
+        {
+          "Share": "FAA_SA",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Servicios Administrativos"
+        },
+        {
+          "Share": "FAAJIMHCO-Viveres",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Control de viveres y alimentos"
+        },
+        {
+          "Share": "FONSABI_farmacia_jim",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Farmacia - Fondo de Salud"
+        },
+        {
+          "Share": "IngenieriaBiomedicaJIM",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Ingeniería biomédica"
+        },
+        {
+          "Share": "INVESTIGACION_DE_MERCADO",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Estudios de mercado"
+        },
+        {
+          "Share": "JIM_DivServ_Admvos",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "División de Servicios Administrativos"
+        },
+        {
+          "Share": "NombramientoRH",
+          "Sensibilidad": "CRÍTICA",
+          "Contenido_Probable": "Nombramientos y contratos de personal"
+        },
+        {
+          "Share": "OftalmoFAA",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Servicio de Oftalmología"
+        },
+        {
+          "Share": "RH-JIM",
+          "Sensibilidad": "CRÍTICO",
+          "Contenido_Probable": "Recursos Humanos JIM"
+        },
+        {
+          "Share": "Serv3",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Servicio genérico"
+        },
+        {
+          "Share": "SubDir.Serv.Auxiliares-JIM",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Subdirección de Servicios Auxiliares"
+        },
+        {
+          "Share": "SubDir.Serv.Dx.Tto._y_Param",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Diagnóstico, Tratamiento y Paramétrica"
+        },
+        {
+          "Share": "SubDireccionMedicaJIM",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Subdirección Médica"
+        },
+        {
+          "Share": "TrabajoSocialJIM",
+          "Sensibilidad": "ALTA",
+          "Contenido_Probable": "Trabajo Social (datos de pacientes vulnerables)"
+        },
+        {
+          "Share": "vinculacionhistorico2019-2022",
+          "Sensibilidad": "MEDIA",
+          "Contenido_Probable": "Vinculación institucional (histórico)"
+        }
+      ]
+    },
+    "analisis_de_flujos_de_red": {
+      "flujo_dominante_voip_webrtc_80_plus_porciento_del_trafico_capturado": {
+        "conexion": "10.1.7.238:56219 ←→ 187.213.74.192:39456 (UDP)",
+        "Origen": "10.1.7.238 (NPIA00B9D)",
+        "Destino": "187.213.74.192 (IP pública Telcel/América Móvil México)",
+        "Puertos": "Local: 56219, Remoto: 39456",
+        "Protocolo": "UDP",
+        "Volumen": "~555 pps en 0.9 segundos de captura",
+        "Ancho_de_banda_envio": "~6-7 Mbps",
+        "Ancho_de_banda_recepcion": "~0.5 Mbps",
+        "Patron": "Burst asimétrico: ~1100-1250 bytes cada ~25ms",
+        "Perfil": "Videoconferencia / screen sharing activo"
+      },
+      "flujo_smb_acceso_a_recursos_compartidos": "10.1.7.238:60666 → 10.2.1.92:445 (TCP) — ESTABLECIDO. Conexión TCP establecida (SYN-ACK completado) con transferencia de datos observada (ACK con Len=1).",
+      "flujo_quic_microsoft_telemetry": "10.1.7.238:60611 ←→ 192.178.56.99:443 (UDP/QUIC) — HANDSHAKE. Tráfico QUIC típico de Windows 10 hacia servicios Microsoft (telemetría, OneDrive). Handshake inicial de 3 paquetes.",
+      "flujo_icmp_cross_vlan_monitoreo": "10.1.97.54 → 10.1.97.254 (ICMP Echo Request) — SIN RESPUESTA. TTL=255 (dispositivo de infraestructura). Capturado en VLAN 10.1.7.0/24, confirmando port mirroring activo en el switch.",
+      "flujos_de_autenticacion_y_datos": [
+        {
+          "Flujo": "LDAP Auth",
+          "Origen_Destino": "10.1.7.x → 10.2.1.1",
+          "Puerto": "389",
+          "Protocolo": "TCP",
+          "Proposito": "Autenticación Active Directory"
+        },
+        {
+          "Flujo": "DNS Internal",
+          "Origen_Destino": "10.1.7.x → 10.2.1.1",
+          "Puerto": "53",
+          "Protocolo": "TCP/UDP",
+          "Proposito": "Resolución nombres internos"
+        },
+        {
+          "Flujo": "DNS External",
+          "Origen_Destino": "10.254.x.x → 148.202.3.5",
+          "Puerto": "53",
+          "Protocolo": "UDP",
+          "Proposito": "Resolución nombres externos"
+        },
+        {
+          "Flujo": "RDP Expedientes",
+          "Origen_Destino": "10.2.1.x → 10.2.1.140",
+          "Puerto": "3389",
+          "Protocolo": "TCP",
+          "Proposito": "Acceso remoto expedientes"
+        },
+        {
+          "Flujo": "SMB Files",
+          "Origen_Destino": "10.2.1.x → 10.2.1.92",
+          "Puerto": "445",
+          "Protocolo": "TCP",
+          "Proposito": "Recursos compartidos departamentales"
+        },
+        {
+          "Flujo": "AJP13 Tomcat",
+          "Origen_Destino": "10.254.x.x → 10.254.3.193 etc.",
+          "Puerto": "8009",
+          "Protocolo": "TCP",
+          "Proposito": "Aplicaciones hospitalarias Java"
+        },
+        {
+          "Flujo": "LDAP (fallido)",
+          "Origen_Destino": "10.254.117.118 → 10.2.1.1",
+          "Puerto": "389",
+          "Protocolo": "TCP",
+          "Proposito": "Intento de autenticación desde WiFi"
+        },
+        {
+          "Flujo": "Name Resolution",
+          "Origen_Destino": "10.1.7.161/.162/.163 → Multicast",
+          "Puerto": "5353/5355/137",
+          "Protocolo": "UDP",
+          "Proposito": "Búsqueda de NPIA00B9D (LLMNR/mDNS/NBNS)"
+        }
+      ]
+    },
+    "analisis_de_firewall_de_windows_defender": {
+      "configuracion_de_perfiles": {
+        "perfiles": [
+          {
+            "Perfil": "Dominio",
+            "Estado": "ACTIVAR",
+            "Politica": "BlockInbound, AllowOutbound",
+            "Logging": "Deshabilitado",
+            "Administracion_Remota": "Deshabilitado"
+          },
+          {
+            "Perfil": "Privado",
+            "Estado": "ACTIVAR",
+            "Politica": "BlockInbound, AllowOutbound",
+            "Logging": "Deshabilitado",
+            "Administracion_Remota": "Deshabilitado"
+          },
+          {
+            "Perfil": "Público",
+            "Estado": "ACTIVAR",
+            "Politica": "BlockInbound, AllowOutbound",
+            "Logging": "Deshabilitado",
+            "Administracion_Remota": "Deshabilitado"
+          }
+        ],
+        "detalles_adicionales": "IPsec configurado con métodos DHGroup2-AES128-SHA1 y DHGroup2-3DES-SHA1, pero sin asociaciones de seguridad activas. ZTDNS (Zero Trust DNS) deshabilitado."
+      },
+      "reglas_criticas": [
+        {
+          "Aplicacion": "AnyDesk",
+          "Puerto": "CUALQUIERA",
+          "Protocolo": "TCP/UDP",
+          "Perfiles": "Pública, Privada",
+          "Riesgo": "CRÍTICO",
+          "Impacto": "Acceso remoto sin restricción desde redes públicas"
+        },
+        {
+          "Aplicacion": "Escritorio Remoto",
+          "Puerto": "3389",
+          "Protocolo": "TCP/UDP",
+          "Perfiles": "Todos",
+          "Riesgo": "ALTO",
+          "Impacto": "Expuesto en cualquier red sin restricción IP"
+        },
+        {
+          "Aplicacion": "Node.js",
+          "Puerto": "CUALQUIERA",
+          "Protocolo": "TCP/UDP",
+          "Perfiles": "Público",
+          "Riesgo": "MEDIO",
+          "Impacto": "Puerto dinámico en perfil público"
+        },
+        {
+          "Aplicacion": "Docker Desktop",
+          "Puerto": "CUALQUIERA",
+          "Protocolo": "CUALQUIERA",
+          "Perfiles": "Todos",
+          "Riesgo": "MEDIO",
+          "Impacto": "Contenedores escuchando en todos los perfiles"
+        }
+      ]
+    },
+    "virtualizacion_hyper_v_mas_docker": {
+      "hyper_v_servicios_y_capacidades": {
+        "Servicios_en_ejecucion": "vmms, vmcompute, vmsmp, VMSNPXY, VMSP, VmsProxy, vmbusr",
+        "Servicios_detenidos": "vmbus, VMBusHID, vmbusproxy, vmicguestinterface, vmicheartbeat, vmickvpexchange, vmicrdv, vmicshutdown, vmictimesync, vmicvmsession, vmicvss, VMSVSF, VMSVSP",
+        "Observaciones": "La mayoría de servicios invitados detenidos indica que no hay VMs activas, pero la infraestructura está lista para ejecutarlas. El VmSwitch v19.0 soporta 29 features incluyendo PacketMonitor, DynamicVMMQ, SuspendedLiveMigration, UntrustedGuestIsolation y SoftwareRscOnPhysicalNic."
+      },
+      "nic_intel_i219_v_offload_de_hardware": [
+        { "Capacidad": "Checksum IPv4 TX/RX", "Estado": "Habilitado" },
+        { "Capacidad": "Checksum IPv6 TX/RX", "Estado": "Habilitado" },
+        {
+          "Capacidad": "LSOv2 IPv4/IPv6",
+          "Estado": "Habilitado (MaxOffload=64240)"
+        },
+        { "Capacidad": "RSS", "Estado": "Habilitado (Toeplitz, 2 colas)" },
+        { "Capacidad": "RSC HW", "Estado": "Habilitado / SW Deshabilitado" }
+      ]
+    },
+    "catalogo_completo_de_ouis_detectados": [
+      {
+        "OUI": "2c:f0:5d",
+        "Vendor": "MicroStar International (MSI)",
+        "Cantidad": "15",
+        "Contexto": "Lote principal de laptops corporativos"
+      },
+      {
+        "OUI": "04:7c:16",
+        "Vendor": "UNIVERSAL GLOBAL Scientific Industrial",
+        "Cantidad": "12",
+        "Contexto": "Periféricos/estaciones segundo lote"
+      },
+      {
+        "OUI": "94:c6:91",
+        "Vendor": "Sercomm Corporation / Foxconn",
+        "Cantidad": "10",
+        "Contexto": "Equipos de escritorio / OEM"
+      },
+      {
+        "OUI": "38:ca:84",
+        "Vendor": "Intel Corporation",
+        "Cantidad": "6",
+        "Contexto": "Adaptadores de red integrados"
+      },
+      {
+        "OUI": "10:e7:c6",
+        "Vendor": "Intel Corporation",
+        "Cantidad": "2",
+        "Contexto": "Adaptadores de red integrados"
+      },
+      {
+        "OUI": "a0:48:1c",
+        "Vendor": "No registrado",
+        "Cantidad": "3",
+        "Contexto": "Posibles móviles/tablets"
+      },
+      {
+        "OUI": "a4:bb:6d",
+        "Vendor": "No registrado",
+        "Cantidad": "4",
+        "Contexto": "Posibles IoT/periféricos"
+      },
+      {
+        "OUI": "ec:7c:2c",
+        "Vendor": "No registrado",
+        "Cantidad": "1",
+        "Contexto": "Gateway (10.1.7.254)"
+      },
+      {
+        "OUI": "30:24:a9",
+        "Vendor": "Apple Inc.",
+        "Cantidad": "2",
+        "Contexto": "Dispositivos móviles Apple"
+      },
+      {
+        "OUI": "f8:0d:ac",
+        "Vendor": "Apple Inc.",
+        "Cantidad": "1",
+        "Contexto": "Dispositivo Apple"
+      },
+      {
+        "OUI": "20:53:8d",
+        "Vendor": "Dell Inc.",
+        "Cantidad": "1",
+        "Contexto": "Estación Dell (router IPv6)"
+      },
+      {
+        "OUI": "c4:34:6b",
+        "Vendor": "Dell Inc.",
+        "Cantidad": "2",
+        "Contexto": "Estaciones Dell"
+      },
+      {
+        "OUI": "64:51:06",
+        "Vendor": "Ubiquiti Networks",
+        "Cantidad": "2",
+        "Contexto": "Dispositivos de red IoT"
+      },
+      {
+        "OUI": "3c:d9:2b",
+        "Vendor": "Samsung Electronics",
+        "Cantidad": "1",
+        "Contexto": "Dispositivo Samsung"
+      },
+      {
+        "OUI": "50:65:f3",
+        "Vendor": "Samsung Electronics",
+        "Cantidad": "1",
+        "Contexto": "Dispositivo Samsung"
+      },
+      {
+        "OUI": "4c:cc:6a",
+        "Vendor": "No registrado",
+        "Cantidad": "1",
+        "Contexto": "—"
+      },
+      {
+        "OUI": "00:15:5d",
+        "Vendor": "Microsoft (Hyper-V)",
+        "Cantidad": "1",
+        "Contexto": "Adaptador virtual"
+      },
+      {
+        "OUI": "8a:66:36",
+        "Vendor": "Intel (WiFi)",
+        "Cantidad": "1",
+        "Contexto": "WiFi 8265 endpoint"
+      },
+      {
+        "OUI": "e8:84:a5",
+        "Vendor": "Intel (WiFi)",
+        "Cantidad": "1",
+        "Contexto": "WiFi 8265 endpoint"
+      },
+      {
+        "OUI": "f4:45:88",
+        "Vendor": "No registrado",
+        "Cantidad": "0",
+        "Contexto": "BSSIDs AP WiFi corporativo"
+      },
+      {
+        "OUI": "b8:85:7b",
+        "Vendor": "No registrado",
+        "Cantidad": "0",
+        "Contexto": "BSSIDs AP WiFi corporativo"
+      },
+      {
+        "OUI": "08:fa:28",
+        "Vendor": "No registrado",
+        "Cantidad": "0",
+        "Contexto": "BSSID AP WiFi corporativo"
+      },
+      {
+        "OUI": "c4:5e:5c",
+        "Vendor": "No registrado",
+        "Cantidad": "0",
+        "Contexto": "BSSID AP WiFi corporativo"
+      },
+      {
+        "OUI": "58:38:79",
+        "Vendor": "No registrado",
+        "Cantidad": "2",
+        "Contexto": "Dispositivos de red/impresoras (RNP)"
+      },
+      {
+        "OUI": "04:0e:3c",
+        "Vendor": "UNIVERSAL GLOBAL",
+        "Cantidad": "1",
+        "Contexto": "Pantalla/HMI (10.1.7.227)"
+      }
+    ],
+    "vulnerabilidades_consolidadas": {
+      "CRITICO": [
+        {
+          "ID": "VULN-001",
+          "Descripcion": "LDAP (389) sin cifrar en DC",
+          "Host": "10.2.1.1",
+          "CVEs": "CVE-2017-8567, CVE-2021-42278"
+        },
+        {
+          "ID": "VULN-002",
+          "Descripcion": "RDP abierto en expedientes clínicos",
+          "Host": "10.2.1.140",
+          "CVEs": "CVE-2019-0708, CVE-2021-38666"
+        },
+        {
+          "ID": "VULN-003",
+          "Descripcion": "SMB con shares administrativos expuestos",
+          "Host": "10.2.1.92",
+          "CVEs": "MS17-010, CVE-2020-0796"
+        },
+        {
+          "ID": "VULN-004",
+          "Descripcion": "37 recursos SMB con datos sensibles",
+          "Host": "10.2.1.92",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-005",
+          "Descripcion": "WHM expuesto a Internet sin restricción",
+          "Host": "216.245.211.42",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-006",
+          "Descripcion": "Apache 2.4.38 EOL con CVEs",
+          "Host": "201.131.132.131",
+          "CVEs": "CVE-2019-0211, CVE-2019-10081"
+        },
+        {
+          "ID": "VULN-007",
+          "Descripcion": "OpenSSL 1.0.2q EOL",
+          "Host": "201.131.132.131",
+          "CVEs": "CVE-2019-1563, CVE-2019-1547"
+        },
+        {
+          "ID": "VULN-008",
+          "Descripcion": "PHP 7.1.26 EOL",
+          "Host": "201.131.132.131",
+          "CVEs": "CVE-2019-11043"
+        },
+        {
+          "ID": "VULN-009",
+          "Descripcion": "SeImpersonatePrivilege con admin local",
+          "Host": "10.254.117.118",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-010",
+          "Descripcion": "Datos biométricos potencialmente accesibles",
+          "Host": "10.2.1.139",
+          "CVEs": "—"
+        }
+      ],
+      "ALTO": [
+        {
+          "ID": "VULN-011",
+          "Descripcion": "DNS expuesto sin restricción de zona",
+          "Host": "10.2.1.1",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-012",
+          "Descripcion": "AJP13 abierto en 4 servidores Wi-Fi",
+          "Host": "10.254.x.x",
+          "CVEs": "CVE-2020-1938"
+        },
+        {
+          "ID": "VULN-013",
+          "Descripcion": "SMBv1 activo en estación",
+          "Host": "10.1.7.97",
+          "CVEs": "MS17-010"
+        },
+        {
+          "ID": "VULN-014",
+          "Descripcion": "cPanel/Webmail HTTP sin cifrar",
+          "Host": "216.245.211.42",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-015",
+          "Descripcion": "MySQL filtrado en intranet pública",
+          "Host": "201.131.132.136",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-016",
+          "Descripcion": "WPAD/LLMNR permitiendo spoofing",
+          "Host": "Toda la red",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-017",
+          "Descripcion": "Fuga DNS por DNS públicos",
+          "Host": "Toda la red",
+          "CVEs": "—"
+        },
+        {
+          "ID": "VULN-018",
+          "Descripcion": "Hyper-V con redes virtuales sin supervisión",
+          "Host": "10.254.117.118",
+          "CVEs": "—"
+        }
+      ],
+      "MEDIO": [
+        {
+          "ID": "VULN-019",
+          "Descripcion": "WPA2-Personal en Wi-Fi institucional",
+          "Host": "redopdhcg"
+        },
+        {
+          "ID": "VULN-020",
+          "Descripcion": "Versiones de software reveladas en headers",
+          "Host": "201.131.132.131"
+        },
+        {
+          "ID": "VULN-021",
+          "Descripcion": "Capturas de red en C:\\Users\\Public",
+          "Host": "10.1.7.238"
+        },
+        {
+          "ID": "VULN-022",
+          "Descripcion": "Proxy Tor en infraestructura hospitalaria",
+          "Host": "10.254.117.118"
+        },
+        {
+          "ID": "VULN-023",
+          "Descripcion": "Concesión DHCP inusualmente corta (30 min)",
+          "Host": "redopdhcg"
+        }
+      ],
+      "hallazgos_de_endpoint_npia00b9d": [
+        {
+          "ID": "F001",
+          "Severidad": "CRÍTICA",
+          "Descripcion": "AnyDesk sin restricciones en perfil Público",
+          "Recomendacion": "Restringir a Privado/Dominio"
+        },
+        {
+          "ID": "F002",
+          "Severidad": "ALTA",
+          "Descripcion": "RDP expuesto en todos los perfiles",
+          "Recomendacion": "Limitar a IPs corporativas"
+        },
+        {
+          "ID": "F003",
+          "Severidad": "ALTA",
+          "Descripcion": "Logging de firewall deshabilitado",
+          "Recomendacion": "Activar LogAllowed/LogDropped"
+        },
+        {
+          "ID": "F004",
+          "Severidad": "MEDIA",
+          "Descripcion": "Tráfico UDP masivo a IP pública",
+          "Recomendacion": "Validar aplicación corporativa"
+        },
+        {
+          "ID": "F005",
+          "Severidad": "MEDIA",
+          "Descripcion": "WPA2-Personal en red gubernamental",
+          "Recomendacion": "Migrar a WPA3-Enterprise"
+        },
+        {
+          "ID": "F006",
+          "Severidad": "BAJO",
+          "Descripcion": "ZTDNS deshabilitado",
+          "Recomendacion": "Evaluar implementación"
+        }
+      ]
+    },
+    "cadena_de_ataque_reconstructiva": [
+      "[1] Conexión a redopdhcg (WPA2-PSK compartida)",
+      "[2] Escaneo de red WiFi → 4 servidores Tomcat AJP13",
+      "[3] Explotación Ghostcat (CVE-2020-1938) en 10.254.3.193:8009 → Lectura de archivos webapp → extracción de credenciales",
+      "[4] Escalada en 10.254.117.118 (SeImpersonatePrivilege) → JuicyPotato / PrintSpoofer → SYSTEM",
+      "[5] Pivoting vía Hyper-V (172.21.240.0/20) o WiFi Direct (192.168.137.0/24) → Evitar segmentación de red",
+      "[6] LLMNR/NBT-NS Poisoning → Captura NTLMv2 hashes → SMB Relay o Pass-the-Hash",
+      "[7] Movimiento lateral SMB a 10.2.1.140 (Expedientes) y 10.2.1.92 (Archivos) → EternalBlue (MS17-010) si SMBv1",
+      "[8] Enumeración LDAP completa en 10.2.1.1:389 → ldapsearch / BloodHound → mapa completo de AD",
+      "[9] Compromiso del Controlador de Dominio (DCSync) → Credenciales de todos los usuarios del dominio",
+      "[10] Acceso a datos biométricos (Sigma), nómina (SYNHCGN), expedientes clínicos"
+    ]
+  }
+}
