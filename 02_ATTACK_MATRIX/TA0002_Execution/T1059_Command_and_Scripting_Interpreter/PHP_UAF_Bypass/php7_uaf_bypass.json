@@ -1,0 +1,29 @@
+{
+  "module_identity": {
+    "name": "PHP 7 Use-After-Free (UAF) Remote Code Execution",
+    "technical_alias": "PHP disable_functions Bypass ",
+    "version": "1.0",
+    "mitre_attack_mappings": [
+      "TA0002.T1059 - Command and Scripting Interpreter",
+      "TA0005.T1548 - Abuse Elevation Control Mechanism"
+    ],
+    "description": "Exploit que aprovecha una vulnerabilidad UAF en la serialización JSON de objetos PHP para ganar primitivas de memoria, localizar la función 'system' y ejecutar comandos arbitrarios, evadiendo restricciones de seguridad del intérprete."
+  },
+  "technical_capabilities": {
+    "memory_manipulation": "Utiliza un fallo de Use-After-Free para controlar el tamaño de un zend_string y convertirlo en una primitiva de lectura/escritura arbitraria.",
+    "exploitation_chain": {
+      "step_1_leak": "Parsea el encabezado ELF del proceso para determinar la dirección base del binario y localizar la tabla de funciones básicas de PHP.",
+      "step_2_find_system": "Escanea la tabla de funciones para encontrar la dirección de 'zif_system'.",
+      "step_3_pwn": "Sobrescribe un bucket de una clase heredada (MySplFixedArray) para redirigir el método 'offsetGet' hacia la función 'system' del sistema operativo."
+    }
+  },
+  "targeting_intel": {
+    "ideal_target": "Servidores web (como los del HCG) que ejecutan versiones de PHP 7 y tienen activadas medidas de endurecimiento como 'disable_functions' que impiden el uso normal de system() o exec().",
+    "impact": "Ejecución de comandos con los privilegios del usuario del servidor web (ej. www-data)."
+  },
+  "build_instructions": {
+    "language": "PHP ",
+    "requirements": "PHP 7.x, extensión JSON habilitada.",
+    "usage": "Modificar la variable '$cmd' con el comando deseado y ejecutar el script en el servidor objetivo."
+  }
+}
