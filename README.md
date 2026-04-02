@@ -23,35 +23,25 @@ Focused on high-complexity targets—including healthcare networks and specializ
 ## 🛰️ Operational Lifecycle (Tactical Chain)
 
 ```mermaid
-graph LR
-    subgraph "Phase 1: Intelligence & Prep"
-        TA43[TA0043 Reconnaissance] --> TA42[TA0042 Resource Dev]
+graph TD
+    subgraph "INTELLIGENCE (Folder 01)"
+        A1[Target Recon Analysis] --> A2[Vulnerability & Vector Mapping]
     end
     
-    subgraph "Phase 2: Infiltration"
-        TA42 --> TA01[TA0001 Initial Access]
-        TA01 --> TA02[TA0002 Execution]
-    end
-    
-    subgraph "Phase 3: Control & Expansion"
-        TA02 --> TA03[TA0003 Persistence]
-        TA03 --> TA04[TA0004 Priv Escalation]
-        TA04 --> TA05[TA0005 Defense Evasion]
-        TA05 --> TA06[TA0006 Cred Access]
-        TA06 --> TA07[TA0007 Discovery]
-        TA07 --> TA11[TA0011 C2]
-    end
-    
-    subgraph "Phase 4: Action & Exfil"
-        TA11 --> TA08[TA0008 Lateral Mov]
-        TA08 --> TA09[TA0009 Collection]
-        TA09 --> TA10[TA0010 Exfiltration]
-        TA10 --> TA40[TA0040 Impact]
+    A2 -->|Tactical Selection| B{STRATCOM Matrix}
+
+    subgraph "ATTACK MATRIX (Folder 02)"
+        B -->|Phase 1: Prep| TA_PREP[TA0043 Recon / TA0042 Resource Dev]
+        TA_PREP -->|Phase 2: Ingress| TA_INGRESS[TA0001 Access / TA0002 Execution]
+        TA_INGRESS -->|Phase 3: Control| TA_CTRL[TA0003 Persistence / TA0004 PrivEsc / TA0005 Evasion / TA0006 Creds / TA0007 Disc / TA0011 C2]
+        TA_CTRL -->|Phase 4: Action| TA_ACTION[TA0008 Lateral / TA0009 Collection / TA0010 Exfil / TA0040 Impact]
     end
 
-    style TA01 fill:#f96,stroke:#333,stroke-width:2px
-    style TA11 fill:#f96,stroke:#333,stroke-width:2px
-    style TA05 fill:#f96,stroke:#333,stroke-width:2px
+    TA_ACTION -->|Solution Encoding| C[BUILD OUTPUT (Folder 03)]
+    
+    style A2 fill:#d4edda,stroke:#28a745
+    style B fill:#fff3cd,stroke:#ffc107
+    style C fill:#f8d7da,stroke:#dc3545
 ```
 
 ---
