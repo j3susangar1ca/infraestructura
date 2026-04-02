@@ -1,60 +1,88 @@
-# C4ISR-STRATCOM-IMPLANT-SIGINT-V5
+# 🛡️ C4ISR STRATCOM: Operation SIGINT-V5
 
-## 🗂️ Información del Proyecto
+[![Strategic Classification](https://img.shields.io/badge/Classified-CONFIDENTIAL-red?style=for-the-badge)](file:///home/jesuslangarica/Infected/C4ISR-STRATCOM-IMPLANT-SIGINT-V5)
+[![MITRE ATT&CK](https://img.shields.io/badge/Matrix-Enterprise-blue?style=for-the-badge)](https://attack.mitre.org/)
+[![Status](https://img.shields.io/badge/Status-Operational-green?style=for-the-badge)](file:///home/jesuslangarica/Infected/C4ISR-STRATCOM-IMPLANT-SIGINT-V5/03_BUILD_OUTPUT)
 
-- **Clasificación:** CONFIDENCIAL — Autorizado
-- **Estándar Táctico:** MITRE ATT&CK Matrix
-- **Objetivo Estratégico:** Automatización de ataques en infraestructuras críticas.
-
----
-
-## 🎯 Misión Ejecutiva
-
-Este repositorio constituye un entorno para el diseño, compilación y despliegue de artefactos de inteligencia de nivel estatal. El sistema integra inteligencia de amenazas real (CTI) de actores APT y campañas de ciberataques para generar soluciones de acceso persistente, ataques de ciberespionaje y evasión de defensas contra objetivos gubernamentales de alta complejidad, como redes hospitalarias y dispositivos de borde (routers/firewalls).
+> **Strategic Directive**: Optimization of tactical offensive systems for critical infrastructure environments.
 
 ---
 
-## 🏗️ Arquitectura del Repositorio
+## 🏛️ Strategic Overview
 
+This repository constitutes a specialized environment for the development, orchestration, and technical validation of high-sophistication offensive artifacts. Designed for **State-Level Cyber Intelligence**, the framework facilitates the integration of **Cyber Threat Intelligence (CTI)** from advanced persistent threat (APT) campaigns into modular implants.
+
+Focused on high-complexity targets—including healthcare networks and specialized edge devices—the environment standardizes the creation of:
+
+- **Persistent Covert Handlers** (ICMP/UDP/TCP Stealth channels).
+- **Evasive Execution Wrappers** (IIS/Apache decoupling).
+- **Context-Aware Implants** (Auto-mutating based on target infrastructure).
+
+---
+
+## 🛰️ Operational Lifecycle
+
+```mermaid
+graph TD
+    A[01 TARGET INTELLIGENCE] -->|Context Injection| B(02 ATTACK MATRIX)
+    B --> T1{Tactical Selection}
+    T1 -->|Initial Access| C[Execution]
+    T1 -->|Persistence| D[Evasion]
+    C -->|Build Pipeline| E[03 BUILD OUTPUT]
+    D -->|Post-Compromise| E
+    E -->|Static Validation| F[Operational Deployment]
+```
+
+---
+
+## ⚔️ Tactical Matrix (MITRE ATT&CK Mapping)
+
+| Category | Tactical Folder | Focus Area | Core Modules |
+| :--- | :--- | :--- | :--- |
+| **Pre-Attack** | `TA0043_Reconnaissance` | Intelligence gathering & scanning | `hcg_audit_report.json` |
+| **Delivery** | `TA0001_Initial_Access` | Surface infiltration vectors | Spearphishing / External exploit |
+| **Control** | `TA0011_Command_Control` | Stealth C2 & Tunneling | `backdoor_icmp.c` |
+| **Execution** | `TA0002_Execution` | Code execution & IPC wrapping | `wrapper_pipe_server.c` |
+| **Stealth** | `TA0005_Defense_Evasion` | Anti-EDR & Signature modification | YARA-Bypass Engine |
+
+---
+
+## 🏗️ Architectural Topology
+
+```text
 /C4ISR-STRATCOM-IMPLANT-SIGINT-V5
 │
-├── 📂 01_TARGET_INTELLIGENCE/  
-│ ├── 📄 hcg_audit_report.json  
-│ ├── 📄 hcg_infraestructure.json
-│
-├── 📂 02_ATTACK_MATRIX/  
-│ │
-│ ├── 📂 TA0001_Initial_Access/
-│ ├── 📂 TA0002_Execution/  
-│ ├── 📂 TA0003_Persistence/  
-│ ├── 📂 TA0004_Priv_Escalation/  
-│ ├── 📂 TA0005_Defense_Evasion/  
-│ ├── 📂 TA0006_Credential_Access/
-│ ├── 📂 TA0007_Discovery/  
-│ ├── 📂 TA0008_Lateral_Movement/
-│ ├── 📂 TA0009_Collection/  
-│ ├── 📂 TA0011_Command_Control/  
-│ ├── 📂 TA0010_Exfiltration/  
-│ └── 📂 TA0040_Impact/  
-│ ├── 📂 TA0043_Reconnaissance/  
-│ ├── 📂 TA0042_Resource_Dev/  
-|
-└── 📂 03_BUILD_OUTPUT/
+├── 📂 01_TARGET_INTELLIGENCE/      # Intelligence packets: HCG Infrastructure + Audit trails
+├── 📂 02_ATTACK_MATRIX/            # Tactical repository mapped to MITRE ATT&CK
+│   ├── 📂 TA0001_Initial_Access/   # Entry vector development
+│   ├── 📂 TA0002_Execution/        # Command wrappers (e.g., Pipe IPC Server)
+│   ├── 📂 TA0005_Defense_Evasion/  # Anti-forensics & Rule bypass
+│   └── 📂 TA0011_Command_Control/  # Stealth protocols (e.g., ICMP Backdoor irad-variant)
+└── 📂 03_BUILD_OUTPUT/             # Final stage compiled & stripped binaries
+```
 
 ---
 
-## 🚦 Protocolo Operacional
+## 🚦 Operational Protocols (Build & Evasion)
 
-Para garantizar resultados de nivel V5 (Madurez Máxima), se debe seguir estas directivas en cada iteración:
+> [!IMPORTANT]
+> **Context-First Development**: Mandatory consultation of `01_TARGET_INTELLIGENCE/hcg_infraestructure.json` is required before implementing any C2 logic. All implants **must** be tailored to the target's specific OS version and security posture.
 
-1.  **Carga de Contexto Mandatoria:** Antes de cualquier modificación de código, se debe consultar principalmente el archivo `hcg_infraestructure.json` y secundariamente el `hcg_audit_report.json` para identificar vulnerabilidades y vectores de ataque.
-2.  **Validación de Evasión:** El código generado **no debe** contener nombres de funciones o constantes identificadas en las reglas YARA de Mandiant o Palo Alto (ej. `pel_setup_context` o `tshd_runshell`).
-3.  **Enlace Estático:** Todo binario de C/C++ debe compilarse con `-static` y stripping de símbolos (`-s`) para garantizar portabilidad y dificultar el análisis forense.
+> [!WARNING]
+> **Evasion Standard**: No function names or strings must collide with **Mandiant/Palo Alto (Unit 42)** YARA rules. Use the JSON metadata files (`backdoor_icmp.json`) as a whitelist of strings to obfuscate.
+
+> [!TIP]
+> **Hardening**: Use static linking (`-static`) and symbol stripping (`-s`) on all C/C++ builds for increased portability and analysis friction.
 
 ---
 
-## ⚖️ Aviso Legal y Ético
+## ⚖️ Legal & Institutional Framework
 
-## Este repositorio lo autoriza la Secretaría de Innovación, Ciencia y Tecnología, el Gobierno del Estado de Jalisco 2026, la Direccion General del OPD Hospital Civil de Guadalajara y su Coordinación General de Informatica, bajo el convenio denominado **CONV-0221-JAL-HCG-2026**, (https://www.udg.mx/es/noticia/udeg-y-gobierno-del-estado-crean-red-de-hospitales-civiles-en-jalisco, https://www.jalisco.gob.mx/prensa/noticias/jalisco-fortalece-sistema-de-salud-y-no-se-afilia-42977) y se mantiene exclusivamente para fines de **investigación avanzada, emulación de adversarios sofisticados autorizados y fortalecimiento de infraestructuras críticas**.
+This laboratory is sanctioned by the **Secretariat of Innovation, Science, and Technology (SICYT)** and the **Government of the State of Jalisco (2026)**, in collaboration with the **Hospital Civil de Guadalajara (HCG)** coordination.
 
-**Generado por el Orquestador C4ISR V5 — 2026**
+- **Convention**: `CONV-0221-JAL-HCG-2026`
+- **Authorized Scope**: Advanced research, adversary emulation for critical health infrastructure, and defensive hardening.
+
+---
+
+**Orchestrated by C4ISR V5 — Strategic Command 2026**
