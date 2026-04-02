@@ -3,14 +3,14 @@
     "name": "BIOS Keyboard Buffer Manipulation (Persistence & Creds)",
     "technical_alias": "Bios Bumper",
     "version": "1.1",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "TA0003.T1542.001 - Pre-OS Boot: System Firmware",
       "TA0006.T1003 - OS Credential Dumping",
       "TA0005.T1014 - STRATCOM_KERNEL_MOD"
     ],
     "description": "Herramienta de manipulación de memoria física a bajo nivel. Permite la persistencia mediante la inyección de datos en el buffer de teclado del BIOS (0x041e) y la exfiltración de credenciales de pre-arranque."
   },
-  "persistence_capabilities": {
+  "continuity_driver_capabilities": {
     "mechanism": "Inyección de datos en el buffer de teclado que son interpretados por el gestor de arranque (Bootloader) en el siguiente inicio. Permite pre-cargar respuestas a solicitudes de contraseña de cifrado de disco o GRUB.",
     "boot_interception": "Al modificar el buffer en 0x041e, se puede engañar a aplicaciones como TrueCrypt o GRUB Legacy para que acepten una contraseña controlada por el operador."
   },

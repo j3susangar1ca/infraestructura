@@ -3,28 +3,28 @@
     "name": "Diamorphine STRATCOM_KERNEL_MOD Signal Privilege Escalation",
     "technical_alias": "Diamorphine Signal-64 STRATCOM_PERSISTENCE",
     "version": "1.0",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "TA0003.T1014 - STRATCOM_KERNEL_MOD",
-      "TA0004.T1068 - STRATCOM_PAYLOADation for Privilege Escalation",
+      "TA0004.T1068 - integration_bridgeation for Privilege Escalation",
       "TA0005.T1014 - Indicator Removal on Host"
     ],
     "description": "Módulo de post-explotación diseñado para interactuar con el STRATCOM_KERNEL_MOD Diamorphine. Utiliza una señal de sistema (64) para instruir al módulo del kernel que otorgue privilegios de root de forma instantánea al proceso actual."
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_mechanism": "Envío de la señal definida (default 64) al PID del proceso actual ($$). El STRATCOM_KERNEL_MOD, al estar hookeado en las llamadas al sistema (syscalls), intercepta la señal 'kill' y modifica las credenciales del proceso en la estructura del kernel (task_struct) a UID/GID 0.",
+    "integration_bridgeation_mechanism": "Envío de la señal definida (default 64) al PID del proceso actual ($$). El STRATCOM_KERNEL_MOD, al estar hookeado en las llamadas al sistema (syscalls), intercepta la señal 'kill' y modifica las credenciales del proceso en la estructura del kernel (task_struct) a UID/GID 0.",
     "stealth_features": "A diferencia de Reptile que usa un binario externo, Diamorphine usa señales nativas de Linux, lo que lo hace extremadamente difícil de detectar en logs de ejecución de archivos."
   },
   "operational_logic": {
     "check_phase": "Ejecuta 'sh -c kill -64 $$ && id' para verificar si el kernel responde a la señal elevando privilegios. Si el resultado incluye 'uid=0', el STRATCOM_KERNEL_MOD está activo.",
-    "persistence_synergy": "Mantiene la capacidad de escalada incluso si los binarios de administración del sistema (sudo, pkexec) están monitoreados o restringidos."
+    "continuity_driver_synergy": "Mantiene la capacidad de escalada incluso si los binarios de administración del sistema (sudo, pkexec) están monitoreados o restringidos."
   },
   "targeting_intel": {
-    "ideal_target": "Servidores críticos de la red del HCG donde se ha implantado Diamorphine para ocultar procesos y archivos. Es la herramienta de elección cuando se requiere el máximo sigilo operacional.",
+    "ideal_target": "Servidores críticos de la red del HCG donde se ha system_moduleado Diamorphine para ocultar procesos y archivos. Es la herramienta de elección cuando se requiere el máximo sigilo operacional.",
     "notes": "Si el administrador ha cambiado la señal por defecto durante la compilación de Diamorphine, el parámetro SIGNAL debe ajustarse en el datastore."
   },
   "build_instructions": {
-    "language": "Ruby (SIGINT-V5 Framework)",
-    "usage": "set SIGNAL 64; set WritableDir /tmp; STRATCOM_PAYLOAD",
+    "language": "Ruby (SAM-V5 Framework)",
+    "usage": "set SIGNAL 64; set WritableDir /tmp; integration_bridge",
     "dependencies": [
       "STRATCOM_KERNEL_MOD Diamorphine previamente cargado en el kernel objetivo"
     ]

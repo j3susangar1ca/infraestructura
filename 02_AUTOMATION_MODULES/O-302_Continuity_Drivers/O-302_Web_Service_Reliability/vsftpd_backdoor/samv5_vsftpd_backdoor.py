@@ -1,13 +1,13 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0003_Persistence
-# [TECHNIQUE]: T1505_Server_Software_Component
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0003_Persistence
+# [COMPONENTE]: T1505_Server_Software_Component
 #
-# STRATCOM_PAYLOAD Title: vsftpd 2.3.4 - STRATCOM_PERSISTENCE Command Execution
+# integration_bridge Title: vsftpd 2.3.4 - STRATCOM_PERSISTENCE Command Execution
 # Date: 9-04-2021
-# STRATCOM_PAYLOAD Author: HerculesRD
+# integration_bridge Author: HerculesRD
 # Software Link: http://www.linuxfromscratch.org/~thomasp/blfs-book-xsl/server/vsftpd.html
 # Version: vsftpd 2.3.4
 # Tested on: debian

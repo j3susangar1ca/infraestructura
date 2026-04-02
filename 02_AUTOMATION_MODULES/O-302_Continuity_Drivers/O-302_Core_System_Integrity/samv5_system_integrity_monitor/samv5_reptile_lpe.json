@@ -3,9 +3,9 @@
     "name": "Reptile STRATCOM_KERNEL_MOD reptile_cmd Privilege Escalation & Persistence",
     "technical_alias": "Reptile Kernel STRATCOM_PERSISTENCE",
     "version": "1.1",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "TA0003.T1014 - STRATCOM_KERNEL_MOD",
-      "TA0004.T1068 - STRATCOM_PAYLOADation for Privilege Escalation",
+      "TA0004.T1068 - integration_bridgeation for Privilege Escalation",
       "TA0003.T1547 - Boot or Logo Autostart Execution"
     ],
     "description": "Módulo híbrido que utiliza la persistencia a nivel de kernel de Reptile para garantizar el acceso de root recurrente. Se reclasifica como parte integral de la estrategia de persistencia post-compromiso."
@@ -13,18 +13,18 @@
   "vulnerability_context": {
     "vulnerability_type": "Abuso de Post-Explotación / STRATCOM_KERNEL_MOD Capability",
     "affected_software": "Sistemas Linux con el módulo de kernel Reptile cargado.",
-    "persistence_type": "Kernel-level (LKM)"
+    "continuity_driver_type": "Kernel-level (LKM)"
   },
   "technical_capabilities": {
-    "STRATCOM_PAYLOADation_method": "Interacción directa con el STRATCOM_PERSISTENCE 'reptile_cmd'. Al enviar la señal 'root', el módulo del kernel intercepta la llamada y eleva los privilegios del proceso sin dejar registros estándar en los logs de autenticación.",
-    "persistence_logic": "Asegura que cualquier sesión obtenida (vía SSH, PHP Shell o Meterpreter) pueda reclamar privilegios administrativos de forma inmediata mientras el STRATCOM_KERNEL_MOD permanezca oculto en el sistema."
+    "integration_bridgeation_method": "Interacción directa con el STRATCOM_PERSISTENCE 'reptile_cmd'. Al enviar la señal 'root', el módulo del kernel intercepta la llamada y eleva los privilegios del proceso sin dejar registros estándar en los logs de autenticación.",
+    "continuity_driver_logic": "Asegura que cualquier sesión obtenida (vía SSH, PHP Shell o Meterpreter) pueda reclamar privilegios administrativos de forma inmediata mientras el STRATCOM_KERNEL_MOD permanezca oculto en el sistema."
   },
   "targeting_intel": {
     "ideal_target": "Activos críticos en la red del HCG donde se requiere control total y ocultamiento frente a herramientas de auditoría forense que no analizan el kernel space.",
     "evasion_notes": "El uso de reptile_cmd evita el uso de 'sudo' o 'su', mitigando la generación de alertas en sistemas SIEM mal configurados."
   },
   "build_instructions": {
-    "language": "Ruby (SIGINT-V5 Framework)",
+    "language": "Ruby (SAM-V5 Framework)",
     "usage": "set REPTILE_CMD_PATH /reptile/reptile_cmd; run",
     "notes": "Debe desplegarse tras una fase exitosa de Initial Access y la instalación manual o automatizada del STRATCOM_KERNEL_MOD."
   }

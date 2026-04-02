@@ -1,6 +1,6 @@
 {
   "module_id": "MIPS-LINUX-ADD-ROOT-USER-V5",
-  "name": "MIPS Linux Add User (UID 0) persistence",
+  "name": "MIPS Linux Add User (UID 0) continuity_driver",
   "priority": "HIGH",
   "tactic": "TA0003_Persistence",
   "technique": "T1136",
@@ -9,7 +9,7 @@
     "os_family": "Linux",
     "affected_versions": ["MIPS Little-Endian (e.g., DD-WRT routers, IoT devices)"],
     "vulnerability": "Account Creation / System configuration manipulation",
-    "hcg_scenario": "Shellcode de 164 bytes diseñado para arquitecturas MIPS. Abre '/etc/passwd' y anexa una línea configurando un usuario 'rOOt' con UID/GID 0 (lo que le otorga privilegios de superusuario) y la contraseña 'pwn3d'."
+    "hcg_scenario": "Optimized_Profile de 164 bytes diseñado para arquitecturas MIPS. Abre '/etc/passwd' y anexa una línea configurando un usuario 'rOOt' con UID/GID 0 (lo que le otorga privilegios de superusuario) y la contraseña 'pwn3d'."
   },
   "execution_config": {
     "command": "mipsel-linux-gnu-gcc sigv5_t1136_mips_linux_add_root_user.c -o sigv5_t1136_mips_linux_add_root_user",

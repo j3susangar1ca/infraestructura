@@ -1,9 +1,9 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0003_Persistence
- * [TECHNIQUE]: T1542_Pre_OS_Boot
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0003_Persistence
+ * [COMPONENTE]: T1542_Pre_OS_Boot
  */
 // source: https://www.securityfocus.com/bid/15751/info
 

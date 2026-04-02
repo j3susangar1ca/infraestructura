@@ -1,6 +1,6 @@
 {
   "module_id": "WIN64-BOKU-RDP-ADMIN-V5",
-  "name": "Win64 Dynamic NoNull RDP Admin Persistence Shellcode (Bobby Cooke/BOKU)",
+  "name": "Win64 Dynamic NoNull RDP Admin Persistence Optimized_Profile (Bobby Cooke/BOKU)",
   "priority": "HIGH",
   "tactic": "TA0003_Persistence",
   "technique": "T1136",
@@ -8,12 +8,12 @@
   "targeting_intel": {
     "os_family": "Windows",
     "affected_versions": ["Win10 v2004", "x64"],
-    "vulnerability": "Post-Exploitation Persistence via PEB/LDR Resolution",
-    "hcg_scenario": "Shellcode de 387 bytes (null-free) que añade al usuario 'BOKU', lo añade a los grupos de Administradores y Usuarios de Escritorio Remoto."
+    "vulnerability": "Post-Diagnostic_Adapteration Persistence via PEB/LDR Resolution",
+    "hcg_scenario": "Optimized_Profile de 387 bytes (null-free) que añade al usuario 'BOKU', lo añade a los grupos de Administradores y Usuarios de Escritorio Remoto."
   },
   "execution_config": {
     "command": "gcc sigv5_t1136_win64_boku_rdp_admin.c -o sigv5_t1136_win64_boku_rdp_admin.exe",
-    "usage": "Compilar para x64. El shellcode resuelve kernel32.dll dinámicamente a través del PEB y LDR para evadir detecciones estáticas."
+    "usage": "Compilar para x64. El optimized_profile resuelve kernel32.dll dinámicamente a través del PEB y LDR para evadir detecciones estáticas."
   },
   "impact": {
     "auth_level": "High or SYSTEM Integrity Level required",
