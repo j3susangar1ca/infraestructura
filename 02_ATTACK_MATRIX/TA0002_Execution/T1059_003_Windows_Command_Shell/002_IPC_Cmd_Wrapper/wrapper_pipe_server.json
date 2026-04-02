@@ -1,0 +1,47 @@
+{
+  "module_identity": {
+    "name": "IIS Backdoor CMD Wrapper (Detele IPC Server)",
+    "family": "C++/CLI IIS Backdoor (Detele)",
+    "version": "2.0",
+    "mitre_attack_mappings": [
+      "T1059.003 - Command and Scripting Interpreter: Windows Command Shell",
+      "T1559 - Inter-Process Communication (Named Pipes)",
+      "T1036.005 - Masquerading: Match Legitimate Name or Location"
+    ],
+    "description": "Aplicación envoltorio (wrapper) independiente que inicia un servidor de Named Pipes para recibir comandos, ejecutarlos en cmd.exe de forma oculta y devolver la salida, separando la ejecución del proceso padre para evadir heurísticas de EDR."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "Desconocido (Indicadores de origen: Tailandia)",
+    "reference_report": "Off the Beaten Path: Recent Unusual Malware (Palo Alto Unit 42)",
+    "tactical_logic": "Evitar la creación anómala de procesos secundarios (cmd.exe) desde el proceso de Internet Information Services (IIS)."
+  },
+  "technical_capabilities": {
+    "ipc_communication": {
+      "pipe_name": "\\\\.\\pipe\\pipename_isudbvvws",
+      "protocol_commands": [
+        "CMD_START_PROCESS (3): Inicia instancia oculta de cmd.exe y redirige STDIN/STDOUT",
+        "CMD_READ_OUTPUT (4): Drena el buffer del pipe de salida y lo convierte a UTF-8",
+        "CMD_STOP_PROCESS (5): Termina el proceso hijo y cierra los handles"
+      ]
+    },
+    "internal_mechanics": {
+      "memory_management": "Uso de estructuras personalizadas DSO_STRING con buffers en línea (16 bytes) escalables al heap para manipulación segura de comandos",
+      "encoding": "Conversión automática en tiempo de ejecución entre UTF-8 y ANSI (MultiByteToWideChar) para compatibilidad con la shell de Windows"
+    }
+  },
+  "targeting_intel": {
+    "primary_objective": "Servidores web Windows corriendo Microsoft IIS.",
+    "deployment_zone": "Se escribe en disco típicamente en rutas públicas como %PUBLIC%\\VC_REDIST_CONFIG_X64.TXT para evadir monitoreo de archivos binarios."
+  },
+  "detection_and_evasion": {
+    "known_file_hashes": [
+      "a28d0550524996ca63f26cb19f4b4d82019a1be24490343e9b916d2750162cda (SHA256 - Módulo wrapper v2)"
+    ],
+    "edr_evasion_logic": "El wrapper termina proactivamente procesos hijos huérfanos usando CreateToolhelp32Snapshot y TerminateProcess (a excepción de conhost.exe) para no dejar procesos 'zombies' que alerten a los cazadores de amenazas."
+  },
+  "build_instructions": {
+    "compiler": "msvc (Microsoft Visual C++) / MinGW",
+    "recommended_flags": "/O2 /MT -lkernel32",
+    "mutation_directives": "Para despliegues nuevos, el nombre del pipe ('pipename_isudbvvws') DEBE ser mutado dinámicamente o generado aleatoriamente en tiempo de ejecución para evitar firmas estáticas de red/memoria."
+  }
+}
