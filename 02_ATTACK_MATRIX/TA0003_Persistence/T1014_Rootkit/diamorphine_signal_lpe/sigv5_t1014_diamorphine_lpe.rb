@@ -3,7 +3,7 @@
 # [CLASSIFIED]: CONFIDENCIAL
 # [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
 # [TACTIC]: TA0003_Persistence
-# [TECHNIQUE]: T1014_Rootkit
+# [TECHNIQUE]: T1014_STRATCOM_KERNEL_MOD
 #
 ##
 # This module requires SIGINT-V5: https://SIGINT-V5.com/download
