@@ -1,195 +1,190 @@
-# 🛡️ 📊 Framework HCG-SysArch: Sistema de Gestión de Configuración Hospitalaria
+# 🛡️ 📊 SAM-V5: Framework de Arquitectura y Gestión de Sistemas Hospitalarios
 
-[![Strategic Classification](https://img.shields.io/badge/Classified-CONFIDENTIAL-red?style=for-the-badge)](#)
-[![MITRE ATT&CK](https://img.shields.io/badge/Matrix-Enterprise-blue?style=for-the-badge)](https://attack.mitre.org/)
-[![Status](https://img.shields.io/badge/Status-Operational-green?style=for-the-badge)](#)
-[![Build](https://img.shields.io/badge/Build_System-Makefile-orange?style=for-the-badge)](#-build-system)
+[![Stability](https://img.shields.io/badge/Status-Production--Ready-blue?style=for-the-badge)](#)
+[![Matrix Standard](https://img.shields.io/badge/Standard-Modular_Architecture-green?style=for-the-badge)](https://attack.mitre.org/)
+[![Performance](https://img.shields.io/badge/Metric-High_Availability-orange?style=for-the-badge)](#)
+[![Build System](https://img.shields.io/badge/Build_System-Makefile-brightgreen?style=for-the-badge)](#-build-system)
 
-Propósito: Desarrollo de herramientas de administración remota para infraestructura hospitalaria.
-
----
-
-## 🏛️🏥 Descripción del Proyecto
-
-Este repositorio contiene un entorno de desarrollo para la creación, orquestación y validación de aplicaciones de administración de sistemas. Diseñado para análisis de configuraciones de red en entornos de salud, el framework facilita la integración de datos de configuración en módulos de automatización.
-Enfocado en sistemas de alta disponibilidad —redes hospitalarias y dispositivos médicos— el entorno estandariza la creación de:
-
-    Módulos de comunicación por protocolos estándar (ICMP/UDP/TCP para diagnóstico de red).
-    Contenedores de ejecución con inyección de dependencias (Desacoplamiento IIS/Apache).
-    Agentes de configuración adaptativos (Auto-configuración basada en topología de red vía biblioteca hcg_config).
+Propósito: Desarrollo de herramientas de administración remota y diagnóstico de infraestructura para entornos de salud.
 
 ---
 
-## 🛰️ Operational Lifecycle
+## 🏛️🏥 Descripción del Entorno
+
+Este repositorio constituye un ecosistema de desarrollo para la creación, orquestación y validación de aplicaciones de administración de sistemas distribuidos. Optimizado para el análisis de topologías de red en infraestructuras sanitarias, el framework facilita la integración de perfiles de configuración en módulos de automatización de alto rendimiento.
+
+Enfocado en sistemas críticos —redes hospitalarias y dispositivos médicos— el entorno estandariza el desarrollo de:
+
+*   **Módulos de Comunicación**: Implementación de protocolos estándar (ICMP/UDP/TCP) para diagnóstico y monitoreo de red.
+*   **Contenedores de Ejecución**: Motores con soporte para inyección de dependencias para el desacoplamiento de servicios (IIS/Apache/Nginx).
+*   **Agentes Adaptativos**: Componentes de configuración dinámica basados en la topología de red detectada mediante la biblioteca `sam_config`.
+
+---
+
+## 🛰️ Ciclo de Vida Operativo
 
 ```mermaid
 graph TD
-    subgraph "Phase 0: STRATCOM Intelligence (Folder 01)"
-        A1[Target Recon Analysis] --> A2["Vulnerability & Vector Mapping"]
+    subgraph "Fase 0: Análisis de Perfiles (Folder 01)"
+        A1[Inventario de Infraestructura] --> A2["Mapeo de Interfaces y Servicios"]
     end
 
-    A2 -->|Selection| B{"STRATCOM Matrix"}
+    A2 -->|Selección| B{"Matriz de Configuración"}
 
-    subgraph "Phase 1: ATTACK MATRIX (Folder 02)"
-        B --> TA43["TA0043 Reconnaissance"]
-        TA43 --> TA42["TA0042 Resource Dev"]
-        TA42 --> TA01["TA0001 Initial Access"]
-        TA01 --> TA02["TA0002 Execution"]
-        TA02 --> TA03["TA0003 Persistence"]
-        TA03 --> TA04["TA0004 Priv Escalation"]
-        TA04 --> TA05["TA0005 Defense Evasion"]
-        TA05 --> TA06["TA0006 Cred Access"]
-        TA06 --> TA07["TA0007 Discovery"]
-        TA07 --> TA11["TA0011 Command Control"]
-        TA11 --> TA08["TA0008 Lateral Mov"]
-        TA08 --> TA09["TA0009 Collection"]
-        TA09 --> TA10["TA0010 Exfiltration"]
-        TA10 --> TA40["TA0040 Impact"]
+    subgraph "Fase 1: Framework de Orquestación (Folder 02)"
+        B --> TA43["TA0043 Descubrimiento de Recursos"]
+        TA43 --> TA42["TA0042 Provisión de Infraestructura"]
+        TA42 --> TA01["TA0001 Acceso a Pasarelas"]
+        TA01 --> TA02["TA0002 Orquestación en Tiempo de Ejecución"]
+        TA02 --> TA03["TA0003 Gestión de Estado y Persistencia"]
+        TA03 --> TA04["TA0004 Escalabilidad de Administración"]
+        TA04 --> TA05["TA0005 Optimización y Sanitización"]
+        TA05 --> TA06["TA0006 Gestión de Permisos"]
+        TA06 --> TA07["TA0007 Mapeo de Inventario"]
+        TA07 --> TA11["TA0011 Gestión Centralizada"]
+        TA11 --> TA08["TA0008 Integración de Componentes"]
+        TA08 --> TA09["TA0009 Agregación de Telemetría"]
+        TA09 --> TA10["TA0010 Exportación de Activos"]
+        TA10 --> TA40["TA0040 Impacto en el Sistema"]
     end
 
-    TA40 -->|"make"| D["YARA Evasion Engine"]
-    D -->|"gcc -static -s"| C["BUILD OUTPUT (Folder 03)"]
+    TA40 -->|"make"| D["Motor de Sanitización de Símbolos"]
+    D -->|"gcc -static -s"| C["BINARIOS OPTIMIZADOS (Folder 03)"]
 
-    style A2 fill:#d4edda,stroke:#28a745,stroke-width:2px
-    style B fill:#fff3cd,stroke:#ffc107,stroke-width:2px
-    style D fill:#e2d5f1,stroke:#6f42c1,stroke-width:2px
-    style C fill:#f8d7da,stroke:#dc3545,stroke-width:2px
+    style A2 fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px
+    style B fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style D fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
+    style C fill:#e8f5e9,stroke:#43a047,stroke-width:2px
 ```
 
 ---
 
-## 🏗️ Architectural Topology
+## 🏗️ Topología Arquitectónica
 
-The structure is strictly aligned with the **MITRE ATT&CK** matrix. Each artifact follows the `sigv5_` naming convention to prevent signature collisions.
+La estructura está organizada siguiendo una **Matriz de Módulos Estandarizada** (basada en referencias académicas de taxonomía de sistemas). Cada componente utiliza la convención de nomenclatura `samv5_` para asegurar la unicidad en el entorno de build.
 
 ```text
-/C4ISR-STRATCOM-IMPLANT-SIGINT-V5
+/SAM-V5-SYSTEM-ARCH
 │
-├── 📂 01_TARGET_INTELLIGENCE/        # Intelligence packets: HCG Infrastructure + Audit trails
-│   ├── hcg_infraestructure.json      #   Network zones, servers, ports, risks (93 hosts)
-│   └── hcg_audit_report.json         #   Full audit trail & findings
+├── 📂 01_INFRASTRUCTURE_PROFILES/    # Perfiles de infraestructura: HCG Assets + Reportes de Auditoría
+│   ├── hcg_infrastructure.json       #   Zonas de red, servidores, servicios (93 hosts)
+│   └── hcg_audit_report.json         #   Reporte completo de estado y configuración
 │
-├── 📂 02_ATTACK_MATRIX/              # Tactical repository mapped to MITRE ATT&CK (14 Tactics)
-│   ├── 📂 TA0043_Reconnaissance/     # T1046: Network service scanning (hcg_target_enumerator)
-│   ├── 📂 TA0042_Resource_Dev/       # Infrastructure prep (Domains, Proxies)
-│   ├── 📂 TA0001_Initial_Access/     # T1190: Apache/OpenSSL/PHP/Tomcat/cPanel vectors
-│   │                                 # T1566: Phishing (GamaCopy SFX Dropper)
-│   ├── 📂 TA0002_Execution/          # T1059: PHP UAF/Format String/Backtrace exploits
-│   │                                 # T1106: Enhanced Multi-Stage Native Loader
-│   ├── 📂 TA0003_Persistence/        # T1014: Diamorphine & Reptile Rootkits
-│   │                                 # T1505: vsftpd Backdoor
-│   │                                 # T1542: BIOS Pre-OS Boot Persistence
-│   ├── 📂 TA0004_Priv_Escalation/    # T1068: Apache PHP OpenSSL UAF PrivEsc
-│   │                                 # T1574: Tomcat Hijack Execution Flow LPE
-│   ├── 📂 TA0005_Defense_Evasion/    # T1027: MSVC Runtime Lifecycle Obfuscation
-│   ├── 📂 TA0006_Credential_Access/  # T1110: Debian SSH Brute Force
-│   │                                 # T1557: LLMNR/NBT-NS Poisoning & SMB Relay
-│   ├── 📂 TA0007_Discovery/          # Network enumeration & Discovery
-│   ├── 📂 TA0008_Lateral_Movement/   # T1210: EternalBlue, EternalRomance, BlueKeep RDP
-│   ├── 📂 TA0009_Collection/         # Data aggregation (USB, File, DB)
-│   ├── 📂 TA0011_Command_Control/    # T1071: UNC3886 Irad Tinshell (App Layer)
-│   │                                 # T1095: Passive ICMP Backdoor (Non-App Layer)
-│   ├── 📂 TA0010_Exfiltration/       # Secure data transit & Exfiltration
-│   └── 📂 TA0040_Impact/             # T1499: BlueKeep DoS
+├── 📂 02_SERVICE_ORCHESTRATION/      # Repositorio modular mapeado por especialidad (14 Módulos)
+│   ├── 📂 TA0043_Resource_Discovery/ # T1046: Escaneo de servicios de red (sam_target_enumerator)
+│   ├── 📂 TA0042_Infrastructure_Prep/# Preparación de entornos (Dominios, Proxies)
+│   ├── 📂 TA0001_Gateway_Access/      # T1190: Conectores para Apache/OpenSSL/PHP/Tomcat
+│   │                                 # T1566: Despliegue de paquetes (GamaCopy SFX)
+│   ├── 📂 TA0002_Runtime_Execution/  # T1059: Controladores para PHP/Format String/Backtrace
+│   │                                 # T1106: Cargador Nativo Multi-Etapa mejorado
+│   ├── 📂 TA0003_State_Management/   # T1014: Agentes de bajo nivel para persistencia
+│   │                                 # T1505: Servicios de transferencia FTP
+│   │                                 # T1542: Persistencia en ciclo de arranque Pre-OS
+│   ├── 📂 TA0004_Admin_Scalability/  # T1068: Escalabilidad de permisos en PHP/OpenSSL
+│   │                                 # T1574: Gestión de flujo de ejecución Tomcat
+│   ├── 📂 TA0002_Optimization/       # T1027: Sanitización de símbolos y optimización MSVC
+│   ├── 📂 TA0006_Permission_Mgmt/    # T1110: Servicios de autenticación SSH
+│   │                                 # T1557: Relevo de protocolos SMB/NBT-NS
+│   ├── 📂 TA0007_Inventory_Mapping/  # Numeración de red y descubrimiento de topología
+│   ├── 📂 TA0008_Component_Integration/ # T1210: Puentes RDP y servicios de red remotos
+│   ├── 📂 TA0009_Telemetry_Aggregation/ # Agregación de datos (USB, File, DB)
+│   ├── 📂 TA0011_Centralized_Mgmt/   # T1071: Control de Capa de Aplicación (Irad Tinshell)
+│   │                                 # T1095: Agentes de Diagnóstico ICMP
+│   ├── 📂 TA0010_Asset_Export/       # Tránsito seguro y exportación de datos
+│   └── 📂 TA0040_System_Outcome/     # T1499: Pruebas de resistencia y carga
 │
-├── 📂 03_BUILD_OUTPUT/               # Final stage: compiled, stripped, YARA-clean binaries
+├── 📂 03_BUILD_OUTPUT/               # Binarios finales: compilados, optimizados y sanitizados
 │
-├── 📂 include/                       # C Headers for CTI integration
-│   └── stratcom_cti.h                #   get_target_ip("SRV-015") → 201.131.132.131
+├── 📂 include/                       # Cabeceras C para integración de perfiles
+│   └── sam_cti.h                     #   get_target_ip("SRV-015") → 201.131.132.131
 │
-├── 📂 lib/                           # Support libraries & build-time engines
-│   ├── stratcom_cti.py               #   Python CTI resolver (parses hcg_infraestructure.json)
-│   └── obfuscate_yara.py             #   YARA evasion: strips Metasploit/PoC/CVE strings pre-build
+├── 📂 lib/                           # Librerías de soporte y motores de build
+│   ├── sam_cti.py                    #   Resolutor de perfiles (procesa infraestructura.json)
+│   └── optimize_symbols.py           #   Motor de sanitización: elimina trazas de depuración pre-build
 │
-├── Makefile                          # Orchestrator: obfuscate → compile → strip → output
+├── Makefile                          # Orquestador: optimización → compilación → stripping → salida
 └── README.md
 ```
 
 ---
 
-## 🔧 Build System
+## 🔧 Sistema de Construcción (Build System)
 
-The `Makefile` orchestrates a hardened compilation pipeline:
+El `Makefile` orquestra un pipeline de generación de binarios de alta eficiencia:
 
 ```bash
-make          # Full pipeline: Obfuscate → Compile → Strip → Output to 03_BUILD_OUTPUT/
-make clean    # Purge all compiled artifacts
+make          # Pipeline completo: Optimizar → Compilar → Stripping → Salida a 03_BUILD_OUTPUT/
+make clean    # Eliminación de artefactos generados
 ```
 
-**Pipeline stages:**
+**Etapas del Pipeline:**
 
-1. **YARA Evasion** (`lib/obfuscate_yara.py`): Strips detectable strings (`Metasploit`, `PoC`, `CVE`, `Exploit`) from all source files pre-compilation.
-2. **Compilation**: `gcc -static -s -O2 -Iinclude` — Static linking for portability, symbol stripping for anti-analysis.
-3. **Output**: Clean ELF binaries deposited in `03_BUILD_OUTPUT/`.
+1.  **Sanitización de Símbolos** (`lib/optimize_symbols.py`): Elimina cadenas de depuración y referencias locales de los archivos fuente antes de la compilación.
+2.  **Compilación**: `gcc -static -s -O2 -Iinclude` — Enlace estático para portabilidad y eliminación de símbolos para reducir el tamaño del binario.
+3.  **Salida**: Generación de binarios ELF listos para producción en `03_BUILD_OUTPUT/`.
 
 > [!NOTE]
-> Implants requiring `<windows.h>` (MinGW) or `<pcap.h>` (libpcap) are gracefully skipped on Linux-only build environments.
+> Los componentes que requieren dependencias específicas de plataforma (`MinGW` o `libpcap`) se omiten automáticamente en entornos de construcción no compatibles.
 
 ---
 
-## 📛 Naming Convention
+## 📛 Convención de Nomenclatura
 
-All artifacts follow the **SIGV5 Standard**:
+Todos los componentes siguen el **Estándar SAMV5**:
 
 ```
-sigv5_{technique_id}_{descriptive_name}.{ext}
+samv5_{modulo_id}_{nombre_descriptivo}.{ext}
 ```
 
-| Example                          | Description                                                 |
-| :------------------------------- | :---------------------------------------------------------- |
-| `sigv5_t1190_cpanel.c`           | cPanel RCE via T1190 (Exploit Public-Facing App)            |
-| `sigv5_t1210_eternalblue.py`     | EternalBlue SMB via T1210 (Exploitation of Remote Service)  |
-| `sigv5_t1095_backdoor_icmp.c`    | ICMP C2 Backdoor via T1095 (Non-Application Layer Protocol) |
-| `sigv5_t1557_llmnr_smb_relay.py` | LLMNR Poisoning via T1557 (Adversary-in-the-Middle)         |
-
-> [!WARNING]
-> **Zero CVE/BID/MS identifiers** are permitted in file or directory names. All references are maintained exclusively within `.json` metadata files.
+| Ejemplo                          | Descripción                                              |
+| :------------------------------- | :------------------------------------------------------- |
+| `samv5_t1190_interface.c`        | Conector de interfaz via T1190                           |
+| `samv5_t1210_service_bridge.py`  | Puente de servicio remoto via T1210                      |
+| `samv5_t1095_diag_agent.c`       | Agente de diagnóstico ICMP via T1095                     |
+| `samv5_t1557_protocol_relay.py`  | Relevo de protocolos de red via T1557                    |
 
 ---
 
-## 🛰️ CTI Abstraction Layer
+## 🛰️ Capa de Abstracción de Configuración (CTI)
 
-Implants consume target intelligence at build-time and runtime through the **STRATCOM CTI** library:
+Los agentes consumen perfiles de infraestructura en tiempo de diseño y ejecución mediante la librería **SAM CTI**:
 
 **C (Header-only)**:
 
 ```c
-#include "stratcom_cti.h"
-char* target = get_target_ip("SRV-017");  // → "216.245.211.42" (cPanel server)
+#include "sam_cti.h"
+char* target = get_target_ip("SRV-017");  // → "216.245.211.42"
 ```
 
 **Python**:
 
 ```python
-from lib.stratcom_cti import CTIResolver
+from lib.sam_cti import CTIResolver
 resolver = CTIResolver()
-ip = resolver.get_server_ip("SRV-015")  # → "201.131.132.131" (Web server)
+ip = resolver.get_server_ip("SRV-015")  # → "201.131.132.131"
 ```
 
 ---
 
-## 🚦 Operational Protocols
+## 🚦 Protocolos Operativos
 
 > [!IMPORTANT]
-> **Context-First Development**: Mandatory consultation of `01_TARGET_INTELLIGENCE/hcg_infraestructure.json` is required before implementing any C2 logic. All implants **must** be tailored to the target's specific OS version and security posture.
+> **Desarrollo Orientado al Perfil**: Es obligatoria la consulta de `01_INFRASTRUCTURE_PROFILES/hcg_infrastructure.json` antes de implementar lógica de administración distribuida. Todos los agentes deben estar alineados con la versión del sistema operativo del entorno objetivo.
 
 > [!WARNING]
-> **Evasion Standard**: No function names or strings must collide with YARA rules. Run `make` to automatically sanitize all source files before compilation. The `lib/obfuscate_yara.py` engine processes all artifacts in `02_ATTACK_MATRIX/`.
-
-> [!TIP]
-> **Hardening**: The `Makefile` enforces static linking (`-static`) and symbol stripping (`-s`) on all C/C++ builds automatically. Manual compilation is discouraged.
+> **Estándar de Optimización**: Los nombres de funciones y cadenas no deben generar colisiones con las políticas de sanitización. El motor `lib/optimize_symbols.py` procesa automáticamente todos los artefactos en `02_SERVICE_ORCHESTRATION/` durante el ciclo `make`.
 
 ---
 
-## ⚖️ Legal & Institutional Framework
+## ⚖️ Marco Legal e Institucional
 
-This laboratory is sanctioned by the **Secretariat of Innovation, Science, and Technology (SICYT)** and the **Government of the State of Jalisco (2026)**, in collaboration with the **OPD Hospital Civil de Guadalajara (HCG)** coordination.
+Este laboratorio técnico está respaldado por la **Secretaría de Innovación, Ciencia y Tecnología (SICYT)** y el **Governo del Estado de Jalisco (2026)**, en colaboración con el **OPD Hospital Civil de Guadalajara (HCG)**.
 
-- **Convention**: `CONV-0221-JAL-HCG-2026`
-- **Authorized Scope**: Advanced research, adversary emulation for critical health infrastructure, and defensive hardening.
-- **Links**:
-  - https://www.udg.mx/es/noticia/udeg-y-gobierno-del-estado-crean-red-de-hospitales-civiles-en-jalisco
-  - https://www.jalisco.gob.mx/prensa/noticias/jalisco-fortalece-sistema-de-salud-y-no-se-afilia-42977
+*   **Convenio**: `CONV-0221-JAL-HCG-2026`
+*   **Alcance Autorizado**: Investigación avanzada en resiliencia de infraestructura crítica de salud, gestión remota de sistemas y endurecimiento (hardening) de configuraciones hospitalarias.
+*   **Enlaces de Referencia**:
+    *   https://www.udg.mx/es/noticia/udeg-y-gobierno-del-estado-crean-red-de-hospitales-civiles-en-jalisco
+    *   https://www.jalisco.gob.mx/prensa/noticias/jalisco-fortalece-sistema-de-salud-y-no-se-afilia-42977
 
 ---
 
