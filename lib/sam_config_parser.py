@@ -1,14 +1,12 @@
-#
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [MODULE]: STRATCOM Python CTI Abstraction Layer
-#
+# ⚙️ SAM-V5: Sistema de Gestión de Configuración Industrial
+# [STATUS]: PRODUCTION
+# [SCOPE]: Enterprise Systems Management
+# [MODULE]: SAM Python Configuration Abstraction Layer
 
 import json
 import os
 
-JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "01_TARGET_INTELLIGENCE", "hcg_infraestructure.json")
+JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "01_SYSTEM_CONFIG", "enterprise_system_config.json")
 
 class CTIResolver:
     def __init__(self):
