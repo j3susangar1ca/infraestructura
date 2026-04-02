@@ -1,0 +1,26 @@
+{
+  "module_id": "TOMCAT-LPE-DEB-V5",
+  "name": "Tomcat Debian/Ubuntu Root Privilege Escalation",
+  "priority": "HIGH",
+  "tactic": "TA0004_Privilege_Escalation",
+  "technique": "T1574.006",
+  "dependencies": ["bash", "gcc"],
+  "targeting_intel": {
+    "os_family": "Linux (Debian/Ubuntu/Derived)",
+    "affected_packages": [
+      "tomcat8 <= 8.0.36-2",
+      "tomcat7 <= 7.0.70-2",
+      "tomcat6 <= 6.0.45"
+    ],
+    "vulnerability": "CVE-2016-1240",
+    "hcg_scenario": "Escalada de privilegios tras compromiso inicial de un servidor web médico basado en Tomcat sobre Ubuntu/Debian legacy."
+  },
+  "execution_config": {
+    "command": "bash CVE_2016_1240_Tomcat_LPE.sh",
+    "usage": "/path/to/catalina.out [-active | -deferred]"
+  },
+  "impact": {
+    "auth_level": "Local (User tomcat)",
+    "action": "Full Root Access"
+  }
+}
