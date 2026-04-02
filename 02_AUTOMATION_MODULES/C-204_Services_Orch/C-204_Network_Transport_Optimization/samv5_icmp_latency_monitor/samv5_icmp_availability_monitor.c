@@ -1,9 +1,9 @@
 /*
- * 🛡️ C4ISR-STRATCOM: SIGINT-V5
- * [CLASSIFIED]: CONFIDENCIAL
- * [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
- * [TACTIC]: TA0011_Command_Control
- * [TECHNIQUE]: T1095_Non_Application_Layer_Protocol
+ * 🛡️ HCG-SYSARCH: SAM-V5
+ * [RESTRICTED]: USO_INTERNO
+ * [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+ * [MODULO]: TA0011_Command_Control
+ * [COMPONENTE]: T1095_Non_Application_Layer_Protocol
  */
 /*
  * ============================================================================

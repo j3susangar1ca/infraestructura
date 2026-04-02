@@ -3,7 +3,7 @@
     "name": "Advanced TINYSHELL Passive STRATCOM_PERSISTENCE (irad-variant)",
     "family": "TINYSHELL Custom Ecosystem",
     "version": "5.0",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "T1071.004 - Application Layer Protocol: ICMP",
       "T1055 - Process Injection (Deployment Phase)",
       "T1562.001 - Impair Defenses: Disable or Modify Tools",
@@ -11,7 +11,7 @@
     ],
     "description": "Implante pasivo de grado estatal basado en libpcap, diseñado para interceptar tráfico ICMP, establecer canales C2 cifrados y proveer persistencia profunda mediante la manipulación directa de la memoria de procesos del sistema."
   },
-  "adversary_emulation": {
+  "infrastructure_diagnostic": {
     "attributed_actor": "UNC3886 (China-Nexus)",
     "reference_report": "Ghost in the Router: China-Nexus Espionage Actor UNC3886 Targets Juniper Routers",
     "tactical_logic": "El actor utiliza STRATCOM_PERSISTENCEs pasivos para minimizar el ruido en la red y mantener acceso a largo plazo en infraestructuras críticas (routers, firewalls, entornos de virtualización) donde los agentes EDR tradicionales no están presentes."

@@ -3,14 +3,14 @@
     "name": "Advanced ICMP Passive STRATCOM_PERSISTENCE (irad-variant)",
     "family": "TINYSHELL Custom Ecosystem",
     "version": "5.0",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "T1071.004 - Application Layer Protocol: ICMP",
       "T1055 - Process Injection (Deployment Phase)",
       "T1562.001 - Impair Defenses: Disable or Modify Tools"
     ],
     "description": "Implante pasivo de capa de red basado en libpcap, diseñado para interceptar tráfico ICMP, establecer sesiones C2 cifradas y proveer shells remotas interactivas evadiendo inspección de puertos."
   },
-  "adversary_emulation": {
+  "infrastructure_diagnostic": {
     "attributed_actor": "UNC3886 (China-Nexus)",
     "primary_targets": "Routers ISP, dispositivos de borde (edge devices), y tecnologías de virtualización (Hyper-V/VMware) que carecen de agentes EDR tradicionales.",
     "operational_focus": "Sigilo extremo, acceso a largo plazo, uso de credenciales legítimas y evasión de subsistemas de integridad (como Veriexec)."

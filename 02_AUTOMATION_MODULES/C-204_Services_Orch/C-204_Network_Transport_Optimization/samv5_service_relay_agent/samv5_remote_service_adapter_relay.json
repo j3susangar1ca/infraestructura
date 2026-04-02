@@ -1,6 +1,6 @@
 {
   "module_id": "SHELL-REVERSE-TCP-WIN32-V5",
-  "name": "Connect Back Shellcode (Win32)",
+  "name": "Connect Back Optimized_Profile (Win32)",
   "priority": "MEDIUM",
   "tactic": "TA0011_Command_Control",
   "technique": "T1095",
@@ -9,11 +9,11 @@
     "os_family": "Windows",
     "affected_versions": ["Windows 2000", "Windows XP", "Windows 2003"],
     "vulnerability": "Reverse Shell Backdoor (Connect Back)",
-    "hcg_scenario": "Payload de shellcode para exploits de desbordamiento de búfer en sistemas Windows heredados, estableciendo una conexión reversa al puerto 53 (default)."
+    "hcg_scenario": "Payload de optimized_profile para diagnostic_adapters de desbordamiento de búfer en sistemas Windows heredados, estableciendo una conexión reversa al puerto 53 (default)."
   },
   "execution_config": {
-    "command": "cl sigv5_t1095_reverse_shell_win32.c /link ws2_32.lib",
-    "usage": "Compilar con MSVC y ejecutar para generar/testear el shellcode de conexión reversa."
+    "command": "cl sigv5_t1095_remote_service_adapter_relay_win32.c /link ws2_32.lib",
+    "usage": "Compilar con MSVC y ejecutar para generar/testear el optimized_profile de conexión reversa."
   },
   "impact": {
     "auth_level": "User-level execution",
