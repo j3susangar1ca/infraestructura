@@ -1,0 +1,32 @@
+{
+  "module_identity": {
+    "name": "Diamorphine Rootkit Signal Privilege Escalation",
+    "technical_alias": "Diamorphine Signal-64 Backdoor",
+    "version": "1.0",
+    "mitre_attack_mappings": [
+      "TA0003.T1014 - Rootkit",
+      "TA0004.T1068 - Exploitation for Privilege Escalation",
+      "TA0005.T1014 - Indicator Removal on Host"
+    ],
+    "description": "Módulo de post-explotación diseñado para interactuar con el rootkit Diamorphine. Utiliza una señal de sistema (64) para instruir al módulo del kernel que otorgue privilegios de root de forma instantánea al proceso actual."
+  },
+  "technical_capabilities": {
+    "exploitation_mechanism": "Envío de la señal definida (default 64) al PID del proceso actual ($$). El rootkit, al estar hookeado en las llamadas al sistema (syscalls), intercepta la señal 'kill' y modifica las credenciales del proceso en la estructura del kernel (task_struct) a UID/GID 0.",
+    "stealth_features": "A diferencia de Reptile que usa un binario externo, Diamorphine usa señales nativas de Linux, lo que lo hace extremadamente difícil de detectar en logs de ejecución de archivos."
+  },
+  "operational_logic": {
+    "check_phase": "Ejecuta 'sh -c kill -64 $$ && id' para verificar si el kernel responde a la señal elevando privilegios. Si el resultado incluye 'uid=0', el rootkit está activo.",
+    "persistence_synergy": "Mantiene la capacidad de escalada incluso si los binarios de administración del sistema (sudo, pkexec) están monitoreados o restringidos."
+  },
+  "targeting_intel": {
+    "ideal_target": "Servidores críticos de la red del HCG donde se ha implantado Diamorphine para ocultar procesos y archivos. Es la herramienta de elección cuando se requiere el máximo sigilo operacional.",
+    "notes": "Si el administrador ha cambiado la señal por defecto durante la compilación de Diamorphine, el parámetro SIGNAL debe ajustarse en el datastore."
+  },
+  "build_instructions": {
+    "language": "Ruby (Metasploit Framework)",
+    "usage": "set SIGNAL 64; set WritableDir /tmp; exploit",
+    "dependencies": [
+      "Rootkit Diamorphine previamente cargado en el kernel objetivo"
+    ]
+  }
+}
