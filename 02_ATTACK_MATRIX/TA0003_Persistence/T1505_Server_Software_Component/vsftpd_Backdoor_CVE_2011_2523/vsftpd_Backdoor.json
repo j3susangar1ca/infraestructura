@@ -1,0 +1,30 @@
+{
+  "module_identity": {
+    "name": "vsftpd 2.3.4 Supply Chain Backdoor",
+    "technical_alias": "Smiley Face Persistence",
+    "version": "1.1",
+    "mitre_attack_mappings": [
+      "TA0003.T1505.003 - Server Software Component",
+      "TA0001.T1190 - Exploit Public-Facing Application",
+      "TA0003.T1195.002 - Supply Chain Compromise"
+    ],
+    "description": "Persistencia pre-implantada en la cadena de suministro de vsftpd 2.3.4. Permite la activación de una shell de root persistente mediante una secuencia de caracteres específica en el protocolo FTP."
+  },
+  "persistence_logic": {
+    "trigger": "Secuencia 'USER :)' que activa un listener oculto en el puerto TCP 6200.",
+    "access_level": "Root (UID 0) inmediato, ya que el servicio vsftpd suele correr con privilegios elevados para manejar el sistema de archivos.",
+    "survivability": "Alta. Al estar integrado en el binario del servicio, la persistencia se mantiene mientras el software no sea reinstalado o parcheado."
+  },
+  "technical_capabilities": {
+    "implementation": "Script en Python 3 que automatiza el 'golpe' en el puerto 21 y la conexión inmediata al puerto 6200 vía Telnet.",
+    "evasion": "La shell no se abre hasta que se envía el disparador, lo que la mantiene invisible para escaneos de puertos convencionales que no interactúen con el servicio FTP."
+  },
+  "targeting_intel": {
+    "ideal_target": "Sistemas críticos del HCG que han quedado congelados en el tiempo por compatibilidad con software médico antiguo o sistemas de transferencia de archivos legacy.",
+    "execution_marker": "Banner de respuesta: '220 (vsFTPd 2.3.4)'."
+  },
+  "build_instructions": {
+    "language": "Python 3",
+    "usage": "python3 vsftpd_exploit.py [target]"
+  }
+}
