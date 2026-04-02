@@ -1,0 +1,22 @@
+{
+  "module_id": "SHELL-BIND-TCP-V5",
+  "name": "Bind Shell TCP (x86/x64 Linux)",
+  "priority": "MEDIUM",
+  "tactic": "TA0011_Command_Control",
+  "technique": "T1095",
+  "dependencies": ["gcc"],
+  "targeting_intel": {
+    "os_family": "Linux",
+    "affected_versions": ["N/A (Shellcode)"],
+    "vulnerability": "Bind Shell Backdoor",
+    "hcg_scenario": "Despliegue de un listener TCP en un puerto específico (default 4444) para acceso remoto mediante shell sploit."
+  },
+  "execution_config": {
+    "command": "gcc -fno-stack-protector -z execstack sigv5_t1095_bind_shell_x86_x64.c -o shell_bind",
+    "usage": "Ejecutar el binario compilado para abrir un bind shell en el puerto 4444."
+  },
+  "impact": {
+    "auth_level": "None (binds to unprivileged port unless root)",
+    "action": "Remote Shell Access"
+  }
+}
