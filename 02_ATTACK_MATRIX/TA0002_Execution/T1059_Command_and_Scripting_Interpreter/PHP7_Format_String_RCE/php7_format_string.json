@@ -1,0 +1,33 @@
+{
+  "module_identity": {
+    "name": "PHP 7.0.0 Class Name Format String Vulnerability",
+    "technical_alias": "PHP 7.0.0 vspprintf Bug",
+    "version": "1.0",
+    "mitre_attack_mappings": [
+      "TA0002.T1059 - Command and Scripting Interpreter",
+      "TA0002.T1203 - Exploitation for Client Execution"
+    ],
+    "description": "Vulnerabilidad de cadena de formato que ocurre cuando PHP 7.0.0 procesa nombres de clases inexistentes, permitiendo la ejecución de código arbitrario al pasar un mensaje de error directamente a una función de formato de cadena sin los especificadores adecuados."
+  },
+  "vulnerability_context": {
+    "affected_version": "PHP 7.0.0 (parcheado en 7.0.1).",
+    "vulnerability_type": "Format String (CWE-134)",
+    "timeline": {
+      "discovered": "2015-12-11",
+      "disclosed": "2015-12-22"
+    }
+  },
+  "technical_capabilities": {
+    "exploitation_method": "Inyección de especificadores de formato (ej. %n, %d) en una cadena asignada a un nombre de clase. Al intentar llamar a un método estático de esa clase inexistente, PHP lanza un error procesando la cadena como formato en zend_throw_or_error.",
+    "memory_primitive": "Permite una primitiva 'write-what-where' controlando los registros RAX (dirección) y RDX (valor) mediante el ajuste de la longitud de la cadena de formato."
+  },
+  "targeting_intel": {
+    "ideal_target": "Servidores del HCG o infraestructuras legacy que utilicen la versión inicial de PHP 7.0.0 sin parches de seguridad, permitiendo el salto de un entorno de script a ejecución de código nativo.",
+    "impact": "Fallo de segmentación (Segfault) inmediato o ejecución de código arbitrario con los privilegios del servidor web."
+  },
+  "build_instructions": {
+    "language": "PHP",
+    "usage": "<?php $name='%n%n%n'; $name::doSomething(); ?>",
+    "notes": "Requiere ajustes de memoria (ini_set('memory_limit', '4G')) para preparar la heap si se busca una explotación controlada de escritura."
+  }
+}
