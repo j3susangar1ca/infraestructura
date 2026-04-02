@@ -1,0 +1,22 @@
+{
+  "module_id": "WIN32-ADMIN-RDP-OBF-V5",
+  "name": "Obfuscated Win32 Admin & RDP Persistence Shellcode",
+  "priority": "CRITICAL",
+  "tactic": "TA0003_Persistence",
+  "technique": "T1136",
+  "dependencies": ["gcc", "windows-target"],
+  "targeting_intel": {
+    "os_family": "Windows",
+    "affected_versions": ["Win7", "Win8", "Win10", "x86"],
+    "vulnerability": "Post-Exploitation Persistence",
+    "hcg_scenario": "Shellcode de 1218 bytes altamente ofuscado que automatiza la persistencia mediante la creación de un usuario administrador (ALI/ALI), habilitación de RDP, desactivación del firewall y configuración del servicio de terminal."
+  },
+  "execution_config": {
+    "command": "gcc sigv5_t1136_win32_admin_rdp_shellcode.c -o sigv5_t1136_win32_admin_rdp_shellcode.exe",
+    "usage": "Compilar para arquitectura x86. Al ejecutarse en un entorno comprometido, el shellcode inyectará los comandos de sistema necesarios para establecer el acceso remoto persistente."
+  },
+  "impact": {
+    "auth_level": "Privileged Execution (Local Admin required for most actions)",
+    "action": "Account Creation & Remote Access Enablement"
+  }
+}
