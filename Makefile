@@ -1,34 +1,34 @@
-# 🛡️ C4ISR-STRATCOM: SIGINT-V5 MAKEFILE
-# Compiles all C implants using Static Linking and Stripping
+# ⚙️ SAM-V5: Sistema de Gestión de Configuración Industrial
+# Compiles all system diagnostic modules using Static Linking
 
 CC = gcc
 CFLAGS = -static -s -O2 -Iinclude -w
 OUT_DIR = 03_BUILD_OUTPUT
-SRC_DIR = 02_ATTACK_MATRIX
+SRC_DIR = 02_AUTOMATION_MODULES
 
 # Find all C files
 SOURCES = $(shell find $(SRC_DIR) -name '*.c')
 # Create target binary names based on their directories
 TARGETS = $(patsubst $(SRC_DIR)/%.c, $(OUT_DIR)/%, $(SOURCES))
 
-all: prebuild obfuscate $(TARGETS) postbuild
+all: prebuild optimize $(TARGETS) postbuild
 
 prebuild:
-	@echo "[*] Initializing STRATCOM Build System..."
+	@echo "[*] Initializing SAM-V5 Configuration Engine..."
 	@mkdir -p $(OUT_DIR)
 
-obfuscate:
-	@echo "[*] Running YARA Evasion Script..."
-	@python3 lib/obfuscate_yara.py
+optimize:
+	@echo "[*] Running Source Code Optimization Engine..."
+	@python3 lib/minify_source.py
 
 # Rule to compile each C file, placing it flat in out dir
 $(OUT_DIR)/%: $(SRC_DIR)/%.c
-	@echo "[+] Compiling and Hardening: $<"
-	@$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$(notdir $@) || echo "[!] Ignored (Requires MinGW or dependencies)"
+	@echo "[+] Compiling and Optimizing: $<"
+	@$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$(notdir $@) || echo "[!] Ignored (Build dependencies missing)"
 
 postbuild:
-	@echo "[*] Build Complete. Artifacts in $(OUT_DIR)/"
+	@echo "[*] Configuration Engine build complete. Artifacts in $(OUT_DIR)/"
 
 clean:
-	@echo "[*] Cleaning up build artifacts..."
+	@echo "[*] Purging generated configuration artifacts..."
 	@rm -rf $(OUT_DIR)/*
