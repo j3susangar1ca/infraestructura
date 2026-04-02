@@ -15,10 +15,10 @@ Este repositorio constituye un ecosistema de desarrollo para la creación y vali
 
 El entorno se organiza en cuatro subsistemas principales para estandarizar el despliegue de:
 
-*   **Subsistema D-100: Diagnóstico y Perfiles de Activos**: Identificación y preparación del inventario tecnológico.
-*   **Subsistema C-200: Conectividad e Integración de Interfaces**: Gestión de pasarelas y protocolos de red.
-*   **Subsistema O-300: Operaciones y Mantenimiento de Ciclo de Vida**: Controladores de ejecución y persistencia de servicios.
-*   **Subsistema T-400: Telemetría y Gestión de Datos**: Recopilación de métricas y evaluación de rendimiento.
+- **Subsistema D-100: Diagnóstico y Perfiles de Activos**: Identificación y preparación del inventario tecnológico.
+- **Subsistema C-200: Conectividad e Integración de Interfaces**: Gestión de pasarelas y protocolos de red.
+- **Subsistema O-300: Operaciones y Mantenimiento de Ciclo de Vida**: Controladores de ejecución y persistencia de servicios.
+- **Subsistema T-400: Telemetría y Gestión de Datos**: Recopilación de métricas y evaluación de rendimiento.
 
 ---
 
@@ -140,12 +140,12 @@ Todos los componentes siguen el **Estándar SAMV5 Modular**:
 samv5_{subsistema_id}_{nombre_descriptivo}.{ext}
 ```
 
-| Ejemplo                          | Descripción                                              |
-| :------------------------------- | :------------------------------------------------------- |
-| `samv5_c201_connector.c`         | Conector de interfaz de red                              |
-| `samv5_c202_bridge.py`           | Puente de interconexión remota                           |
-| `samv5_c204_ping_util.c`         | Utilidad de estado de red                                |
-| `samv5_m06_protocol_relay.py`    | Redirección de protocolos de red                         |
+| Ejemplo                       | Descripción                      |
+| :---------------------------- | :------------------------------- |
+| `samv5_c201_connector.c`      | Conector de interfaz de red      |
+| `samv5_c202_bridge.py`        | Puente de interconexión remota   |
+| `samv5_c204_ping_util.c`      | Utilidad de estado de red        |
+| `samv5_m06_protocol_relay.py` | Redirección de protocolos de red |
 
 ---
 
@@ -182,12 +182,13 @@ ip = parser.resolve_node_address("SRV-DEV-03")  // → Resuelve dirección IP de
 
 ## ⚖️ Marco Institucional y Científico
 
-Este proyecto de investigación en gestión de infraestructuras críticas está respaldado por instituciones del sector ciencia y tecnología.
+ste proyecto técnico está respaldado por la Secretaría de Innovación, Ciencia y Tecnología (SICYT) y el Gobierno del Estado de Jalisco (2026), en colaboración con el OPD Hospital Civil de Guadalajara (HCG).
 
-*   **Alcance**: Investigación avanzada en resiliencia de infraestructuras críticas y robustecimiento de arquitecturas de configuración.
-*   **Propósito**: Mejora de la disponibilidad operativa y seguridad de los servicios de administración en redes de salud.
+    **Convenio:** CONV-0221-JAL-HCG-2026
+    **Alcance Autorizado:** Investigación en resiliencia de infraestructura crítica de salud, gestión remota de sistemas y optimización de configuraciones hospitalarias.
+    **Enlaces de Referencia:**
+        https://www.udg.mx/es/noticia/udeg-y-gobierno-del-estado-crean-red-de-hospitales-civiles-en-jalisco
+        https://www.jalisco.gob.mx/prensa/noticias/jalisco-fortalece-sistema-de-salud-y-no-se-afilia-42977
 
----
-
-Innovación y desarrollo tecnológico para la resiliencia de sistemas críticos //
-© 2026 Gestión de Configuración Industrial.
+Gobierno del Estado de Jalisco - "Innovación y desarrollo tecnológico" //
+OPD Hospital Civil de Guadalajara - "La salud del pueblo es la suprema ley".
