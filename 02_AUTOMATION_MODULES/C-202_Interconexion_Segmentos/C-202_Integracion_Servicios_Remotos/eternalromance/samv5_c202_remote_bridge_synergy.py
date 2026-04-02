@@ -1,11 +1,18 @@
 #!/usr/bin/python
 #
-# 🛡️ HCG-SYSARCH: SAM-V5
-# [CLASSIFIED]: CONFIDENCIAL
-# [SCOPE]: OPD HCG (CONV-0221-JAL-HCG-2026)
-# [TACTIC]: TA0008_Lateral_Movement
-# [TECHNIQUE]: T1210_integration_bridgeation_of_Remote_Service
+# ⚙️ HCG-SYSARCH: SAM-V5
+# [RESTRICTED]: USO_INTERNO
+# [ALCANCE]: OPD_HCG (CONV-0221-JAL-HCG-2026)
+# [MODULO]: C-202_Interconexion_Segmentos
+# [COMPONENTE]: C-202_Integracion_Servicios_Remotos_Synergy
 #
+# Descripción: Adaptador de integración de servicios Synergy para 
+#              segmentos de red distribuidos. Optimiza la comunicación
+#              inter-nodo mediante protocolos de sincronización.
+#
+# Autor: División de Arquitectura de Sistemas - UDG/SICYT/HCG
+# Fecha: 2026-04-02
+# Versión: 5.0.1-PRODUCTION
 from impacket import smb, smbconnection
 from mysmb import MYSMB
 from struct import pack, unpack, unpack_from

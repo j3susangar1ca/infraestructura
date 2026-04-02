@@ -1,9 +1,615 @@
-01_SYSTEM_CONFIG:      directory
-02_AUTOMATION_MODULES: directory
-03_BUILD_OUTPUT:       directory
-include:               directory
-lib:                   directory
-main_framework.py:     Python script, Unicode text, UTF-8 text executable
-Makefile:              makefile script, Unicode text, UTF-8 text
-README.md:             C source, Unicode text, UTF-8 text
-sam_core_framework:    directory
+.:
+total 16K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  174 abr  2 05:11 01_SYSTEM_CONFIG
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  594 abr  2 06:22 02_AUTOMATION_MODULES
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   58 abr  2 00:35 03_BUILD_OUTPUT
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   28 abr  2 00:23 include
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  108 abr  2 05:09 lib
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.2K abr  2 05:10 main_framework.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 05:09 Makefile
+-rw-r--r--. 1 jesuslangarica jesuslangarica 7.8K abr  2 05:14 README.md
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  126 abr  2 03:39 sam_core_framework
+-rw-r--r--. 1 jesuslangarica jesuslangarica    0 abr  2 06:23 t.txt
+
+./01_SYSTEM_CONFIG:
+total 192K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.4K abr  2 05:11 architecture_specification.md
+-rw-r--r--. 1 jesuslangarica jesuslangarica  92K abr  1 17:50 enterprise_system_config.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  94K abr  1 17:52 enterprise_system_status.json
+
+./02_AUTOMATION_MODULES:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 118 abr  2 05:11 C-201_Gateway_Connectors
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  70 abr  2 06:22 C-202_Interconexion_Segmentos
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 112 abr  2 05:11 C-204_Services_Orch
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  42 abr  2 05:11 D-101_Node_Discovery
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  52 abr  2 01:01 D-102_Env_Prep
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  74 abr  2 00:56 D-103_Inventory_Discovery
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  92 abr  2 00:31 M06_Access_Protocol
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 110 abr  1 22:02 O-301_Component_Proc
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 166 abr  2 03:03 O-302_Continuity_Drivers
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 130 abr  2 00:03 O-303_Hierarchy_Mgmt
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 102 abr  2 03:16 O-304_Build_Optimization
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  82 abr  2 05:11 T-401_Metrics_Agg
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  46 abr  2 05:11 T-402_Sec_Data_Export
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  48 abr  2 05:11 T-403_Load_Evaluation
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 470 abr  2 01:38 interface_diagnostic
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  46 abr  2 01:39 T1189_Drive_By_Compromise
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  40 abr  2 00:35 T1566_Phishing
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 278 abr  2 00:36 apache
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 124 abr  2 00:34 awstats_unc_rce
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 148 abr  2 01:38 cisco_asa_extrabacon
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 172 abr  2 01:22 class_scheduling_system_xss
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  86 abr  2 00:34 cpanel_rce
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 116 abr  2 01:28 drupalgeddon2
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 122 abr  2 00:34 openssl_asn1_bruteforce
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 170 abr  2 01:02 openssl_ocsp
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 182 abr  2 01:06 openssl_padding_oracle
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 114 abr  2 00:36 openssl_sslv2
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 132 abr  2 00:34 php_wddx
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 116 abr  2 00:34 plumecms_sqli
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 176 abr  2 01:23 stock_management_system_csrf
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 136 abr  2 00:36 tomcat
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 128 abr  2 00:34 tomcat_ajp_ghostcat
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/apache:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.6K abr  2 00:26 sigv5_t1190_apache.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.7K abr  2 00:26 sigv5_t1190_apache_path_traversal.json
+-rwxr-xr-x. 1 jesuslangarica jesuslangarica  916 abr  2 00:26 sigv5_t1190_apache_path_traversal.sh
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.4K abr  2 00:35 sigv5_t1190_apache.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica  837 abr  2 00:35 sigv5_t1190_apache.sh
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/awstats_unc_rce:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  869 abr  2 00:06 sigv5_t1190_awstats_unc_rce.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1020 abr  2 00:35 sigv5_t1190_awstats_unc_rce.py
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/cisco_asa_extrabacon:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  898 abr  2 01:38 sigv5_t1190_cisco_asa_extrabacon.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.3K abr  2 01:38 sigv5_t1190_cisco_asa_extrabacon.nasm
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/class_scheduling_system_xss:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  855 abr  2 01:22 sigv5_t1190_class_scheduling_system_xss.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.8K abr  2 01:22 sigv5_t1190_class_scheduling_system_xss.py
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/cpanel_rce:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.3K abr  2 00:35 sigv5_t1190_cpanel.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica  428 abr  2 00:26 sigv5_t1190_cpanel.json
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/drupalgeddon2:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 960 abr  2 01:28 sigv5_t1190_drupalgeddon2.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 13K abr  2 01:27 sigv5_t1190_drupalgeddon2.rb
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/openssl_asn1_bruteforce:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 9.2K abr  2 00:35 sigv5_t1190_asn1_bruteforce.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.9K abr  2 00:26 sigv5_t1190_asn1_bruteforce.json
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/openssl_ocsp:
+total 28K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   96 abr  2 01:02 __pycache__
+-rw-r--r--. 1 jesuslangarica jesuslangarica  17K abr  2 00:59 sigv5_t1190_openssl_ocsp_exploit.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.7K abr  2 00:26 sigv5_t1190_poc.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  497 abr  1 21:53 sigv5_t1190_poc.txt
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/openssl_ocsp/__pycache__:
+total 24K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 22K abr  2 01:02 sigv5_t1190_openssl_ocsp_exploit.cpython-314.pyc
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/openssl_padding_oracle:
+total 36K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  25K abr  2 01:06 sigv5_t1190_rsa_buffer_overflow.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.0K abr  2 00:26 sigv5_t1190_rsa_overflow.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.3K abr  1 21:49 sigv5_t1190_rsa_overflow.xml
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/openssl_sslv2:
+total 40K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  35K abr  2 00:35 sigv5_t1190_openssl_sslv2.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.1K abr  2 00:26 sigv5_t1190_openssl_sslv2.json
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/php_wddx:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.6K abr  1 22:00 sigv5_t1190_repro2.wddx
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.7K abr  2 00:26 sigv5_t1190_repro.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.3K abr  1 22:00 sigv5_t1190_repro.php
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/plumecms_sqli:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  833 abr  2 00:26 sigv5_t1190_plumecms_sqli.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.6K abr  2 00:35 sigv5_t1190_plumecms_sqli.py
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/stock_management_system_csrf:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  892 abr  2 01:23 sigv5_t1190_stock_management_system_csrf.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.6K abr  2 01:23 sigv5_t1190_stock_management_system_csrf.py
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/tomcat:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.4K abr  2 00:26 sigv5_tomcat_tomcat.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.9K abr  2 00:35 sigv5_tomcat_tomcat.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.3K abr  2 00:35 sigv5_tomcat_tomcat.rb
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/interface_diagnostic/tomcat_ajp_ghostcat:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 898 abr  2 00:01 sigv5_tomcat_tomcat_ghostcat.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 11K abr  2 00:35 sigv5_tomcat_tomcat_ghostcat.py
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/T1189_Drive_By_Compromise:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 156 abr  2 01:40 win32_dl_exec_generator
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/T1189_Drive_By_Compromise/win32_dl_exec_generator:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  975 abr  2 01:40 sigv5_t1189_win32_dl_exec_generator.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.1K abr  2 01:40 sigv5_t1189_win32_dl_exec_generator.pl
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/T1566_Phishing:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 228 abr  2 00:34 gamacopy_sfx_dropper
+
+./02_AUTOMATION_MODULES/C-201_Gateway_Connectors/T1566_Phishing/gamacopy_sfx_dropper:
+total 32K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.2K abr  1 21:04 sigv5_t1566_gamacopy_install_script.bat
+-rw-r--r--. 1 jesuslangarica jesuslangarica  23K abr  2 00:35 sigv5_t1566_gamacopy_sfx_installer.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.6K abr  1 21:07 sigv5_t1566_gamacopy_sfx_installer.json
+
+./02_AUTOMATION_MODULES/C-202_Interconexion_Segmentos:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 74 abr  2 00:35 C-202_Integracion_Servicios_Remotos
+
+./02_AUTOMATION_MODULES/C-202_Interconexion_Segmentos/C-202_Integracion_Servicios_Remotos:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 112 abr  2 06:22 eternalblue
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 144 abr  2 06:23 eternalromance
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 112 abr  2 00:36 rdp_bluekeep
+
+./02_AUTOMATION_MODULES/C-202_Interconexion_Segmentos/C-202_Integracion_Servicios_Remotos/eternalblue:
+total 32K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 947 abr  2 06:22 samv5_c202_remote_bridge.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 27K abr  2 06:22 samv5_c202_remote_bridge.py
+
+./02_AUTOMATION_MODULES/C-202_Interconexion_Segmentos/C-202_Integracion_Servicios_Remotos/eternalromance:
+total 48K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 00:26 samv5_c202_remote_bridge_synergy.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  41K abr  2 06:23 samv5_c202_remote_bridge_synergy.py
+
+./02_AUTOMATION_MODULES/C-202_Interconexion_Segmentos/C-202_Integracion_Servicios_Remotos/rdp_bluekeep:
+total 44K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 998 abr  2 00:26 sigv5_t1210_rdp_bluekeep.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 40K abr  2 00:35 sigv5_t1210_rdp_bluekeep.rb
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  16 abr  2 00:35 standard_application_protocols
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 128 abr  2 05:11 transport_level_management
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/standard_application_protocols:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 114 abr  2 00:34 unc3irad
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/standard_application_protocols/unc3irad:
+total 52K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  47K abr  2 00:35 sigv5_t1071_tinshell_irad.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.0K abr  2 00:26 sigv5_t1071_tinshell_irad.json
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/transport_level_management:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 114 abr  2 00:34 icmp_latency_monitor
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 134 abr  2 01:34 remote_service_bridge_x64
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 138 abr  2 01:37 service_relay_agent
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/transport_level_management/icmp_latency_monitor:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  14K abr  2 00:35 sigv5_t1095_backdoor_icmp.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.9K abr  2 00:26 sigv5_t1095_backdoor_icmp.json
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/transport_level_management/remote_service_bridge_x64:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.8K abr  2 01:34 sigv5_t1095_bind_shell_x86_x64.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica  817 abr  2 01:34 sigv5_t1095_bind_shell_x86_x64.json
+
+./02_AUTOMATION_MODULES/C-204_Services_Orch/transport_level_management/service_relay_agent:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 15K abr  2 01:37 sigv5_t1095_reverse_shell_win32.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 884 abr  2 01:37 sigv5_t1095_reverse_shell_win32.json
+
+./02_AUTOMATION_MODULES/D-101_Node_Discovery:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 42 abr  2 00:34 network_profile_audit
+
+./02_AUTOMATION_MODULES/D-101_Node_Discovery/network_profile_audit:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 248 abr  2 00:34 hcg_target_enumerator
+
+./02_AUTOMATION_MODULES/D-101_Node_Discovery/network_profile_audit/hcg_target_enumerator:
+total 864K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  656 abr  1 21:10 sigv5_t1046_hcgenum_report.txt
+-rwxr-xr-x. 1 jesuslangarica jesuslangarica 833K abr  1 21:10 sigv5_t1046_hcg_smb_ldap_enum
+-rw-r--r--. 1 jesuslangarica jesuslangarica  19K abr  2 00:35 sigv5_t1046_hcg_smb_ldap_enum.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.9K abr  1 21:10 sigv5_t1046_hcg_smb_ldap_enum.json
+
+./02_AUTOMATION_MODULES/D-102_Env_Prep:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 150 abr  2 01:02 T1587_Develop_Capabilities
+
+./02_AUTOMATION_MODULES/D-102_Env_Prep/T1587_Develop_Capabilities:
+total 16K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   88 abr  2 01:02 __pycache__
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.0K abr  2 01:02 sigv5_t1587_payload_compiler.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  11K abr  2 01:01 sigv5_t1587_payload_compiler.py
+
+./02_AUTOMATION_MODULES/D-102_Env_Prep/T1587_Develop_Capabilities/__pycache__:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 15K abr  2 01:02 sigv5_t1587_payload_compiler.cpython-314.pyc
+
+./02_AUTOMATION_MODULES/D-103_Inventory_Discovery:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 162 abr  2 01:02 T1016_System_Network_Config_Discovery
+
+./02_AUTOMATION_MODULES/D-103_Inventory_Discovery/T1016_System_Network_Config_Discovery:
+total 36K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   94 abr  2 01:02 __pycache__
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.6K abr  2 00:58 sigv5_t1016_net_topology_mapper.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  29K abr  2 00:56 sigv5_t1016_net_topology_mapper.py
+
+./02_AUTOMATION_MODULES/D-103_Inventory_Discovery/T1016_System_Network_Config_Discovery/__pycache__:
+total 48K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 46K abr  2 01:02 sigv5_t1016_net_topology_mapper.cpython-314.pyc
+
+./02_AUTOMATION_MODULES/M06_Access_Protocol:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  20 abr  2 00:35 T1110_Brute_Force
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 124 abr  2 00:36 T1557_Adversary_in_the_Middle
+
+./02_AUTOMATION_MODULES/M06_Access_Protocol/T1110_Brute_Force:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 176 abr  2 01:08 debian_ssh
+
+./02_AUTOMATION_MODULES/M06_Access_Protocol/T1110_Brute_Force/debian_ssh:
+total 32K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  22K abr  2 01:08 sigv5_t1110_debian_ssh_bruteforce.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.7K abr  2 00:26 sigv5_t1110_debian_ssh.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.8K abr  1 21:52 sigv5_t1110_debian_ssh.pl
+
+./02_AUTOMATION_MODULES/M06_Access_Protocol/T1557_Adversary_in_the_Middle:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  632 abr  1 23:02 sigv5_t1557_llmnr_smb_relay.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.0K abr  2 00:35 sigv5_t1557_llmnr_smb_relay.py
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 196 abr  2 03:20 T1059_Command_and_Scripting_Interpreter
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  52 abr  2 00:35 T1106_Native_API
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 138 abr  2 00:34 detele_ipc_wrapper
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 166 abr  2 03:21 mips_linux_port_bind_shell
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 138 abr  2 00:34 php7_backtrace_uaf
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 138 abr  2 00:34 php7_format_string_rce
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 126 abr  2 00:34 php_uaf_bypass
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter/detele_ipc_wrapper:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  16K abr  2 00:35 sigv5_t1059_wrapper_pipe_server.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.8K abr  2 00:26 sigv5_t1059_wrapper_pipe_server.json
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter/mips_linux_port_bind_shell:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.7K abr  2 03:20 sigv5_t1059_mips_linux_port_bind_shell.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.3K abr  2 03:21 sigv5_t1059_mips_linux_port_bind_shell.json
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter/php7_backtrace_uaf:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.0K abr  2 00:26 sigv5_t1059_php7_backtrace_uaf.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.9K abr  1 22:05 sigv5_t1059_php7_backtrace_uaf.php
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter/php7_format_string_rce:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.0K abr  2 00:26 sigv5_t1059_php7_format_string.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.2K abr  1 22:06 sigv5_t1059_php7_format_string.php
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1059_Command_and_Scripting_Interpreter/php_uaf_bypass:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.9K abr  2 00:26 sigv5_t1059_php7_uaf_bypass.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 7.6K abr  1 22:03 sigv5_t1059_php7_uaf_bypass.php
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1106_Native_API:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 150 abr  2 00:34 enhanced_multistage_loader
+
+./02_AUTOMATION_MODULES/O-301_Component_Proc/T1106_Native_API/enhanced_multistage_loader:
+total 68K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  63K abr  2 00:35 sigv5_t1106_enhanced_native_loader.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.5K abr  2 00:26 sigv5_t1106_enhanced_native_loader.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  84 abr  2 00:35 T1014_Rootkit
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 246 abr  2 03:22 T1136_Account_Creation
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 126 abr  2 03:18 T1505_Server_Software_Component
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  64 abr  2 00:35 T1542_Pre_OS_Boot
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1014_Rootkit:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 124 abr  2 00:34 diamorphine_signal_lpe
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 108 abr  2 00:34 reptile_lpe_backdoor
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1014_Rootkit/diamorphine_signal_lpe:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.3K abr  2 00:26 sigv5_t1014_diamorphine_lpe.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.8K abr  2 00:35 sigv5_t1014_diamorphine_lpe.rb
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1014_Rootkit/reptile_lpe_backdoor:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.1K abr  2 00:26 sigv5_t1014_reptile_lpe.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.1K abr  2 00:35 sigv5_t1014_reptile_lpe.rb
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 158 abr  2 03:22 mips_linux_add_root_user
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 162 abr  2 03:03 win32_admin_rdp_shellcode
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 178 abr  2 03:07 win32_msvcrt_system_rdp_admin
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 162 abr  2 03:05 win64_admin_rdp_shellcode
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 142 abr  2 03:09 win64_boku_rdp_admin
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation/mips_linux_add_root_user:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.5K abr  2 03:22 sigv5_t1136_mips_linux_add_root_user.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.2K abr  2 03:22 sigv5_t1136_mips_linux_add_root_user.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation/win32_admin_rdp_shellcode:
+total 32K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  26K abr  2 03:03 sigv5_t1136_win32_admin_rdp_shellcode.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.2K abr  2 03:03 sigv5_t1136_win32_admin_rdp_shellcode.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation/win32_msvcrt_system_rdp_admin:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  13K abr  2 03:07 sigv5_t1136_win32_msvcrt_system_rdp_admin.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 03:07 sigv5_t1136_win32_msvcrt_system_rdp_admin.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation/win64_admin_rdp_shellcode:
+total 28K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  24K abr  2 03:05 sigv5_t1136_win64_admin_rdp_shellcode.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.2K abr  2 03:05 sigv5_t1136_win64_admin_rdp_shellcode.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1136_Account_Creation/win64_boku_rdp_admin:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 9.4K abr  2 03:09 sigv5_t1136_win64_boku_rdp_admin.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1009 abr  2 03:09 sigv5_t1136_win64_boku_rdp_admin.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1505_Server_Software_Component:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 154 abr  2 03:19 linux_html_php_injector
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 162 abr  2 03:14 linux_php_webshell_writer
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 124 abr  2 00:34 vsftpd_backdoor
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1505_Server_Software_Component/linux_html_php_injector:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.5K abr  2 03:18 sigv5_t1505_linux_html_php_injector.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.3K abr  2 03:19 sigv5_t1505_linux_html_php_injector.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1505_Server_Software_Component/linux_php_webshell_writer:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.4K abr  2 03:14 sigv5_t1505_linux_php_webshell_writer.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.2K abr  2 03:14 sigv5_t1505_linux_php_webshell_writer.json
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1505_Server_Software_Component/vsftpd_backdoor:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.8K abr  2 00:26 sigv5_t1505_vsftpd_backdoor.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.3K abr  2 00:35 sigv5_t1505_vsftpd_backdoor.py
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1542_Pre_OS_Boot:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 106 abr  2 00:34 bios_keyboard_buffer_persistence
+
+./02_AUTOMATION_MODULES/O-302_Continuity_Drivers/T1542_Pre_OS_Boot/bios_keyboard_buffer_persistence:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.5K abr  2 00:35 sigv5_t1542_bios_bumper.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.9K abr  2 00:26 sigv5_t1542_bios_bumper.json
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 104 abr  2 01:25 T1068_Exploitation_for_Priv_Escalation
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  34 abr  2 00:35 T1574_Hijack_Execution_Flow
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1068_Exploitation_for_Priv_Escalation:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  90 abr  2 00:36 apache
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 126 abr  2 00:34 apache_php_openssl_exploit
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 196 abr  2 01:26 pwnkit_cve_2021_4034
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1068_Exploitation_for_Priv_Escalation/apache:
+total 28K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.2K abr  2 00:26 sigv5_t1068_apache.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  23K ene 25 22:14 sigv5_t1068_apache.php
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1068_Exploitation_for_Priv_Escalation/apache_php_openssl_exploit:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.1K abr  2 00:26 sigv5_t1068_php_openssl_uaf.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 9.0K abr  1 21:47 sigv5_t1068_php_openssl_uaf.php
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1068_Exploitation_for_Priv_Escalation/pwnkit_cve_2021_4034:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica  183 abr  2 01:25 evil-so.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica  614 abr  2 01:26 exploit.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica  148 abr  2 01:25 Makefile
+-rw-r--r--. 1 jesuslangarica jesuslangarica  809 abr  2 01:26 sigv5_t1068_pwnkit_cve_2021_4034.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.0K abr  2 01:26 sigv5_t1068_pwnkit_cve_2021_4034.py
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1574_Hijack_Execution_Flow:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 108 abr  2 00:34 tomcat_debian_lpe
+
+./02_AUTOMATION_MODULES/O-303_Hierarchy_Mgmt/T1574_Hijack_Execution_Flow/tomcat_debian_lpe:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 835 abr  2 00:03 sigv5_tomcat_tomcat_lpe.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 15K abr  2 00:35 sigv5_tomcat_tomcat_lpe.sh
+
+./02_AUTOMATION_MODULES/O-304_Build_Optimization:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 44 abr  2 00:35 T1027_Obfuscated_Files_or_Info
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 50 abr  2 03:16 T1562_Impair_Defenses
+
+./02_AUTOMATION_MODULES/O-304_Build_Optimization/T1027_Obfuscated_Files_or_Info:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 132 abr  2 00:34 msvc_runtime_lifecycle
+
+./02_AUTOMATION_MODULES/O-304_Build_Optimization/T1027_Obfuscated_Files_or_Info/msvc_runtime_lifecycle:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 7.5K abr  1 20:12 sigv5_t1027_runtime_lifecycle.cp
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.8K abr  2 00:26 sigv5_t1027_runtime_lifecycle.json
+
+./02_AUTOMATION_MODULES/O-304_Build_Optimization/T1562_Impair_Defenses:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 162 abr  2 03:17 win32_firewall_except_445
+
+./02_AUTOMATION_MODULES/O-304_Build_Optimization/T1562_Impair_Defenses/win32_firewall_except_445:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.7K abr  2 03:16 sigv5_t1562_win32_firewall_except_445.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica  966 abr  2 03:17 sigv5_t1562_win32_firewall_except_445.json
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica  92 abr  2 05:11 input_profiling
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 142 abr  2 01:02 T1119_Automated_Collection
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg/input_profiling:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 138 abr  2 03:13 win32_diagnostic_input
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 158 abr  2 03:10 win32_nullfree_keylogger
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg/input_profiling/win32_diagnostic_input:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.7K abr  2 03:12 sigv5_t1056_win32_udp_keylogger.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 03:13 sigv5_t1056_win32_udp_keylogger.json
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg/input_profiling/win32_nullfree_keylogger:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.1K abr  2 03:10 sigv5_t1056_win32_nullfree_keylogger.c
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 03:10 sigv5_t1056_win32_nullfree_keylogger.json
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg/T1119_Automated_Collection:
+total 24K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   84 abr  2 01:02 __pycache__
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.9K abr  2 01:00 sigv5_t1119_data_harvester.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica  17K abr  2 01:00 sigv5_t1119_data_harvester.py
+
+./02_AUTOMATION_MODULES/T-401_Metrics_Agg/T1119_Automated_Collection/__pycache__:
+total 24K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 23K abr  2 01:02 sigv5_t1119_data_harvester.cpython-314.pyc
+
+./02_AUTOMATION_MODULES/T-402_Sec_Data_Export:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 150 abr  2 01:02 alternative_data_export
+
+./02_AUTOMATION_MODULES/T-402_Sec_Data_Export/alternative_data_export:
+total 16K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   88 abr  2 01:02 __pycache__
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.8K abr  2 01:01 sigv5_t1048_dns_exfil_tunnel.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 8.8K abr  2 01:01 sigv5_t1048_dns_exfil_tunnel.py
+
+./02_AUTOMATION_MODULES/T-402_Sec_Data_Export/alternative_data_export/__pycache__:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 13K abr  2 01:02 sigv5_t1048_dns_exfil_tunnel.cpython-314.pyc
+
+./02_AUTOMATION_MODULES/T-403_Load_Evaluation:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 112 abr  2 00:36 service_load_stress_test
+
+./02_AUTOMATION_MODULES/T-403_Load_Evaluation/service_load_stress_test:
+total 56K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 871 abr  2 00:26 sigv5_t1499_dos_bluekeep.json
+-rw-r--r--. 1 jesuslangarica jesuslangarica 51K abr  2 00:35 sigv5_t1499_dos_bluekeep.rb
+
+./03_BUILD_OUTPUT:
+total 920K
+-rwxr-xr-x. 1 jesuslangarica jesuslangarica 917K abr  2 00:35 sigv5_t1046_hcg_smb_ldap_enum
+
+./include:
+total 4.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 876 abr  2 00:23 stratcom_cti.h
+
+./lib:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.5K abr  2 00:24 minify_source.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.1K abr  2 05:10 sam_config_parser.py
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   62 abr  2 05:10 sam_core_framework
+
+./lib/sam_core_framework:
+total 0
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 64 abr  2 03:36 core
+-rw-r--r--. 1 jesuslangarica jesuslangarica  0 abr  2 03:35 __init__.py
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 60 abr  2 03:36 modules
+drwxr-xr-x. 1 jesuslangarica jesuslangarica 52 abr  2 03:36 protocols
+
+./lib/sam_core_framework/core:
+total 12K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.4K abr  2 05:11 dag.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica    0 abr  2 03:35 __init__.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 5.3K abr  2 03:35 orchestrator.py
+
+./lib/sam_core_framework/modules:
+total 8.0K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 2.8K abr  2 03:36 evasion.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 3.9K abr  2 03:36 fuzzer.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica    0 abr  2 03:35 __init__.py
+
+./lib/sam_core_framework/protocols:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.3K abr  2 03:36 ajp13.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica    0 abr  2 03:35 __init__.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 4.2K abr  2 03:36 ldap.py
+
+./sam_core_framework:
+total 4.0K
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   52 abr  2 03:39 analysis
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   50 abr  2 03:39 cracking
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   40 abr  2 03:39 evasion
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   40 abr  2 03:39 fuzzing
+-rw-r--r--. 1 jesuslangarica jesuslangarica 1.2K abr  2 03:39 __init__.py
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   36 abr  2 03:39 orchestration
+drwxr-xr-x. 1 jesuslangarica jesuslangarica   64 abr  2 03:39 protocols
+
+./sam_core_framework/analysis:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 14K abr  2 03:39 differential.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 123 abr  2 03:39 __init__.py
+
+./sam_core_framework/cracking:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 13K abr  2 03:39 distributed.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 126 abr  2 03:39 __init__.py
+
+./sam_core_framework/evasion:
+total 16K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 11K abr  2 03:39 engine.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 110 abr  2 03:39 __init__.py
+
+./sam_core_framework/fuzzing:
+total 20K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 14K abr  2 03:39 engine.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 136 abr  2 03:39 __init__.py
+
+./sam_core_framework/orchestration:
+total 28K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 21K abr  2 03:39 core.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 286 abr  2 03:39 __init__.py
+
+./sam_core_framework/protocols:
+total 52K
+-rw-r--r--. 1 jesuslangarica jesuslangarica 15K abr  2 03:39 ajp13.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 387 abr  2 03:39 __init__.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 20K abr  2 03:39 ldap.py
+-rw-r--r--. 1 jesuslangarica jesuslangarica 12K abr  2 03:39 smb.py

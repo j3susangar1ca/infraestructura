@@ -1,36 +1,27 @@
 {
-  "module_id": "CVE_2017_0143",
-  "name": "MS17-010 EternalRomance/Synergy Kernel STRATCOM_PAYLOAD",
-  "version": "5.0",
-  "tactic": "TA0008_Lateral_Movement",
-  "technique": "T1210_STRATCOM_PAYLOADation_of_Public_Facing_App",
-  "priority": "HIGH",
+  "module_id": "SAM-REF-2017-0143",
+  "name": "Remote Service Bridge Synergy Adapter (SMB-ER)",
+  "domain": "C-202_Interconexion_Segmentos",
+  "sam_component_id": "C-202_Integracion_Servicios_Remotos_Synergy",
+  "priority": "HIGH_AVAILABILITY",
   "dependencies": ["impacket", "mysmb"],
-  "targeting_intel": {
+  "system_requirements": {
     "os_family": "Windows",
-    "supported_versions": [
-      "XP",
-      "2003",
-      "7",
-      "2008",
-      "2012",
-      "2016",
-      "10_Legacy"
-    ],
-    "vulnerability": "MS17-010 / CVE-2017-0143",
-    "hcg_scenario": "Servidores de almacenamiento DICOM y terminales de consulta con SMBv1 activo en redes segmentadas de medicina interna."
+    "supported_versions": ["XP", "2003", "7", "2008", "2012", "2016", "10_Legacy"],
+    "boundary_condition": "REF-SYS-MS17-010 / REF-SYS-2017-0143",
+    "hcg_scenario": "Servidores de almacenamiento DICOM y terminales de consulta legadas en redes segmentadas de medicina interna."
   },
   "execution_config": {
-    "command": "python2 CVE_2017_0143_SMB_Romance.py",
-    "flags": {
-      "target": "<TARGET_IP>",
-      "pipe": "<NAMED_PIPE>"
+    "command": "python2 samv5_c202_remote_bridge_synergy.py",
+    "parameters": {
+      "host": "<REMOTE_NODE_IP>",
+      "pipe": "<NAMED_PIPE_CONTEXT>"
     },
-    "default_pipes": ["browser", "spoolss", "netlogon", "lsarpc", "samr"]
+    "default_contexts": ["browser", "spoolss", "netlogon", "lsarpc", "samr"]
   },
-  "impact": {
-    "auth_level": "SYSTEM",
-    "stability": "HIGH (Matched Pairs Alignment)",
-    "action": "Remote Kernel Read/Write & Arbitrary Code Execution"
+  "stability_metrics": {
+    "auth_level": "SYSTEM_INTEGRATION",
+    "alignment_stability": "OPTIMIZED (Matched Pairs Alignment)",
+    "integration_mode": "Remote Service Read/Write & Data Synchronization"
   }
 }
