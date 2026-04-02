@@ -3,14 +3,14 @@
     "name": "MSVC Runtime Lifecycle Reconstruction",
     "family": "Advanced Evasion Utilities",
     "version": "5.0",
-    "mitre_attack_mappings": [
+    "compliance_ref": [
       "T1027.007 - Obfuscated Files or Information: Stripped Payloads",
       "T1562.001 - Impair Defenses: Disable or Modify Tools",
       "T1106 - Native API"
     ],
     "description": "Módulo de bajo nivel diseñado para la reconstrucción de estructuras de control de flujo de C++ (vtables) y la interceptación de manejadores de terminación (atexit), facilitando una salida limpia del proceso y dificultando el análisis forense de memoria post-ejecución."
   },
-  "adversary_emulation": {
+  "infrastructure_diagnostic": {
     "attributed_actor": "Unknown / High-Sophistication Developer ",
     "tactical_logic": "Evitar la detección por comportamiento mediante la restauración manual de estructuras de la biblioteca estándar (STL) antes de que las herramientas de monitoreo inspeccionen el proceso al finalizar."
   },
@@ -30,7 +30,7 @@
   },
   "detection_and_evasion": {
     "logic": "Al restaurar las vtables originales de la biblioteca estándar (std::basic_filebuf::vftable) antes de cerrar los manejadores, el código neutraliza la posibilidad de detectar ganchos (hooks) de funciones en el momento del cierre.",
-    "obfuscation_targets": [
+    "build_optimization_targets": [
       "InvokeAtexitHandlers",
       "DestroyGlobalOstream",
       "AcquireStreamHandle"
