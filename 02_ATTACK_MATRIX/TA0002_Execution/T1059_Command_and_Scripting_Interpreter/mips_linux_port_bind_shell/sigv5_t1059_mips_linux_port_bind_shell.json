@@ -1,0 +1,22 @@
+{
+  "module_id": "MIPS-LINUX-PORT-BIND-SHELL-V5",
+  "name": "MIPS Linux Port Bind Shellcode (Port 4919/0x1337)",
+  "priority": "HIGH",
+  "tactic": "TA0002_Execution",
+  "technique": "T1059",
+  "dependencies": ["gcc-mips", "linux-target", "mips-little-endian"],
+  "targeting_intel": {
+    "os_family": "Linux",
+    "affected_versions": ["MIPS Little-Endian (e.g., DD-WRT routers, IoT devices)"],
+    "vulnerability": "Remote Command Execution / Shell Access",
+    "hcg_scenario": "Shellcode de 276 bytes diseñado para dispositivos MIPS Little-Endian (como enrutadores Linksys o sistemas embebidos DD-WRT). Abre un listener en el puerto 4919 (0x1337) y al recibir conexión, ejecuta /bin/sh proporcionando acceso remoto a la línea de comandos."
+  },
+  "execution_config": {
+    "command": "mipsel-linux-gnu-gcc sigv5_t1059_mips_linux_port_bind_shell.c -o sigv5_t1059_mips_linux_port_bind_shell_mips",
+    "usage": "Requiere compilación cruzada para MIPS Little-Endian (`mipsel`). Una vez ejecutado en el dispositivo víctima (por ejemplo, a través de explotación de memoria), el atacante puede conectarse usando: nc <target_ip> 4919"
+  },
+  "impact": {
+    "auth_level": "Context of the exploited process (often root on IoT)",
+    "action": "Unauthenticated Remote Shell Access (Execution)"
+  }
+}
