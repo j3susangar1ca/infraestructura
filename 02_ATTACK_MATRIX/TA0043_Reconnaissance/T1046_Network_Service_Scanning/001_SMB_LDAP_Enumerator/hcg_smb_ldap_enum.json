@@ -1,0 +1,110 @@
+{
+  "technique_id": "T1046",
+  "technique_name": "Network Service Scanning",
+  "tactic": "TA0043 - Reconnaissance",
+  "subtechnique_of": null,
+  "description": "Scanning for SMB shares and LDAP services on HCG infrastructure targets identified in intelligence files.",
+  "platforms": ["Windows", "Linux"],
+  "permissions_required": ["User"],
+  "data_sources": ["Network Traffic", "Process Creation"],
+  "targets": {
+    "infrastructure": "Hospital Civil de Guadalajara (HCG)",
+    "domain": "opd-hcg.org",
+    "primary_targets": [
+      {
+        "ip": "10.2.1.1",
+        "hostname": "srv-opd-hcg-org",
+        "roles": ["Domain Controller", "DNS Server", "LDAP Server"],
+        "ports": [53, 88, 135, 389, 445, 636, 3268, 3269],
+        "risk_level": "CRITICAL",
+        "intelligence_source": "hcg_infraestructure.json"
+      },
+      {
+        "ip": "10.2.1.92",
+        "hostname": "srv-smb",
+        "roles": ["File Server"],
+        "ports": [139, 445],
+        "share_count": 37,
+        "risk_level": "CRITICAL",
+        "intelligence_source": "hcg_infraestructure.json"
+      },
+      {
+        "ip": "10.2.1.140",
+        "hostname": "srv-expediente",
+        "roles": ["Clinical Records", "Intranet", "Employee Portal"],
+        "ports": [80, 443, 3389, 445],
+        "risk_level": "CRITICAL",
+        "intelligence_source": "hcg_infraestructure.json"
+      },
+      {
+        "ip": "10.2.1.139",
+        "hostname": "srv-sigma",
+        "roles": ["Biometric System", "Access Control"],
+        "ports": [80, 443],
+        "risk_level": "HIGH",
+        "intelligence_source": "hcg_infraestructure.json"
+      }
+    ]
+  },
+  "implementation_details": {
+    "source_file": "hcg_smb_ldap_enum.c",
+    "compilation": {
+      "windows": "gcc -o hcg_smb_ldap_enum.exe hcg_smb_ldap_enum.c -lws2_32 -static -s",
+      "linux": "gcc -o hcg_smb_ldap_enum hcg_smb_ldap_enum.c -static -s"
+    },
+    "usage": {
+      "scan_all": "./hcg_smb_ldap_enum -a",
+      "scan_target": "./hcg_smb_ldap_enum -t <IP>",
+      "smb_only": "./hcg_smb_ldap_enum -t <IP> -s",
+      "ldap_only": "./hcg_smb_ldap_enum -t <IP> -l"
+    },
+    "evasion_techniques": [
+      "Static linking for portability",
+      "Symbol stripping to hinder reverse engineering",
+      "Connection timeout to avoid detection",
+      "Non-blocking sockets for async operation"
+    ]
+  },
+  "known_shares": [
+    "ADMIN$", "C$", "E$", "F$", "G$", "H$", "I$", "IPC$",
+    "020_Depto_Soporte", "060_Direccion", "11 UIG", "AlmacenFAA",
+    "CAA_FAA", "CGRH_CV", "Coord.Administrativa-JIM",
+    "Coord.Epidemio.Hospitalaria", "Coordinacion Juridico",
+    "DIETOLOGIA_Y_NUT_FAA", "FAA_divserv_admvos", "FAA_SA",
+    "FAAJIMHCO-Viveres", "FONSABI_farmacia_jim", "IngenieriaBiomedicaJIM",
+    "INVESTIGACION_DE_MERCADO", "JIM_DivServ_Admvos", "NombramientoRH",
+    "OftalmoFAA", "RH-JIM", "Serv3", "SubDir.Serv.Auxiliares-JIM",
+    "SubDir.Serv.Dx.Tto._y_Param", "SubDireccionMedicaJIM",
+    "TrabajoSocialJIM", "vinculacionhistorico2019-2022"
+  ],
+  "output_files": [
+    {
+      "name": "hcgenum_report.txt",
+      "description": "Full enumeration report with findings"
+    },
+    {
+      "name": "enumeration_log.txt", 
+      "description": "Timestamped log of all scan operations"
+    }
+  ],
+  "mitre_attack_url": "https://attack.mitre.org/techniques/T1046/",
+  "related_techniques": [
+    "T1018 - Remote System Discovery",
+    "T1021 - Remote Services",
+    "T1087 - Account Discovery"
+  ],
+  "detection_opportunities": [
+    "Multiple connection attempts to ports 445, 389",
+    "SMB negotiation packets from non-standard sources",
+    "LDAP bind requests from unauthorized IPs",
+    "Anomalous network scanning patterns"
+  ],
+  "metadata": {
+    "author": "C4ISR STRATCOM",
+    "version": "1.0",
+    "created": "2026",
+    "classification": "CONFIDENTIAL",
+    "operation": "SIGINT-V5",
+    "convention": "CONV-0221-JAL-HCG-2026"
+  }
+}

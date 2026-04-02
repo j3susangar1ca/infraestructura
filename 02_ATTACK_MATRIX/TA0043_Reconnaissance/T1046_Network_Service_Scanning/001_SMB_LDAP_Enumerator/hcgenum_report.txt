@@ -1,0 +1,21 @@
+========================================
+HCG SMB/LDAP ENUMERATION REPORT
+Generated: 2026-04-02 03:06:37
+Target Infrastructure: Hospital Civil de Guadalajara
+Domain: opd-hcg.org
+========================================
+
+HCG Infrastructure Summary:
+===========================
+
+10.2.1.1         | srv-opd-hcg-org           | Risk: 4/4
+10.2.1.92        | srv-smb                   | Risk: 4/4
+10.2.1.140       | srv-expediente            | Risk: 4/4
+10.2.1.139       | srv-sigma                 | Risk: 3/4
+
+Use command-line options to perform active scanning.
+
+
+========================================
+END OF REPORT
+========================================
