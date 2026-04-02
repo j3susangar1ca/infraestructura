@@ -1,0 +1,40 @@
+{
+  "technique_id": "T1016",
+  "technique_name": "System Network Configuration Discovery",
+  "tactic": "TA0007 - Discovery",
+  "description": "Asyncio network topology mapper: passive enumeration (interfaces, ARP, routes, DNS) and active scanning (ICMP sweep, TCP banner grab, OS fingerprinting).",
+  "platforms": ["Linux"],
+  "permissions_required": ["User"],
+  "implementation_details": {
+    "source_file": "sigv5_t1016_net_topology_mapper.py",
+    "language": "Python 3.8+",
+    "dependencies": [],
+    "usage": {
+      "full_scan": "python3 sigv5_t1016_net_topology_mapper.py --cidr 10.2.1.0/24",
+      "custom_ports": "python3 sigv5_t1016_net_topology_mapper.py --cidr 10.2.1.0/24 --ports 22,80,443,445,3389",
+      "passive_only": "python3 sigv5_t1016_net_topology_mapper.py --passive-only"
+    },
+    "capabilities": [
+      "Interface enumeration via /sys/class/net and ip addr",
+      "ARP table extraction from /proc/net/arp",
+      "Routing table parsing",
+      "DNS resolver extraction",
+      "Async ICMP echo sweep",
+      "TCP connect scan with banner grabbing",
+      "Service fingerprinting via regex",
+      "OS fingerprinting via TTL heuristics",
+      "Reverse DNS resolution",
+      "JSON topology report generation"
+    ]
+  },
+  "mitre_attack_url": "https://attack.mitre.org/techniques/T1016/",
+  "related_techniques": ["T1046", "T1018", "T1049", "T1082"],
+  "metadata": {
+    "author": "C4ISR STRATCOM",
+    "version": "1.0",
+    "created": "2026",
+    "classification": "CONFIDENTIAL",
+    "operation": "SIGINT-V5",
+    "convention": "CONV-0221-JAL-HCG-2026"
+  }
+}
