@@ -1,0 +1,22 @@
+{
+  "module_id": "WIN32-NULLFREE-KEYLOGGER-V5",
+  "name": "Win32 Null-Free Keylogger Shellcode (Fugu)",
+  "priority": "HIGH",
+  "tactic": "TA0009_Collection",
+  "technique": "T1056",
+  "dependencies": ["gcc", "windows-target"],
+  "targeting_intel": {
+    "os_family": "Windows",
+    "affected_versions": ["Win7", "Win8", "Win10", "x86", "x64 (via Wow64)"],
+    "vulnerability": "Input Capture / Keylogging",
+    "hcg_scenario": "Shellcode de 601 bytes (null-free) que captura pulsaciones de teclas y las guarda en %TEMP%\\log.bin como Virtual-Key Codes. Utiliza resolución dinámica de APIs de USER32 y KERNEL32."
+  },
+  "execution_config": {
+    "command": "gcc sigv5_t1056_win32_nullfree_keylogger.c -o sigv5_t1056_win32_nullfree_keylogger.exe",
+    "usage": "Compilar para x86. El programa genera un archivo log.bin en el directorio temporal del usuario. Las teclas se guardan en formato raw de Virtual-Key Codes."
+  },
+  "impact": {
+    "auth_level": "User level execution",
+    "action": "Sensitive Information Collection (Keystrokes)"
+  }
+}
