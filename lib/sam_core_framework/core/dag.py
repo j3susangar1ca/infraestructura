@@ -1,17 +1,16 @@
 #
-# 🛡️ C4ISR-STRATCOM-IMPLANT-SIGINT-V5: Attack Directed Acyclic Graph
-# [CLASSIFIED]: CONFIDENCIAL
-# [MODULE]: AttackDAG
+# ⚙️ SAM-V5: Sistema de Gestión de Configuración Industrial
+# [MODULE]: ManagementDAG
 #
 
 import asyncio
 import logging
 
-logger = logging.getLogger("SIGINT_V5")
+logger = logging.getLogger("SAM_V5")
 
-class AttackNode:
+class ComponentNode:
     """
-    Represents a single tactical step in the Attack Matrix.
+    Represents a single management step in the configuration lifecycle.
     """
     def __init__(self, id, action, target, priority=5, timeout=300, 
                  is_objective=False, prereq_check=None):
@@ -64,12 +63,11 @@ class AttackNode:
     async def signal_failure(self, queue):
         """Handles path failure and potential fallbacks."""
         self.status = "FAILURE"
-        # In a real scenario, we might trigger alternative paths here
-        logger.warning(f"Tactical node {self.id} failed. Checking for fallbacks...")
+        logger.warning(f"Management node {self.id} failed. Checking for fallbacks...")
 
-class AttackDAG:
+class ManagementDAG:
     """
-    Manages the lifecycle and dependencies of a complex attack campaign.
+    Manages the lifecycle and dependencies of a complex configuration workflow.
     """
     def __init__(self):
         self.nodes = {}
