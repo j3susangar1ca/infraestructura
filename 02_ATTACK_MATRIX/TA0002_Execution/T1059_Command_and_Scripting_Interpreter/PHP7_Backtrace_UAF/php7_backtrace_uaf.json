@@ -1,0 +1,34 @@
+{
+  "module_identity": {
+    "name": "PHP 7.0-7.4 debug_backtrace UAF Bypass",
+    "technical_alias": "PHP 7 Backtrace Exploit",
+    "version": "1.0",
+    "mitre_attack_mappings": [
+      "TA0002.T1059 - Command and Scripting Interpreter",
+      "TA0005.T1548 - Abuse Elevation Control Mechanism"
+    ],
+    "description": "Exploit que utiliza una vulnerabilidad Use-After-Free (UAF) en la función debug_backtrace() para ganar acceso de lectura/escritura en la memoria, localizar la función 'system' y ejecutar comandos arbitrarios en sistemas *nix."
+  },
+  "vulnerability_context": {
+    "php_bug_id": "76047",
+    "affected_versions": "PHP 7.0 hasta 7.4 (lanzadas antes del 30/01/2020).",
+    "vulnerability_type": "Use-After-Free (UAF)"
+  },
+  "technical_capabilities": {
+    "exploitation_logic": {
+      "step_1_trigger": "Utiliza un objeto con un destructor personalizado para invalidar referencias durante la generación de un backtrace.",
+      "step_2_memory_leak": "Parsea el encabezado ELF para determinar la base binaria y localizar la tabla 'basic_functions' de PHP.",
+      "step_3_pwn": "Sobrescribe un manejador de objeto de cierre (closure) para redirigir la ejecución hacia 'zif_system'."
+    },
+    "environment_restrictions": "Diseñado exclusivamente para sistemas basados en *nix (no compatible con Windows)."
+  },
+  "targeting_intel": {
+    "ideal_target": "Servidores web (como los del HCG) que ejecutan versiones vulnerables de PHP 7 y aplican restricciones estrictas de 'disable_functions' que impiden la ejecución normal de comandos shell.",
+    "impact": "Ejecución de comandos arbitrarios (ej. 'uname -a') con los privilegios del proceso web."
+  },
+  "build_instructions": {
+    "language": "PHP",
+    "usage": "Invocación de la función pwn($cmd) con el comando deseado.",
+    "opcache_evasion": "Utiliza str_shuffle() para prevenir el interning de strings por parte de OPCache durante la explotación."
+  }
+}
