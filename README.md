@@ -20,14 +20,14 @@ Focused on high-complexity targets—including healthcare networks and specializ
 
 ---
 
-## 🛰️ Operational Lifecycle (Full Tactical Chain)
+## 🛰️ Operational Lifecycle
 
 ```mermaid
 graph TD
     subgraph "Phase 0: STRATCOM Intelligence (Folder 01)"
         A1[Target Recon Analysis] --> A2["Vulnerability & Vector Mapping"]
     end
-    
+
     A2 -->|Selection| B{"STRATCOM Matrix"}
 
     subgraph "Phase 1: ATTACK MATRIX (Folder 02)"
@@ -48,7 +48,7 @@ graph TD
     end
 
     TA40 -->|Solution Encoding| C["BUILD OUTPUT (Folder 03)"]
-    
+
     style A2 fill:#d4edda,stroke:#28a745,stroke-width:2px
     style B fill:#fff3cd,stroke:#ffc107,stroke-width:2px
     style C fill:#f8d7da,stroke:#dc3545,stroke-width:2px
@@ -56,7 +56,7 @@ graph TD
 
 ---
 
-## 🏗️ Architectural Topology (Tactical Repository)
+## 🏗️ Architectural Topology
 
 The structure is strictly aligned with the **MITRE ATT&CK** matrix, ensuring each artifact is documented within its tactical objective folder.
 
@@ -99,11 +99,15 @@ The structure is strictly aligned with the **MITRE ATT&CK** matrix, ensuring eac
 
 ## ⚖️ Legal & Institutional Framework
 
-This laboratory is sanctioned by the **Secretariat of Innovation, Science, and Technology (SICYT)** and the **Government of the State of Jalisco (2026)**, in collaboration with the **Hospital Civil de Guadalajara (HCG)** coordination.
+This laboratory is sanctioned by the **Secretariat of Innovation, Science, and Technology (SICYT)** and the **Government of the State of Jalisco (2026)**, in collaboration with the **OPD Hospital Civil de Guadalajara (HCG)** coordination.
 
 - **Convention**: `CONV-0221-JAL-HCG-2026`
 - **Authorized Scope**: Advanced research, adversary emulation for critical health infrastructure, and defensive hardening.
+- **Links**:
+  - https://www.udg.mx/es/noticia/udeg-y-gobierno-del-estado-crean-red-de-hospitales-civiles-en-jalisco
+  - https://www.jalisco.gob.mx/prensa/noticias/jalisco-fortalece-sistema-de-salud-y-no-se-afilia-42977
 
 ---
 
-Orchestrated by C4ISR V5 — Strategic Command 2026
+Gobierno del Estado de Jalisco - "Innovación y desarrollo tecnológico".
+OPD Hospital Civil de Guadalajara - "La salud del pueblo es la suprema ley".
