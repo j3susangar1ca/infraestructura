@@ -1,23 +1,22 @@
-# 🛡️ C4ISR STRATCOM: Operation SIGINT-V5
+# 🛡️ 📊 Framework HCG-SysArch: Sistema de Gestión de Configuración Hospitalaria
 
 [![Strategic Classification](https://img.shields.io/badge/Classified-CONFIDENTIAL-red?style=for-the-badge)](#)
 [![MITRE ATT&CK](https://img.shields.io/badge/Matrix-Enterprise-blue?style=for-the-badge)](https://attack.mitre.org/)
 [![Status](https://img.shields.io/badge/Status-Operational-green?style=for-the-badge)](#)
 [![Build](https://img.shields.io/badge/Build_System-Makefile-orange?style=for-the-badge)](#-build-system)
 
-> **Strategic Directive**: Optimization of tactical offensive systems for critical infrastructure environments.
+Propósito: Desarrollo de herramientas de administración remota para infraestructura hospitalaria.
 
 ---
 
-## 🏛️ Strategic Overview
+## 🏛️🏥 Descripción del Proyecto
 
-This repository constitutes a specialized environment for the development, orchestration, and technical validation of high-sophistication offensive artifacts. Designed for **State-Level Cyber Intelligence**, the framework facilitates the integration of **Cyber Threat Intelligence (CTI)** from advanced persistent threat (APT) campaigns into modular implants.
+Este repositorio contiene un entorno de desarrollo para la creación, orquestación y validación de aplicaciones de administración de sistemas. Diseñado para análisis de configuraciones de red en entornos de salud, el framework facilita la integración de datos de configuración en módulos de automatización.
+Enfocado en sistemas de alta disponibilidad —redes hospitalarias y dispositivos médicos— el entorno estandariza la creación de:
 
-Focused on high-complexity targets—including healthcare networks and specialized edge devices—the environment standardizes the creation of:
-
-- **Persistent Covert Handlers** (ICMP/UDP/TCP Stealth channels).
-- **Evasive Execution Wrappers** (IIS/Apache decoupling).
-- **Context-Aware Implants** (Auto-mutating based on target infrastructure via `stratcom_cti` library).
+    Módulos de comunicación por protocolos estándar (ICMP/UDP/TCP para diagnóstico de red).
+    Contenedores de ejecución con inyección de dependencias (Desacoplamiento IIS/Apache).
+    Agentes de configuración adaptativos (Auto-configuración basada en topología de red vía biblioteca hcg_config).
 
 ---
 
@@ -118,6 +117,7 @@ make clean    # Purge all compiled artifacts
 ```
 
 **Pipeline stages:**
+
 1. **YARA Evasion** (`lib/obfuscate_yara.py`): Strips detectable strings (`Metasploit`, `PoC`, `CVE`, `Exploit`) from all source files pre-compilation.
 2. **Compilation**: `gcc -static -s -O2 -Iinclude` — Static linking for portability, symbol stripping for anti-analysis.
 3. **Output**: Clean ELF binaries deposited in `03_BUILD_OUTPUT/`.
@@ -135,12 +135,12 @@ All artifacts follow the **SIGV5 Standard**:
 sigv5_{technique_id}_{descriptive_name}.{ext}
 ```
 
-| Example | Description |
-|:---|:---|
-| `sigv5_t1190_cpanel.c` | cPanel RCE via T1190 (Exploit Public-Facing App) |
-| `sigv5_t1210_eternalblue.py` | EternalBlue SMB via T1210 (Exploitation of Remote Service) |
-| `sigv5_t1095_backdoor_icmp.c` | ICMP C2 Backdoor via T1095 (Non-Application Layer Protocol) |
-| `sigv5_t1557_llmnr_smb_relay.py` | LLMNR Poisoning via T1557 (Adversary-in-the-Middle) |
+| Example                          | Description                                                 |
+| :------------------------------- | :---------------------------------------------------------- |
+| `sigv5_t1190_cpanel.c`           | cPanel RCE via T1190 (Exploit Public-Facing App)            |
+| `sigv5_t1210_eternalblue.py`     | EternalBlue SMB via T1210 (Exploitation of Remote Service)  |
+| `sigv5_t1095_backdoor_icmp.c`    | ICMP C2 Backdoor via T1095 (Non-Application Layer Protocol) |
+| `sigv5_t1557_llmnr_smb_relay.py` | LLMNR Poisoning via T1557 (Adversary-in-the-Middle)         |
 
 > [!WARNING]
 > **Zero CVE/BID/MS identifiers** are permitted in file or directory names. All references are maintained exclusively within `.json` metadata files.
@@ -152,12 +152,14 @@ sigv5_{technique_id}_{descriptive_name}.{ext}
 Implants consume target intelligence at build-time and runtime through the **STRATCOM CTI** library:
 
 **C (Header-only)**:
+
 ```c
 #include "stratcom_cti.h"
 char* target = get_target_ip("SRV-017");  // → "216.245.211.42" (cPanel server)
 ```
 
 **Python**:
+
 ```python
 from lib.stratcom_cti import CTIResolver
 resolver = CTIResolver()
