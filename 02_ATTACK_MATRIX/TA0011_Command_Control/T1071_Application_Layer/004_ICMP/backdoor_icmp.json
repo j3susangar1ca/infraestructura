@@ -1,0 +1,97 @@
+{
+  "module_identity": {
+    "name": "Advanced ICMP Passive Backdoor (irad-variant)",
+    "family": "TINYSHELL Custom Ecosystem",
+    "version": "5.0",
+    "mitre_attack_mappings": [
+      "T1071.004 - Application Layer Protocol: ICMP",
+      "T1055 - Process Injection (Deployment Phase)",
+      "T1562.001 - Impair Defenses: Disable or Modify Tools"
+    ],
+    "description": "Implante pasivo de capa de red basado en libpcap, diseñado para interceptar tráfico ICMP, establecer sesiones C2 cifradas y proveer shells remotas interactivas evadiendo inspección de puertos."
+  },
+  "adversary_emulation": {
+    "attributed_actor": "UNC3886 (China-Nexus)",
+    "primary_targets": "Routers ISP, dispositivos de borde (edge devices), y tecnologías de virtualización (Hyper-V/VMware) que carecen de agentes EDR tradicionales.",
+    "operational_focus": "Sigilo extremo, acceso a largo plazo, uso de credenciales legítimas y evasión de subsistemas de integridad (como Veriexec)."
+  },
+  "technical_capabilities": {
+    "activation_trigger": {
+      "protocol": "ICMP Echo Request (Type 8)",
+      "bpf_filter": "icmp[4:2] == 0xaa56",
+      "decryption_key": "XOR 0x86"
+    },
+    "authentication_markers": {
+      "session_key_seed": "WZtOTig2m42gXB6U",
+      "active_mode_trigger": "uSarguuS62bKRA0J",
+      "kill_switch": "1spCq0BMbJwCoeZn",
+      "proxy_trigger": "fb-75c043b82127",
+      "session_established_marker": "ek63a21km7WSWkfk"
+    },
+    "cryptography": {
+      "encryption": "AES-128-CBC con T-Tables personalizadas (S-BOX modificada)",
+      "integrity": "HMAC-SHA1 nativo (64-byte block size)"
+    },
+    "c2_functions": [
+      "0: Establish Bind Shell (TCP 31234)",
+      "1: Remote File Upload",
+      "2: Remote File Download",
+      "3: Launch Interactive /bin/csh or /bin/sh session",
+      "5: Relay / TCP Proxy Tunneling"
+    ]
+  },
+  "tactical_enhancements_available": {
+    "process_injection": "Capacidad de inyección en procesos suspendidos ('hung process' via 'mkfifo' y 'cat') usando 'dd' para sobrescribir memoria en /proc/$pid/mem (Global Offset Table) y evadir Veriexec (CVE-2025-21590).",
+    "anti_forensics": "Uso de scripts incrustados para parchear en caliente la memoria de procesos de auditoría (ej. snmpd, mgd) cambiando prólogos a 'NOP; MOV EAX,EDX; RET' para silenciar logs, y manipulación de syslog.conf antes de la ejecución de comandos."
+  },
+  "detection_and_evasion": {
+    "yara_rules_to_bypass": [
+      {
+        "rule": "M_Hunting_PacketEncryptionLayer_1",
+        "strings_to_obfuscate": [
+          "pel_client_init",
+          "pel_server_init",
+          "pel_setup_context",
+          "pel_send_msg",
+          "pel_recv_msg",
+          "pel_send_all",
+          "pel_recv_all",
+          "pel_errno",
+          "pel_context",
+          "pel_ctx",
+          "send_ctx",
+          "recv_ctx"
+        ]
+      },
+      {
+        "rule": "M_Hunting_TINYSHELL_5",
+        "strings_to_obfuscate": [
+          "tsh_get_file",
+          "tsh_put_file",
+          "tsh_runshell",
+          "tshd_get_file",
+          "tshd_put_file",
+          "tshd_runshell"
+        ]
+      }
+    ],
+    "ids_ips_signatures_to_bypass": [
+      {
+        "type": "Snort/Suricata",
+        "sid": "1000002",
+        "description": "M_Backdoor_TINYSHELL_uSarguuS62bKRA0J",
+        "hex_pattern_to_mutate": "f3 d5 e7 f4 e1 f3 f3 d5 b0 b4 e4 cd d4 c7 b6 cc"
+      }
+    ],
+    "known_file_hashes": [
+      "aac5d83d296df81c9259c9a533a8423a (MD5)",
+      "1a6d07da7e77a5706dd8af899ebe4daa74bbbe91 (SHA1)"
+    ]
+  },
+  "build_instructions": {
+    "compiler": "gcc",
+    "required_libraries": ["libpcap", "libutil"],
+    "recommended_flags": "-O3 -s -static",
+    "mutation_directives": "El motor de mutación DEBE renombrar todas las funciones listadas en 'yara_rules_to_bypass' y reestructurar las cadenas mágicas en memoria para evitar colisiones con las firmas de Snort."
+  }
+}
